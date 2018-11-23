@@ -250,7 +250,8 @@
 		},
 		watch: {
 			'$route' (to, from) {
-				this.$router.go(0);
+//				this.$router.go(0);
+window.location.reload();
 			},
 			templist: function(v) {
 				if(v.length == 0) return;
