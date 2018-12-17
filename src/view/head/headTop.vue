@@ -7,6 +7,7 @@
 					<el-menu-item index="temPlate">模板管理</el-menu-item>
 					<el-menu-item index="questionNaire">问卷管理</el-menu-item>
 					<el-menu-item index="analysis">我的问卷</el-menu-item>
+					<el-menu-item index="intro">公司简介</el-menu-item>
 				</el-menu>
 			</el-col>
 			<el-col :span="4" class="headtopRight">

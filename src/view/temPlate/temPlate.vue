@@ -9,7 +9,7 @@
 				<establishBT></establishBT>
 			</el-col>
 		</el-row>
-		<oneTemplate_temp :list="list" @getList="getList"></oneTemplate_temp>
+		<oneTemplate_temp :list="list" @getList="getList" @copyItem="copyItem"></oneTemplate_temp>
 		<div class="block">
 			<span class="demonstration"></span>
 			<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage1" :page-sizes="pageSizes" :page-size="searchInfo.pageSize" layout="total, prev, pager, next, jumper" :total="searchInfo.pageTotal">
@@ -69,6 +69,12 @@
 			searchBtn(){
 				this.getList();
 			},
+			copyItem(item){
+				console.log(this.$router.query)
+					this.$post("/Home/Tpl/copy", {"id":item.id}).then((res) => {
+					this.getList();
+				});
+			}
 //			publishTemp(item){
 //					this.$router.push({
 //						path: '/questionNaire?modelId='+item.id+'&modelname='+item.tmp_name;
@@ -111,5 +117,8 @@
 	.Templatecontain .el-input__inner {
 		height: 34px;
 		line-height: 34px;
+	}
+	.Templatecontain{
+		background:#fff;
 	}
 </style>

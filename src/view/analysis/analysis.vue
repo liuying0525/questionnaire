@@ -50,18 +50,23 @@
 									<el-col :span="23" :offset="1" v-else>
 										<el-button size="medium" @click="tagItem(qitem)" class="checkmy">查看详细信息</el-button>
 										<el-table :data="qitem.resultList" border style="width: 100%" v-show="!!qitem.itemshow">
-											<el-table-column prop="rownum" label="序号" width="180"></el-table-column>
+											<el-table-column prop="rownum" label="序号" width="80"></el-table-column>
 											<el-table-column prop="answer_time" label="日期" width="180"></el-table-column>
 											<el-table-column label="详细内容" v-if="qitem.sub_cat=='uploadimg'">
-
-												<template slot-scope="scope" v-if="qitem.sub_cat=='uploadimg'">
-													<img :src="imgitem" v-for="(imgitem,imgindex) in qitem.resultList[scope.$index].result" class="uploadimgList" :key="index"/>
+												<template slot-scope="scope">
+												<el-button v-if="imgitem" v-for="(imgitem,imgindex) in qitem.resultList[scope.$index].result"  @click="open4(imgitem)"  :key="imgindex">
+													<img :src="imgitem"  class="uploadimgList"/>
+												</el-button>
 												</template>
-
 											</el-table-column>
-
+											<el-table-column label="详细内容" v-if="qitem.sub_cat=='signature'" width="210">
+												<template slot-scope="scope">
+													<el-button v-if="qitem.resultList[scope.$index].result"   @click="open5(qitem,scope.$index)">
+													<img :src="qitem.resultList[scope.$index].result"  class="signature"/>
+													</el-button>
+												</template>
+											</el-table-column>
 											<el-table-column label="详细内容" v-if="qitem.sub_cat=='loCation'" prop="result">
-
 											</el-table-column>
 											<el-table-column prop="result" label="详细内容" v-else>
 											</el-table-column>
@@ -103,12 +108,13 @@
 	import headTop from 'view/head/headTop.vue';
 	import topic from 'components/topic.vue';
 	import { jsNumDX } from 'javascripts/utils/index';
+	import { Message } from "element-ui";
 
 	import { ofill, osingle, omultiple, omultistage, ouploadimg, oloCation, ofractions, ocomprehensive } from "components/itemType";
 	export default {
 		data() {
 			return {
-				contentText: '添加问卷说明添加问卷说明添加问卷说明添加问卷说明添加问卷说明添加问卷说明添加问卷说明添加问卷说明添加问卷说明添加问卷说明添加问卷说明添加添加问卷说明添加问卷说明添加问卷说明添加问卷说明添卷说明',
+				contentText: '',
 				activeNames: ['1'],
 				questiontitle: "",
 				quesId: "",
@@ -176,6 +182,24 @@
 				return resList;
 
 			},
+			open4(imgitem){
+			
+				   this.$alert('<img src='+imgitem+' class="uploadimgListview"/>', '图片预览', {
+			          dangerouslyUseHTMLString: true
+			        })   
+			        .catch(action => {
+         
+          				});
+			},
+			open5(qitem,index){
+			
+				   this.$alert('<img src='+qitem.resultList[index].result+' class="signatureview"/>', '图片预览', {
+			          dangerouslyUseHTMLString: true
+			        })   
+			        .catch(action => {
+         
+          				});
+			},
 			getSummaries(param) {
 				const {
 					columns,
@@ -202,12 +226,14 @@
 				this.$post("/Home/Analysis/detail", {
 					id: item.id
 				}).then((res) => {
-					if(item.sub_cat == 'uploadimg') {
+					if(item.sub_cat == 'uploadimg'||item.sub_cat=='signature') {
+						
 						var imgLoad = res;
 						res.forEach((obj, index) => {
-							obj.result = JSON.parse(obj.result);
+							item.sub_cat == 'uploadimg'?(obj.result = JSON.parse(obj.result)):(obj.result = obj.result);
 						});
 						item.resultList = imgLoad;
+					
 					} else if(item.sub_cat == 'loCation') {
 						var obj = res || [];
 						res.forEach((obj, index) => {
@@ -216,6 +242,7 @@
 						item.resultList = obj; //objres.addresname+obj.locationName;
 					} else {
 						item.resultList = res;
+						
 					}
 				})
 			},
@@ -332,6 +359,18 @@
 	
 	.el-table th>.cell {
 		text-align: center;
+	}
+	.signatureview{
+		    width: 30%;
+       transform: rotate(90deg) translate(-25%,-50%);
+    margin-bottom: -20%;
+	}
+	.editTemContain .el-table--enable-row-transition .el-table__body td .el-button{
+		border:none
+	}
+.uploadimgListview{
+		    max-width: 100%;
+   
 	}
 </style>
 <style scoped="scoped" lang="scss">
@@ -495,4 +534,16 @@
 		font-weight: bold;
 	}
 	.conBottomT h6{font-size:20px;}
+	.signature{
+		width: 20%;
+		height: auto;
+		transform: rotate(90deg);
+	}
+	.el-message-box__message p{
+		    height: 200px;
+    margin: 0 auto;
+    text-align: center;
+    line-height: 200px;
+	}
+
 </style>

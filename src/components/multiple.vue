@@ -4,7 +4,7 @@
 			<el-form-item :label="(qindex+1)+taccord+item.title" :key="index" @mouseover.native.prevent="showcart(item)" @mouseout.native.prevent="showcart(item)" :class="{'bordernone':item.edittextinput,'itemborder':item.show,'itemmust':item.is_must}">
 				<!--<i v-if="item.is_must" v-text="'*'" class="itemmust"></i>-->
 				<el-checkbox-group v-model="item.checkedGroup">
-					<el-checkbox v-for="(checkoption,index) in item.option" :label="checkoption" :key="index">{{checkoption.option_name}}</el-checkbox>
+					<el-checkbox v-for="(checkoption,index) in item.option" :label="checkoption" :key="index" class="multiplecheck">{{checkoption.option_name}}</el-checkbox>
 				</el-checkbox-group>
 				<div v-show="item.show" class="transition-box">
 					<span @click="showedit(item)">编辑</span>
@@ -280,7 +280,6 @@
 	
 	.transition-box span {
 		color: rgb(41, 155, 252);
-		text-decoration: underline;
 		margin-right: 15%;
 		cursor: pointer;
 		display: inline-block;
@@ -389,5 +388,12 @@
 				width: 25%;
 			}
 		}
+	}
+	.multiplecheck{
+		width:100%;
+		
+	}
+	.multiplecheck+.multiplecheck{
+		margin-left:0;
 	}
 </style>

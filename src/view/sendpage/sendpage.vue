@@ -105,7 +105,7 @@
 	}
 }
 	.sendpage {
-		
+		background: #fff;
 		h6{
 			text-align: center;
 			line-height: 120px;

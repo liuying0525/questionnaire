@@ -1,14 +1,11 @@
 <template>
 	<div>
 		<el-form>
-
 			<el-form-item :label="(qindex+1)+taccord+item.title+':'" @mouseover.native.prevent="showcart(item)" @mouseout.native.prevent="showcart(item)" :class="{'bordernone':item.edittextinput,'itemborder':item.show,'itemmust':item.is_must}">
 				<!--<i v-if="item.is_must" v-text="'*'" class="itemmust"></i>-->
-
 				<el-radio-group v-model="item.default_choose" @change="dochange">
-					<el-radio :label="im.option_name" v-for="(im,inx) in item.option" :key="inx">{{im.option_name}}</el-radio>
+					<el-radio :label="im.option_name" v-for="(im,inx) in item.option" :key="inx" class="singradio">{{im.option_name}}</el-radio>
 				</el-radio-group>
-
 				<div v-show="item.show" class="transition-box">
 					<span @click="showedit(item)">编辑</span>
 					<span @click.prevent="removeDomain(index,qindex)">删除</span>
@@ -42,11 +39,12 @@
 											<el-input v-model="domain.option_name"></el-input>
 										</el-col>
 										<el-col :span="4" class="grade">
-											<el-input v-model="domain.grade"></el-input>
+											<el-input v-model="domain.score"></el-input>
 										</el-col>
 										<el-col :span="3">
-											<el-radio-group v-model="item.default_choose" @change="gdochange">
-												<el-radio :label="domain.option_name" border></el-radio>
+											<!--<el-radio-group v-model="item.default_choose" @change="gdochange">-->
+												<el-radio-group v-model="item.default_choose">
+												<el-radio :label="domain.option_name" @click.native.prevent="gdochange(domain.option_name)"></el-radio>
 											</el-radio-group>
 										</el-col>
 										<el-col :span="5" class="iconplus">
@@ -74,9 +72,7 @@
 				<relevance :relevanceshow='relevanceshow' :domains="item.option" :item="item" @canclerelevance='canclerelevance' :qlist="qlist" @surerelevance="surerelevance"></relevance>
 			</el-form-item>
 		</el-form>
-
 	</div>
-
 </template>
 
 <script>
@@ -134,6 +130,7 @@
 				//				this.gdomack = item;
 			},
 			gdochange(item) {
+			
 				if(this.status != "1" && !this.$route.query.templateId) {
 					return;
 				}
@@ -141,16 +138,18 @@
 
 			},
 			showcart(item) {
-				console.log(this.$route.query.templateId)
+				//console.log(this.$route.query.templateId)
 				if(this.status != "1" && !this.$route.query.templateId) {
 					return;
 				}
 				item.show = item.edittextinput || !item.show;
 			},
 			submitForm(item) {
+				
 				if(this.status != "1" && !this.$route.query.templateId) {
 					return;
 				}
+				
 				this.$emit("submitForm", item, this.index);
 			},
 			removeDomain() {
@@ -372,7 +371,6 @@
 	
 	.transition-box span {
 		color: rgb(41, 155, 252);
-		text-decoration: underline;
 		margin-right: 15%;
 		cursor: pointer;
 		display: inline-block;
@@ -491,4 +489,11 @@
 	/*.singleedit .el-row > .el-col.grade{
 		text-align: left;
 	}*/
+	.singradio{
+		width:100%;
+		margin:10px 0;
+	}
+	.singradio+.singradio{
+		margin-left:0;
+	}
 </style>

@@ -25,6 +25,7 @@
 						<el-dropdown-item @click.native="addItem(index,'uploadimg')">图片上传</el-dropdown-item>
 						<el-dropdown-item @click.native="addItem(index,'multistage')">多级下拉</el-dropdown-item>
 						<el-dropdown-item @click.native="addItem(index,'fractions')">分数题</el-dropdown-item>
+						<el-dropdown-item @click.native="addItem(index,'multistage')">电子签名</el-dropdown-item>
 					</el-dropdown-menu>
 				</el-dropdown>
 
@@ -50,6 +51,9 @@
 					<template v-if="qitem.sub_cat=='fractions'">
 						<fractions :item="qitem" :taccord="taccord" :index="index" :type="type" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></fractions>
 					</template>
+					<template v-if="qitem.sub_cat=='signature'">
+						<signature :item="qitem" :taccord="taccord" :index="index" :type="type" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></signature>
+					</template>
 				</div>
 			</el-form-item>
 
@@ -67,8 +71,9 @@
 	import uploadimg from 'components/uploadimg.vue';
 	import loCation from 'components/loCation.vue';
 	import fractions from 'components/fractions.vue';
+	import signature from 'components/signature.vue';
 	import { Message } from "element-ui";
-	import { ofill, osingle, omultiple, omultistage, ouploadimg, oloCation, ofractions } from "./itemType";
+	import { ofill, osingle, omultiple, omultistage, ouploadimg, oloCation, ofractions,osignature } from "./itemType";
 	export default {
 		data() {
 			return {
@@ -121,7 +126,7 @@
 				ofill.edittextinput=true;
 				let ix = this.comitem.qlist.length + 1;
 				let ifill = JSON.parse(JSON.stringify(ofill));
-				ifill.ppid = this.$route.query.questionId;
+				ifill.ppid = this.$route.query.questionId?this.$route.query.questionId:this.$route.query.templateId;;
 				ifill.edittextinput=true;
 				ifill.pid = this.comitem.id;
 				ifill.serial_number = ix;
@@ -133,7 +138,7 @@
 				osingle.edittextinput=true;
 				let ix = this.comitem.qlist.length + 1;
 				let isingle = JSON.parse(JSON.stringify(osingle));				
-				isingle.ppid = this.$route.query.questionId;
+				isingle.ppid = this.$route.query.questionId?this.$route.query.questionId:this.$route.query.templateId;;
 			
 				isingle.pid = this.comitem.id;
 				isingle.serial_number = ix;
@@ -146,7 +151,7 @@
 				omultiple.edittextinput=true;
 				let ix = this.comitem.qlist.length + 1;
 				let imultiple = JSON.parse(JSON.stringify(omultiple));
-				imultiple.ppid = this.$route.query.questionId;
+				imultiple.ppid = this.$route.query.questionId?this.$route.query.questionId:this.$route.query.templateId;;
 				imultiple.pid = this.comitem.id;
 				imultiple.serial_number = ix;
 				imultiple.qtitle = ix;
@@ -158,7 +163,7 @@
 				omultistage.edittextinput=true;
 				let ix = this.comitem.qlist.length + 1;
 				let imultistage = JSON.parse(JSON.stringify(omultistage));
-				imultistage.ppid = this.$route.query.questionId;
+				imultistage.ppid = this.$route.query.questionId?this.$route.query.questionId:this.$route.query.templateId;
 				imultistage.pid = this.comitem.id;
 				imultistage.serial_number = ix;
 				imultistage.qtitle = ix;
@@ -170,7 +175,7 @@
 				ouploadimg.edittextinput=true;
 				let ix = this.comitem.qlist.length + 1;
 				let iuploadimg = JSON.parse(JSON.stringify(ouploadimg));
-				iuploadimg.ppid = this.$route.query.questionId;
+				iuploadimg.ppid = this.$route.query.questionId?this.$route.query.questionId:this.$route.query.templateId;;
 				iuploadimg.pid = this.comitem.id;
 				iuploadimg.serial_number = ix;
 				iuploadimg.qtitle = ix;
@@ -182,7 +187,7 @@
 				oloCation.edittextinput=true;
 				let ix = this.comitem.qlist.length + 1;
 				let iloCation = JSON.parse(JSON.stringify(oloCation));
-				iloCation.ppid = this.$route.query.questionId;
+				iloCation.ppid = this.$route.query.questionId?this.$route.query.questionId:this.$route.query.templateId;;
 				iloCation.pid = this.comitem.id;
 				iloCation.serial_number = ix;
 				iloCation.qtitle = ix;
@@ -200,6 +205,18 @@
 				ifractions.qtitle = ix;
 				ifractions.edittextinput=true;
 				this.comitem.qlist.push(ifractions);
+			},
+				addsignature(index) {
+				osignature.show=true;
+				osignature.edittextinput=true;
+				let ix = this.comitem.qlist.length + 1;
+				let isignature = JSON.parse(JSON.stringify(osignature));
+				isignature.ppid =this.$route.query.questionId;
+				isignature.pid = this.comitem.id;
+				isignature.serial_number = ix;
+				isignature.qtitle = ix;
+				isignature.edittextinput=true;
+				this.comitem.qlist.push(isignature);
 			},
 			addItem(index, type) {
 					if(this.status != "1") {
@@ -245,6 +262,11 @@
 							this.addfractions(index);
 						}
 						break;
+							case "signature":
+						{
+							this.addsignature(index);
+						}
+						break;
 					case "comprehensive":
 						{
 							this.addcomprehensive(index);
@@ -270,12 +292,17 @@
 					option_name: "选项" + sort,
 					default_choose: 0,
 					related_sub: '',
-					skip_sub: ''
+					skip_sub: '',
+					score:0				
 				}
 				this.comitem.qlist[qindex].option.push(options);
 			},
 			changeDomainRadio(index, qindex, v) {
-				this.comitem.qlist[qindex].default_choose = v;
+					if(v==this.list[index].qlist[qindex].default_choose){
+					this.list[index].qlist[qindex].default_choose="";
+				}else{
+					this.list[index].qlist[qindex].default_choose = v;
+				}
 				let domainlist = this.comitem.qlist[qindex].option;
 				for(let i in domainlist) {
 					if(domainlist[i].option_name == v) {
@@ -499,7 +526,8 @@
 			multistage,
 			loCation,
 			uploadimg,
-			fractions
+			fractions,
+			signature
 		}
 	}
 </script>
@@ -734,7 +762,7 @@
 	.el-dropdown {
 		position: absolute;
 		top: 12px;
-		right: 100px;
+		right: 65px;
 		/*background: #005ad4;*/
 		color: #299bfc;
 		/*z-index: 100;

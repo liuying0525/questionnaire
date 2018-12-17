@@ -20,6 +20,7 @@
 					<span @click="analyzeDown(item)"><i class="analyzeDown"></i>分析&下载</span>
 				</el-col>
 				<el-col :span="6" class="ontemplateBotR">
+					<el-button @click="copyItem(item)" class="copy">复制</el-button>
 					<el-button class="active" @click="publishAn(item)"><i class="el-icon-edit" v-if="item.status!=2"></i>{{item.status!=2?"发布":"暂停"}}</el-button>
 					<el-button @click="deleItem(item)"><i class="el-icon-delete"></i>删除</el-button>
 				</el-col>
@@ -47,10 +48,11 @@
 							</el-select>
 						</li>
 						<li>
-							<el-select v-model="region" placeholder="请选择">
+							<!--<el-select v-model="region" placeholder="请选择">
 								<el-option v-for="(item,index) in qoptions" :key="index" :label="item.label" :value="item.value">
 								</el-option>
-							</el-select>
+							</el-select>-->
+							<el-input v-model="region" placeholder="请输入所属区域" maxlength="4"></el-input>
 						</li>
 					</ul>
 				</div>
@@ -121,6 +123,9 @@
 					});
 				});
 			},
+			copyItem(item){
+				this.$emit("copyItem", item);
+			},
 			designAn(item) {
 				return this.$router.push({
 					path: '/edit/edit_questionnaire',
@@ -172,10 +177,10 @@
 						});
 						return false;
 					}
-					if(this.modelId == "" || this.region == "") {
+					if(this.modelId == "" || this.region.trim() == "") {
 						Message({
 							showClose: true,
-							message: "请选择所属区域!",
+							message: "请输入所属区域!",
 							type: 'warning',
 							duration: 2000
 						});
@@ -194,10 +199,10 @@
 						});
 					});
 				} else {
-					if(this.region == "") {
+					if(this.region.trim() == "") {
 						Message({
 							showClose: true,
-							message: "请选择所属区域!",
+							message: "请输入所属区域!",
 							type: 'warning',
 							duration: 3000
 						});
@@ -220,15 +225,15 @@
 				}
 
 			},
-			gettmpList() {
-				let sendModel = this.searchInfo;
-				delete sendModel.pageTotal;
-				delete sendModel.status;
-				this.$post("/Home/Tpl/tplList", sendModel).then((res) => {
-					let resdata = res;
-					this.templist = resdata.list;
-				});
-			}
+//			gettmpList() {
+//				let sendModel = this.searchInfo;
+//				delete sendModel.pageTotal;
+//				delete sendModel.status;
+//				this.$post("/Home/Tpl/tplList", sendModel).then((res) => {
+//					let resdata = res;
+//					this.templist = resdata.list;
+//				});
+//			}
 		},
 		mounted() {
 			let self = this;
@@ -305,6 +310,11 @@ window.location.reload();
 			>.el-col {
 				display: flex;
 				padding: 18px 0;
+				span:hover{
+					color:#005ad4;
+					text-decoration: underline;
+					cursor: pointer;
+				}
 			}
 		}
 	}
@@ -385,7 +395,7 @@ window.location.reload();
 	
 	.el-icon-edit,
 	.el-icon-delete {
-		margin-right: 12px;
+		margin-right: 5px;
 	}
 	
 	.ontemplateBotL {
@@ -404,6 +414,10 @@ window.location.reload();
 		.el-button {
 			margin-right: 0;
 			margin-left: 12px;
+			&.copy{
+				color:rgb(219,96,29);
+				border:1px solid rgb(219,96,29);
+			}
 		}
 	}
 	
@@ -465,6 +479,7 @@ window.location.reload();
 						width: 30%;
 						li {
 							padding: 14px 0;
+							
 						}
 					}
 					width: 70%;
@@ -472,6 +487,9 @@ window.location.reload();
 					li {
 						text-align: center;
 						padding: 8px 0;
+						.el-input{
+							width:76%;
+						}
 					}
 				}
 			}

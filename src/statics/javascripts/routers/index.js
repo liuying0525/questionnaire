@@ -56,6 +56,14 @@ export default [{
 				meta: {
 					title: '发送问卷'
 				}
+			},
+			{
+				path:'/intro',
+				name:'/intro',
+				component:require('view/intro/intro'),
+				meta:{
+					title:'公司简介'
+				}
 			}
 			
 		]

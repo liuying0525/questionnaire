@@ -34,7 +34,7 @@ let osingle = {
 		option_name: '选项1',
 		default_choose: 0,
 		related_sub: "",
-		grade:"",
+		score:0,
 		skip_sub: ""
 	}]
 };
@@ -172,6 +172,22 @@ let ofractions = {
 	changeButton: false
 };
 
+let osignature={
+	id: 0,
+	ppid: 0,
+	pid: 0,
+	sub_cat: "signature",
+	title: '标题',
+	serial_number: 0,
+	poSition: "",
+	qtitle: 0,
+	option: [],
+	is_must: false,
+	show: false,
+	edittextinput: false,
+	changeButton: false,
+};
+
 let ocomprehensive = {
 	id: 0,
 	ppid: 0,
@@ -196,5 +212,6 @@ export {
 	ouploadimg,
 	oloCation,
 	ofractions,
-	ocomprehensive
+	ocomprehensive,
+	osignature
 }

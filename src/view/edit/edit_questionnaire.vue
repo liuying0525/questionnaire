@@ -5,12 +5,13 @@
 			<el-col :offset="10" :span="3" @click.native="finishSub()"><i class="el-icon-check"></i>完成</el-col>
 		</el-row>
 		<div class="editTemContain">
-			<div>
+			<div class="outconTop">
 				<el-row type="flex" justify="end" class="conTop">
 
 					<el-col :span="3" @click.native="openModel" class="openModel"><i class="el-icon-plus"></i>新建模块</el-col>
 
 				</el-row>
+			</div>
 				<div class="conBottom">
 					<div class="conBottomT">
 						<el-input type="text" v-model="questiontitle" placeholder="问卷标题" class="questiontitle"></el-input>
@@ -31,6 +32,7 @@
 									<el-dropdown-item @click.native="addItem(index,'uploadimg')">图片上传</el-dropdown-item>
 									<el-dropdown-item @click.native="addItem(index,'multistage')">多级下拉</el-dropdown-item>
 									<el-dropdown-item @click.native="addItem(index,'fractions')">分数题</el-dropdown-item>
+									<el-dropdown-item @click.native="addItem(index,'signature')">电子签名</el-dropdown-item>
 									<el-dropdown-item @click.native="addItem(index,'comprehensive')">综合题</el-dropdown-item>
 								</el-dropdown-menu>
 							</el-dropdown>
@@ -60,6 +62,10 @@
 									<template v-if="qitem.sub_cat=='fractions'">
 										<fractions :item="qitem" :taccord="taccord" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></fractions>
 									</template>
+									<template v-if="qitem.sub_cat=='signature'">
+										<signature :item="qitem" :taccord="taccord" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></signature>
+									</template>
+								
 									<template v-if="qitem.sub_cat=='comprehensive'">
 										<comprehensive @deleCom="delem" :comtaccord="comtaccord" :index="index" :comitem="qitem" :status="status" :qindex="qindex" @itemSortdown="itemSortdown"></comprehensive>
 									</template>
@@ -71,7 +77,7 @@
 					</el-collapse>
 
 				</div>
-			</div>
+			
 		</div>
 
 	</div>
@@ -86,10 +92,11 @@
 	import multistage from 'components/multistage.vue';
 	import uploadimg from 'components/uploadimg.vue';
 	import loCation from 'components/loCation.vue';
+	import signature from 'components/signature.vue';
 	import fractions from 'components/fractions.vue';
 	import { Message } from "element-ui";
 	import comprehensive from 'components/comprehensive.vue';
-	import { ofill, osingle, omultiple, omultistage, ouploadimg, oloCation, ofractions, ocomprehensive } from "components/itemType";
+	import { ofill, osingle, omultiple, omultistage, ouploadimg, oloCation, ofractions, ocomprehensive ,osignature} from "components/itemType";
 
 	export default {
 		data() {
@@ -176,6 +183,17 @@
 				iloCation.serial_number = ix;
 				iloCation.qtitle = ix;
 				this.list[index].qlist.push(iloCation);
+			},
+				addsignature(index) {
+				osignature.show = true;
+				osignature.edittextinput = true;
+				let ix = this.list[index].qlist.length + 1;
+				let isignature= JSON.parse(JSON.stringify(osignature));
+				isignature.ppid = this.subId;
+				isignature.pid = this.list[index].id;
+				isignature.serial_number = ix;
+				isignature.qtitle = ix;
+				this.list[index].qlist.push(isignature);
 			},
 			addfractions(index) {
 				ofractions.show = true;
@@ -267,10 +285,15 @@
 						break;
 					case "fractions":
 						{
-							debugger
+						
 							this.addfractions(index);
 						}
 						break;
+					case "signature":
+					{
+						this.addsignature(index);
+					}
+					break;
 					case "comprehensive":
 						{
 							this.addcomprehensive(index);
@@ -294,15 +317,22 @@
 					id: 0,
 					order_num: sort,
 					option_name: "选项" + sort,
-					grade:'',
+					score:0,
 					default_choose: 0,
 					related_sub: '',
 					skip_sub: ''
 				}
 				this.list[index].qlist[qindex].option.push(options);
+				
 			},
 			changeDomainRadio(index, qindex, v) {
-				this.list[index].qlist[qindex].default_choose = v;
+			
+				if(v==this.list[index].qlist[qindex].default_choose){
+					this.list[index].qlist[qindex].default_choose="";
+				}else{
+					this.list[index].qlist[qindex].default_choose = v;
+				}
+				
 				let domainlist = this.list[index].qlist[qindex].option;
 				for(let i in domainlist) {
 					if(domainlist[i].option_name == v) {
@@ -515,7 +545,7 @@
 				}
 				console.log(subModel);
 				this.$post("/Home/Subject/createNewItem", subModel).then((res) => {
-					debugger
+//					debugger
 					item.id = res.id;
 				});
 			},
@@ -759,6 +789,16 @@
 								resList.push(ifractions);
 							}
 							break;
+						case "signature":
+							{
+								let isignature = JSON.parse(JSON.stringify(osignature));
+								for(var km in isignature) {
+									fatheritem.hasOwnProperty(km) && (isignature[km] = fatheritem[km])
+								}
+								resList.push(isignature);
+							}
+							break;	
+							
 					}
 				});
 
@@ -829,7 +869,8 @@
 			loCation,
 			uploadimg,
 			fractions,
-			comprehensive
+			comprehensive,
+			signature
 		}
 	}
 </script>
@@ -895,6 +936,9 @@
 	.topic .el-form-item__content>.itemmust{
 		top:-38px;
 	}
+	.el-radio:focus:not(.is-focus):not(:active):not(.is-disabled) .el-radio__inner {
+    box-shadow: none;
+}
 </style>
 <style scoped="scoped" lang="scss">
 	* {
@@ -902,24 +946,31 @@
 	}
 	
 	.edit_tempbg {
-		background-color: #f3f3f3;
+			background-color: #f3f3f3;
+		    min-width: 1000px;
+    height: 100%;
+    overflow-x: hidden;
+    padding-top: 30px;
+    position: relative;
 	}
 	
 	.top {
-		padding: 29px 0;
-		background-color: #fff;
-		    position: absolute;
-		    margin-left:0 !important;
+			    margin-left:0 !important;
 		    margin-right:0 !important;
-    left: 0;
-    right: 0;
+    
+        position: absolute;
     top: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    height: 50px;
+    line-height: 50px;
     z-index: 20;
 		>.el-col {
 			display: flex;
 			justify-content: center;
 			
-			height: 10px;
+			height: 40px;
 			align-items: center;
 			&:nth-of-type(1) {
 				color: #0b61d6;
@@ -936,24 +987,19 @@
 	}
 	
 	.editTemContain {
-		padding: 88px 120px 0;
-		background-color: #f3f3f3;
-		height: 100%;
+			    width: 1000px;
+    height: 100%;
+    margin: 0 auto;
+    background: #fff;
+    padding-top: 90px;
+    overflow-x: hidden;
 		>div {
 			background-color: #fff;
 		}
 	}
 	
 	.conTop {
-		    padding: 15px 0;
-    background: #303033;
-    color: #fff;
-    font-size: 14px;
-    position: absolute;
-    left: 120px;
-    right: 120px;
-    z-index: 200;
-    top: 68px;
+	
 		i {
 			font-size: 20px;
 			margin-right: 18px;
@@ -1074,5 +1120,19 @@
 	.openModel{
 		/*position:absolute;*/
 	}
-	
+	.outconTop{
+		position: absolute;
+    top: 45px;
+    left: 0;
+    width: 100%;
+    z-index: 20;
+    .conTop{
+    	    background: #000;
+    color: #fff;
+    text-align: right;
+    padding: 10px 20px;
+        width: 1000px;
+    margin: 0 auto;
+    }
+	}
 </style>

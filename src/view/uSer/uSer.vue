@@ -444,6 +444,7 @@
 		height: 100%;
 		padding: 60px 10% 0px 10%;
 		box-sizing: border-box;
+		background: #fff;
 	}
 	
 	.usersearch .el-row {

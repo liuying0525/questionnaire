@@ -13,7 +13,7 @@
 						<span>{{domainitem.option_name}}</span>
 						<span>
 							<el-select v-model="domainitem.skip_sub" placeholder="请选择" :disabled="!!domainitem.related_sub">
-								<el-option v-for="(itemoption,index) in qlist" :label="itemoption.qtitle+itemoption.title" :value="itemoption.qtitle+itemoption.title" :key="index">
+								<el-option v-for="(itemoption,index) in qlist" v-if="itemoption.id!=item.id" :label="(index+1)+itemoption.title" :value="(index+1)+itemoption.title" :key="index">
 								</el-option>
 							</el-select>
 						</span>
@@ -62,7 +62,11 @@
 				this.$emit("surejump");
 			},
 		},
-		components: {
+		created(){
+			debugger 
+			var ss=this.domains;
+		},
+		components:{
 
 		}
 	}

@@ -9,7 +9,7 @@
 				<establishBT ></establishBT>
 			</el-col>
 		</el-row>
-		<oneTemplate_ques :list="list" @getList="getList" @publishAn="publishAn" :templist="templist"></oneTemplate_ques>
+		<oneTemplate_ques :list="list" @getList="getList" @publishAn="publishAn" :templist="templist" @copyItem="copyItem"></oneTemplate_ques>
 		<div class="block">
 			<span class="demonstration"></span>
 			<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage1" :page-sizes="pageSizes" :page-size="searchInfo.pageSize" layout="total, prev, pager, next, jumper" :total="searchInfo.pageTotal">
@@ -119,6 +119,12 @@
 					let resdata = res;
 					this.templist = resdata.list;
 				});
+			},
+			copyItem(item){
+				console.log(this.$router.query)
+					this.$post("/Home/Subject/copy", {"id":item.id}).then((res) => {
+					this.getList();
+				});
 			}
 		},
 		created() {
@@ -158,5 +164,8 @@
 	.Templatecontain .el-input__inner {
 		height: 34px;
 		line-height: 34px;
+	}
+	.Templatecontain{
+		background: #fff;
 	}
 </style>

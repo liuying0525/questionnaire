@@ -415,7 +415,6 @@
 	
 	.transition-box span {
 		color: rgb(41, 155, 252);
-		text-decoration: underline;
 		margin-right: 15%;
 		cursor: pointer;
 		display: inline-block;

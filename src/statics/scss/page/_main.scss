@@ -13,7 +13,7 @@ legend { color:#000; }
 fieldset, img { border:0; } 
 button, input, select, textarea { font-size:100%; } 
 table { border-collapse:collapse; border-spacing:0; }
-body,html{height:100%;width:100%;}
+body,html{height:100%;width:100%;min-width:1200px;background-color:#f3f3f3;}
 body>frame {
     display: none;
 }
@@ -51,4 +51,9 @@ body>frame {
         height:100%;
         padding:90px 10% 0px 10%;
         box-sizing: border-box;
+    }
+    .transition-box span:hover{
+        color:#005ad4 !important;
+        text-decoration: underline;
+        
     }

@@ -11,7 +11,7 @@
 					<span>{{domainitem.option_name}}</span>
 					<span>
 									<el-select v-model="domainitem.related_sub" placeholder="请选择" :disabled="!!domainitem.skip_sub">									
-											<el-option v-for="(itemoption,itindex) in qlist" :key="itindex"  :label="itemoption.qtitle+itemoption.title" :value="itemoption.qtitle+itemoption.title">
+											<el-option v-for="(itemoption,itindex) in qlist" :key="itindex" v-if="itemoption.id!=item.id" :label="(itindex+1)+itemoption.title" :value="(itindex+1)+itemoption.title">
 										</el-option>
 									</el-select>
 								</span>

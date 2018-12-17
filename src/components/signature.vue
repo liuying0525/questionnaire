@@ -1,17 +1,14 @@
 <template>
 	<div>
 		<el-form>
-			<el-form-item :label="(qindex+1)+taccord+item.title+':'" :key="index" @mouseover.native.prevent="showcart(item)" @mouseout.native.prevent="showcart(item)" :class="[{'bordernone':item.edittextinput,'itemborder':item.show,'itemmust':item.is_must}]">
-				<!--<i v-if="item.is_must" v-text="'*'" class="itemmust"></i>-->
-				<el-row type="flex" justify="start" class="loCationtips">
-					<div class="block">
-						<span class="demonstration">{{item.option[0].option_name}}</span>
-						<!--<el-slider v-model="item.silidervalue" show-input :max="parseInt(item.silidervalue)"></el-slider>-->
-						<!--<el-slider v-model="item.silidervalue" show-input></el-slider>-->
-						<el-progress :percentage="100" :show-text="false" style="width:85%;left:5%;top:18px;"></el-progress>
+			<el-form-item :label="(qindex+1)+taccord+item.title+':'" :key="index" @mouseover.native.prevent="showcart(item)" @mouseout.native.prevent="showcart(item)" :class="[{'bordernone':item.edittextinput,'itemborder':item.show,'itemmust':item.is_must}]" >
+				<el-row justify="start">
 
-					</div>
-
+					<el-col :span="6" >
+						<el-upload :disabled="true" class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list='false' >
+							<span>电子签名</span>
+						</el-upload>
+					</el-col>
 				</el-row>
 				<div v-show="item.show" class="transition-box">
 					<span @click="showedit(item)">编辑</span>
@@ -30,20 +27,15 @@
 					<el-col class="singleinputcontent">
 						<el-form-item :label="'题目文本'">
 							<el-input v-model="item.title"></el-input>
-							<el-checkbox label="必答" name="type" v-model="item.is_must" :disabled="status!='1' && type!='0' "></el-checkbox>
-
+							<el-checkbox label="必答" name="type" v-model="item.is_must" :disabled="status!='1' && type!='0'"></el-checkbox>
+						
+							<el-button type="primary" @click="submitForm(item)">保存</el-button>
 						</el-form-item>
-						<el-form-item :label="'总分'">
-							<el-input v-model="item.option[0].option_name"></el-input>
-						</el-form-item>
-						<el-button type="primary" @click="submitForm(item)">保存</el-button>
 					</el-col>
 				</el-row>
 			</el-form-item>
 		</el-form>
-
 	</div>
-
 </template>
 
 <script>
@@ -51,12 +43,11 @@
 	export default {
 		data() {
 			return {
-				poSition: '',
-				cformlistSix: [],
-				imageUrl: '',
+			
+				
 			}
 		},
-		props: {
+	props: {
 			item: {
 				type: Object,
 				default: {}
@@ -69,21 +60,24 @@
 				type: Number,
 				default: 0
 			},
-			taccord: {
-				type: String,
-				default: ""
+			taccord:{
+				type:String,
+				default:""
 			},
-			status: {
+			status:{
 				type: String,
 				default: "1"
 			},
-			type: {
+			type:{
 				type: String,
 				default: ""
 			}
 		},
 		methods: {
 			showedit(item) {
+				if(this.status != "1") {
+					return;
+				}
 				item.edittextinput = !item.edittextinput;
 			},
 			showcart(item) {
@@ -99,14 +93,6 @@
 				this.$emit("submitForm", item, this.index);
 			},
 			removeDomain() {
-				if(this.status != "1") {
-
-					this.$message({
-						type: 'error',
-						message: '当前问卷状态无法进行此操作'
-					});
-					return;
-				}
 				this.$emit("removeDomain", this.index, this.qindex);
 			},
 			command(callback, vc) {
@@ -121,60 +107,27 @@
 					}
 				}
 			},
-			addDomain() { //这个相当于是item就是formlistOne的每一项
-				//debugger
-				if(this.status != "1") {
-
-					this.$message({
-						type: 'error',
-						message: '当前问卷状态无法进行此操作'
-					});
-					return;
-				}
-				this.cformlistSix[0].domains.push({
-					"value": ""
-				})
-				//				this.formlistOne.domain.domains.push({我不动了
-				//					value: ''
-				//				});
-			},
-			itemSortdown: function(index, qindex, type) {
-				if(this.status != "1") {
-
-					this.$message({
-						type: 'error',
-						message: '当前问卷状态无法进行此操作'
-					});
-					return;
-				}
-				this.$emit("itemSortdown", index, qindex, type);
+			addDomain() { 
+				this.cformlistFive[0].domains.push({"value":""})
+				
 			},
 			changeposition(item) {
-				if(this.status != "1") {
-
-					this.$message({
-						type: 'error',
-						message: '当前问卷状态无法进行此操作'
-					});
-					return;
-				}
 				item.changeButton = !item.changeButton;
-			}
+			},
+			itemSortdown:function(index, qindex,type){
+				this.$emit("itemSortdown", index, qindex,type);
+			},
+		
 		},
-		created() {
-			this.cformlistSix = this.formlistSix;
-		},
-		watch: {
-			//			this.cformlistSix[0].silidervalue:function(val){
-			//				this.txtSilider=val;
-			//				
-			//			}
+		created(){
+			this.cformlistFive=this.formlistFive;
 		},
 		components: {
 			headTop
 		}
 	}
 </script>
+
 <style>
 	.changeposition .inputposition .el-input__inner {
 		background-color: rgb(245, 245, 245);
@@ -208,6 +161,7 @@
 		cursor: pointer;
 		position: relative;
 		overflow: hidden;
+		padding:16px;
 	}
 	
 	.avatar-uploader .el-upload:hover {
@@ -228,20 +182,6 @@
 		height: 178px;
 		display: block;
 	}
-	
-	.elform .el-form-item__label {
-		width: 100%;
-		text-align: left;
-	}
-	
-	.el-slider__input {
-		position: absolute;
-		bottom: -175px;
-		left: 92px;
-		z-index: 222;
-	}
-	
-	.el-slider__input .el-input__inner {}
 </style>
 <style scoped="scoped" lang="scss">
 	.el-input {
@@ -431,27 +371,5 @@
 	
 	.transition-box {
 		position: relative
-	}
-	
-	.elform>label.el-form-item__label {
-		width: 100%;
-		text-align: left;
-	}
-	
-	.loCationtips {
-		width: 100%;
-		height: 70px;
-		padding-top: 15px;
-		.block {
-			width: 100%;
-			span.demonstration {
-				position: absolute;
-			}
-			.el-slider {
-				display: inline-block;
-				width: 100%;
-				margin-left: 6%;
-			}
-		}
 	}
 </style>

@@ -3,11 +3,13 @@
 		<el-row :gutter="20" class="top">
 			<el-col :offset="10" :span="3" @click.native="finishSub()"><i class="el-icon-check"></i>完成</el-col>
 		</el-row>
-		<div class="editTemContain">
-			<div>
+		<div class="editTemContain">	
+			<div class="outconTop">
 				<el-row type="flex" justify="end" class="conTop">
 					<el-col :span="3" @click.native="openModel"><i class="el-icon-plus"></i>新建模块</el-col>
 				</el-row>
+			</div>
+				
 				<div class="conBottom">
 					<div class="conBottomT">
 						<el-input type="text" v-model="questiontitle" placeholder="模板标题" class="questiontitle"></el-input>
@@ -66,7 +68,7 @@
 						</div>
 					</el-collapse>
 				</div>
-			</div>
+		
 		</div>
 
 	</div>
@@ -269,14 +271,18 @@
 					order_num: sort,
 					option_name: "选项" + sort,
 					default_choose: 0,
-					grade:'',
+					score:0,
 					related_sub: '',
 					skip_sub: ''
 				}
 				this.list[index].qlist[qindex].option.push(options);
 			},
 			changeDomainRadio(index, qindex, v) {
-				this.list[index].qlist[qindex].default_choose = v;
+					if(v==this.list[index].qlist[qindex].default_choose){
+					this.list[index].qlist[qindex].default_choose="";
+				}else{
+					this.list[index].qlist[qindex].default_choose = v;
+				}
 				let domainlist = this.list[index].qlist[qindex].option;
 				for(let i in domainlist) {
 					if(domainlist[i].option_name == v) {
@@ -420,6 +426,7 @@
 				});
 			},
 			submitForm(item, index) {
+				
 				item.show = false;
 				item.edittextinput = false;
 				let subModel = JSON.parse(JSON.stringify(item));
@@ -461,7 +468,7 @@
 				}
 				console.log(subModel);
 				this.$post("/Home/Tpl/createNewItem", subModel).then((res) => {
-				
+				debugger
 					item.id = res.id;
 				});
 			},
@@ -849,6 +856,9 @@
 	.topic .el-form-item__content>.itemmust{
 		top:-38px;
 	}
+		.el-radio:focus:not(.is-focus):not(:active):not(.is-disabled) .el-radio__inner {
+    box-shadow: none;
+}
 </style>
 <style scoped="scoped" lang="scss">
 	* {
@@ -857,23 +867,30 @@
 	
 	.edit_tempbg {
 		background-color: #f3f3f3;
+		    min-width: 1000px;
+    height: 100%;
+    overflow-x: hidden;
+    padding-top: 30px;
+    position: relative;
 	}
 	
 	.top {
-		padding: 29px 0;
-		background-color: #fff;
-		    position: absolute;
 		    margin-left:0 !important;
 		    margin-right:0 !important;
-    left: 0;
-    right: 0;
+    
+        position: absolute;
     top: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    height: 50px;
+    line-height: 50px;
     z-index: 20;
 		>.el-col {
 			display: flex;
 			justify-content: center;
 			
-			height: 10px;
+			height: 40px;
 			align-items: center;
 			&:nth-of-type(1) {
 				color: #0b61d6;
@@ -890,24 +907,31 @@
 	}
 	
 	.editTemContain {
-		padding: 0 120px 0;
+		/*padding: 0 5% 0;
 		background-color: #f3f3f3;
 		height: 100%;
+		position: relative;*/
+		    width: 1000px;
+    height: 100%;
+    margin: 0 auto;
+    background: #fff;
+    padding-top: 90px;
+    overflow-x: hidden;
 		>div {
 			background-color: #fff;
 		}
 	}
 	
 	.conTop {
-			    padding: 15px 0;
+			    /*padding: 15px 0;
     background: #303033;
     color: #fff;
     font-size: 14px;
     position: absolute;
-    left: 120px;
-    right: 120px;
+    width: 90%;
     z-index: 200;
-    top: 68px;
+    min-width: 1000px;
+    top: -53px;*/
 		i {
 			font-size: 20px;
 			margin-right: 18px;
@@ -920,6 +944,7 @@
 		padding: 60px;
 		background-color: #fff;
 		font-size: 14px;
+		padding-top:0;
 	}
 	
 	.conBottomT {
@@ -1028,4 +1053,20 @@
 		font-size: 24px;
 		color: #005ad4;
 	}
+	.outconTop{
+		position: absolute;
+    top: 45px;
+    left: 0;
+    width: 100%;
+    z-index: 20;
+    .conTop{
+    	    background: #000;
+    color: #fff;
+    text-align: right;
+    padding: 10px 20px;
+        width: 1000px;
+    margin: 0 auto;
+    }
+	}
+	
 </style>

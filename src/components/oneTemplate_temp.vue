@@ -20,7 +20,7 @@
 					<span @click="edtingTemplate(item,userlevel)" v-if="userlevel>1"><i class="edtingTemplate"></i>查看模板</span>
 				</el-col>
 				<el-col :span="6" class="ontemplateBotR">
-
+					<el-button @click="copyItem(item)" class="copy">复制</el-button>
 					<el-button class="active" @click="publishTemp(item)" v-if="userlevel==1"><i class="el-icon-edit"></i>使用模板</el-button>
 
 					<el-button @click="deleItem(item)" v-if="userlevel==1"><i class="el-icon-delete"></i>删除</el-button>
@@ -143,6 +143,9 @@
 					}
 				});
 			},
+			copyItem(item){
+				this.$emit("copyItem", item);
+			},
 
 			submit() {
 				//				if(this.ckRadio == "1") {
@@ -255,6 +258,11 @@
 			>.el-col {
 				display: flex;
 				padding: 18px 0;
+				span:hover{
+					color:#005ad4;
+					text-decoration: underline;
+					cursor: pointer;
+				}
 			}
 		}
 	}
@@ -336,7 +344,7 @@
 	
 	.el-icon-edit,
 	.el-icon-delete {
-		margin-right: 12px;
+		margin-right: 5px;
 	}
 	
 	.ontemplateBotL {
@@ -355,6 +363,10 @@
 		.el-button {
 			margin-right: 0;
 			margin-left: 12px;
+				&.copy{
+				color:rgb(219,96,29);
+				border:1px solid rgb(219,96,29);
+			}
 		}
 	}
 	
