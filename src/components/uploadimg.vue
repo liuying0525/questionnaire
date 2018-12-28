@@ -32,7 +32,7 @@
 							<el-checkbox label="必答" name="type" v-model="item.is_must" :disabled="status!='1' && type!='0'"></el-checkbox>
 							<div class="singleedit">
 								<el-row type="flex">
-									<el-col :span="3">最大上传数量:</el-col>
+									<el-col :span="5">最大上传数量:</el-col>
 									<el-select v-model="item.option[0].option_name" placeholder="请选择">
 										<el-option v-for="(option,index) in 5" :value="option" :key="index">{{option}}
 										</el-option>

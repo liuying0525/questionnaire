@@ -49,7 +49,9 @@
 		},
 		methods: {
 			loginin: function() {
+				
 				this.$post('/Home/Login/login', this.loginForm).then((res) => {
+				
 						if(Number(res.level) >2) {
 						this.$message({
 							type: 'error',
@@ -65,7 +67,6 @@
 						path: '/uSer'
 					});
 				}).catch((err) => {
-
 				})
 			}
 		},

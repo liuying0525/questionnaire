@@ -939,6 +939,9 @@
 	.el-radio:focus:not(.is-focus):not(:active):not(.is-disabled) .el-radio__inner {
     box-shadow: none;
 }
+.topic .avatar-uploader-icon{
+	line-height: 100px !important;
+}
 </style>
 <style scoped="scoped" lang="scss">
 	* {

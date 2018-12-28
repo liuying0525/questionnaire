@@ -3,72 +3,76 @@
 		<el-row :gutter="20" class="top">
 			<el-col :offset="10" :span="3" @click.native="finishSub()"><i class="el-icon-check"></i>完成</el-col>
 		</el-row>
-		<div class="editTemContain">	
+		<div class="editTemContain">
 			<div class="outconTop">
 				<el-row type="flex" justify="end" class="conTop">
 					<el-col :span="3" @click.native="openModel"><i class="el-icon-plus"></i>新建模块</el-col>
 				</el-row>
 			</div>
-				
-				<div class="conBottom">
-					<div class="conBottomT">
-						<el-input type="text" v-model="questiontitle" placeholder="模板标题" class="questiontitle"></el-input>
-						<el-input type="textarea" v-model="contentText" placeholder="模板说明" class="questiontitle"></el-input>
-					</div>
 
-					<el-collapse v-model="activeNames" @change="handleChange">
-						<div class="edit_item" v-for="(item,index) in list" :key="index">
-							<el-dropdown placement="bottom">
-								<span class="el-dropdown-link">
+			<div class="conBottom">
+				<div class="conBottomT">
+					<el-input type="text" v-model="questiontitle" placeholder="模板标题" class="questiontitle"></el-input>
+					<el-input type="textarea" v-model="contentText" placeholder="模板说明" class="questiontitle"></el-input>
+				</div>
+
+				<el-collapse v-model="activeNames" @change="handleChange">
+					<div class="edit_item" v-for="(item,index) in list" :key="index">
+						<el-dropdown placement="bottom">
+							<span class="el-dropdown-link">
 						        	<i class="new"></i> 新建题目
 						        </span>
-								<el-dropdown-menu slot="dropdown" class="topicdropdown">
-									<el-dropdown-item @click.native="addItem(index,'fill')">填空题</el-dropdown-item>
-									<el-dropdown-item @click.native="addItem(index,'single')">选择题</el-dropdown-item>
-									<el-dropdown-item @click.native="addItem(index,'multiple')">多选题</el-dropdown-item>
-									<el-dropdown-item @click.native="addItem(index,'loCation')">位置上传</el-dropdown-item>
-									<el-dropdown-item @click.native="addItem(index,'uploadimg')">图片上传</el-dropdown-item>
-									<el-dropdown-item @click.native="addItem(index,'multistage')">多级下拉</el-dropdown-item>
-									<el-dropdown-item @click.native="addItem(index,'fractions')">分数题</el-dropdown-item>
-									<el-dropdown-item @click.native="addItem(index,'comprehensive')">综合题</el-dropdown-item>
-								</el-dropdown-menu>
-							</el-dropdown>
-							<el-input v-model="item.mod_name" placeholder="模块名称" class="titlename"></el-input>
-							<el-collapse-item :title="item.qtitle" :name="index">
+							<el-dropdown-menu slot="dropdown" class="topicdropdown">
+								<el-dropdown-item @click.native="addItem(index,'fill')">填空题</el-dropdown-item>
+								<el-dropdown-item @click.native="addItem(index,'single')">选择题</el-dropdown-item>
+								<el-dropdown-item @click.native="addItem(index,'multiple')">多选题</el-dropdown-item>
+								<el-dropdown-item @click.native="addItem(index,'loCation')">位置上传</el-dropdown-item>
+								<el-dropdown-item @click.native="addItem(index,'uploadimg')">图片上传</el-dropdown-item>
+								<el-dropdown-item @click.native="addItem(index,'multistage')">多级下拉</el-dropdown-item>
+								<el-dropdown-item @click.native="addItem(index,'fractions')">分数题</el-dropdown-item>
+								<el-dropdown-item @click.native="addItem(index,'signature')">电子签名</el-dropdown-item>
+								<el-dropdown-item @click.native="addItem(index,'comprehensive')">综合题</el-dropdown-item>
+							</el-dropdown-menu>
+						</el-dropdown>
+						<el-input v-model="item.mod_name" placeholder="模块名称" class="titlename"></el-input>
+						<el-collapse-item :title="item.qtitle" :name="index">
 
-								<div class="topic" v-for="(qitem,qindex) in item.qlist" :key="qindex">
+							<div class="topic" v-for="(qitem,qindex) in item.qlist" :key="qindex">
 
-									<template v-if="qitem.sub_cat=='fill'">
-										<fill :item="qitem" @removeDomain="removeDomain" :taccord="taccord" :index="index" :qindex="qindex" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status" :type="type"></fill>
-									</template>
-									<template v-if="qitem.sub_cat=='single'">
-										<single :item="qitem" :qlist="item.qlist" :taccord="taccord" @changeDomainRadio="changeDomainRadio" @addDomain="addDomain" :index="index" :type="type" :qindex="qindex" :status="status" @removeDomainitem="removeDomainitem" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm"></single>
-									</template>
-									<template v-if="qitem.sub_cat=='multiple'">
-										<multiple :item="qitem" @addDomain="addDomain" :taccord="taccord" :index="index" :qindex="qindex" @removeDomainitem="removeDomainitem" :type="type" :status="status" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm"></multiple>
-									</template>
-									<template v-if="qitem.sub_cat=='multistage'">
-										<multistage :item="qitem" :taccord="taccord" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" :type="type" :status="status" @submitForm="submitForm"></multistage>
-									</template>
-									<template v-if="qitem.sub_cat=='loCation'">
-										<loCation :item="qitem" :taccord="taccord" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" :type="type" :status="status" @submitForm="submitForm"></loCation>
-									</template>
-									<template v-if="qitem.sub_cat=='uploadimg'">
-										<uploadimg :item="qitem" :taccord="taccord" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" :type="type" :status="status" @submitForm="submitForm"></uploadimg>
-									</template>
-									<template v-if="qitem.sub_cat=='fractions'">
-										<fractions :item="qitem" :taccord="taccord" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" :type="type" :status="status" @submitForm="submitForm"></fractions>
-									</template>
-									<template v-if="qitem.sub_cat=='comprehensive'">
-										<comprehensive @deleCom="delem" :comtaccord="comtaccord" :index="index" :comitem="qitem" :qindex="qindex" @itemSortdown="itemSortdown" :type="type" :status="status"></comprehensive>
-									</template>
-								</div>
-							</el-collapse-item>
-							<div class="quetiondelete" @click.stop="removeMode(item)"><i class="el-icon-delete"></i></div>
-						</div>
-					</el-collapse>
-				</div>
-		
+								<template v-if="qitem.sub_cat=='fill'">
+									<fill :item="qitem" @removeDomain="removeDomain" :taccord="taccord" :index="index" :qindex="qindex" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status" :type="type"></fill>
+								</template>
+								<template v-if="qitem.sub_cat=='single'">
+									<single :item="qitem" :qlist="item.qlist" :taccord="taccord" @changeDomainRadio="changeDomainRadio" @addDomain="addDomain" :index="index" :type="type" :qindex="qindex" :status="status" @removeDomainitem="removeDomainitem" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm"></single>
+								</template>
+								<template v-if="qitem.sub_cat=='multiple'">
+									<multiple :item="qitem" @addDomain="addDomain" :taccord="taccord" :index="index" :qindex="qindex" @removeDomainitem="removeDomainitem" :type="type" :status="status" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm"></multiple>
+								</template>
+								<template v-if="qitem.sub_cat=='multistage'">
+									<multistage :item="qitem" :taccord="taccord" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" :type="type" :status="status" @submitForm="submitForm"></multistage>
+								</template>
+								<template v-if="qitem.sub_cat=='loCation'">
+									<loCation :item="qitem" :taccord="taccord" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" :type="type" :status="status" @submitForm="submitForm"></loCation>
+								</template>
+								<template v-if="qitem.sub_cat=='uploadimg'">
+									<uploadimg :item="qitem" :taccord="taccord" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" :type="type" :status="status" @submitForm="submitForm"></uploadimg>
+								</template>
+								<template v-if="qitem.sub_cat=='fractions'">
+									<fractions :item="qitem" :taccord="taccord" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" :type="type" :status="status" @submitForm="submitForm"></fractions>
+								</template>
+								<template v-if="qitem.sub_cat=='signature'">
+									<signature :item="qitem" :taccord="taccord" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></signature>
+								</template>
+								<template v-if="qitem.sub_cat=='comprehensive'">
+									<comprehensive @deleCom="delem" :comtaccord="comtaccord" :index="index" :comitem="qitem" :qindex="qindex" @itemSortdown="itemSortdown" :type="type" :status="status"></comprehensive>
+								</template>
+							</div>
+						</el-collapse-item>
+						<div class="quetiondelete" @click.stop="removeMode(item)"><i class="el-icon-delete"></i></div>
+					</div>
+				</el-collapse>
+			</div>
+
 		</div>
 
 	</div>
@@ -83,10 +87,11 @@
 	import uploadimg from 'components/uploadimg.vue';
 	import loCation from 'components/loCation.vue';
 	import fractions from 'components/fractions.vue';
+	import signature from 'components/signature.vue';
 	import { Message } from "element-ui";
 	import { jsNumDX } from 'javascripts/utils/index';
 	import comprehensive from 'components/comprehensive.vue';
-	import { ofill, osingle, omultiple, omultistage, ouploadimg, oloCation, ofractions, ocomprehensive } from "components/itemType";
+	import { ofill, osingle, omultiple, omultistage, ouploadimg, oloCation, ofractions, ocomprehensive, osignature } from "components/itemType";
 
 	export default {
 		data() {
@@ -170,6 +175,17 @@
 				iloCation.edittextinput = true;
 				this.list[index].qlist.push(iloCation);
 			},
+			addsignature(index) {
+				osignature.show = true;
+				osignature.edittextinput = true;
+				let ix = this.list[index].qlist.length + 1;
+				let isignature = JSON.parse(JSON.stringify(osignature));
+				isignature.ppid = this.subId;
+				isignature.pid = this.list[index].id;
+				isignature.serial_number = ix;
+				isignature.qtitle = ix;
+				this.list[index].qlist.push(isignature);
+			},
 			addfractions(index) {
 				let ix = this.list[index].qlist.length + 1;
 				let ifractions = JSON.parse(JSON.stringify(ofractions));
@@ -209,7 +225,7 @@
 				this.list[index].qlist.splice(pindex, 1);
 			},
 			addItem(index, type) {
-//				debugger
+				//				debugger
 				if(this.status != "1") {
 					this.$message({
 						type: 'error',
@@ -254,6 +270,11 @@
 							this.addfractions(index);
 						}
 						break;
+					case "signature":
+						{
+							this.addsignature(index);
+						}
+						break;
 					case "comprehensive":
 						{
 							this.addcomprehensive(index);
@@ -271,16 +292,16 @@
 					order_num: sort,
 					option_name: "选项" + sort,
 					default_choose: 0,
-					score:0,
+					score: 0,
 					related_sub: '',
 					skip_sub: ''
 				}
 				this.list[index].qlist[qindex].option.push(options);
 			},
 			changeDomainRadio(index, qindex, v) {
-					if(v==this.list[index].qlist[qindex].default_choose){
-					this.list[index].qlist[qindex].default_choose="";
-				}else{
+				if(v == this.list[index].qlist[qindex].default_choose) {
+					this.list[index].qlist[qindex].default_choose = "";
+				} else {
 					this.list[index].qlist[qindex].default_choose = v;
 				}
 				let domainlist = this.list[index].qlist[qindex].option;
@@ -426,7 +447,7 @@
 				});
 			},
 			submitForm(item, index) {
-				
+
 				item.show = false;
 				item.edittextinput = false;
 				let subModel = JSON.parse(JSON.stringify(item));
@@ -468,11 +489,11 @@
 				}
 				console.log(subModel);
 				this.$post("/Home/Tpl/createNewItem", subModel).then((res) => {
-				debugger
+					debugger
 					item.id = res.id;
 				});
 			},
-					removeMode(item) {
+			removeMode(item) {
 				this.$confirm('您确定要删除该模块，是否继续？', '提示', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
@@ -638,53 +659,53 @@
 
 			},
 			getListArrary(subId) {
-			this.list = [];
-			this.$post("/Home/Tpl/getSingleTpl", {
-				id: this.subId
-			}).then((res) => {
+				this.list = [];
+				this.$post("/Home/Tpl/getSingleTpl", {
+					id: this.subId
+				}).then((res) => {
 
-				this.contentText = res.description || "";
-				this.questiontitle = res.tmp_name || "";
-				let modlist = res.mod;
-				for(var k = 0; k < modlist.length; k++) {
-					var option = {};
-					option.mod_name = modlist[k].mod_name;
-					option.qtitle = this.list.length + 1;
-					option.qtitle = jsNumDX(option.qtitle);
-					option.id = modlist[k].id;
-					option.sortId = modlist[k].order_num;
-					option.qlist = [];
-					option.pid = modlist[k].pid;
+					this.contentText = res.description || "";
+					this.questiontitle = res.tmp_name || "";
+					let modlist = res.mod;
+					for(var k = 0; k < modlist.length; k++) {
+						var option = {};
+						option.mod_name = modlist[k].mod_name;
+						option.qtitle = this.list.length + 1;
+						option.qtitle = jsNumDX(option.qtitle);
+						option.id = modlist[k].id;
+						option.sortId = modlist[k].order_num;
+						option.qlist = [];
+						option.pid = modlist[k].pid;
 
-					if(modlist[k].item.length != 0) {
-						let opList = this.getItemOptions(modlist[k].item);
-						option.qlist = opList;
-					}
-					if(modlist[k].mod && modlist[k].mod.length != 0) {
-						for(var j = 0; j < modlist[k].mod.length; j++) {
-							let icomprehensive = JSON.parse(JSON.stringify(ocomprehensive));
-							for(var km in icomprehensive) {
-								modlist[k].mod[j].hasOwnProperty(km) && (icomprehensive[km] = modlist[k].mod[j][km])
-								if(km == "serial_number") {
-									modlist[k].mod[j][km]
-								}
-							}
-							let copList = this.getItemOptions(modlist[k].mod[j].item);
-							icomprehensive.qlist = copList;
-							option.qlist.push(icomprehensive);
+						if(modlist[k].item.length != 0) {
+							let opList = this.getItemOptions(modlist[k].item);
+							option.qlist = opList;
 						}
+						if(modlist[k].mod && modlist[k].mod.length != 0) {
+							for(var j = 0; j < modlist[k].mod.length; j++) {
+								let icomprehensive = JSON.parse(JSON.stringify(ocomprehensive));
+								for(var km in icomprehensive) {
+									modlist[k].mod[j].hasOwnProperty(km) && (icomprehensive[km] = modlist[k].mod[j][km])
+									if(km == "serial_number") {
+										modlist[k].mod[j][km]
+									}
+								}
+								let copList = this.getItemOptions(modlist[k].mod[j].item);
+								icomprehensive.title = modlist[k].mod[j].mod_name;
+								icomprehensive.qlist = copList;
+								option.qlist.push(icomprehensive);
+							}
+						}
+						this.list.push(option);
+						option.qlist.sort(function(a, b) {
+
+							return a.serial_number - b.serial_number;
+						});
+
 					}
-					this.list.push(option);
-					option.qlist.sort(function(a, b) {
 
-						return a.serial_number - b.serial_number;
-					});
+				});
 
-				}
-
-			});
-				
-				
 			},
 			getItemOptions(itemList) {
 				let resList = [];
@@ -762,6 +783,16 @@
 								resList.push(ifractions);
 							}
 							break;
+						case "signature":
+							{
+								let isignature = JSON.parse(JSON.stringify(osignature));
+								for(var km in isignature) {
+									fatheritem.hasOwnProperty(km) && (isignature[km] = fatheritem[km])
+								}
+								resList.push(isignature);
+							}
+							break;
+
 					}
 				});
 				return resList;
@@ -773,7 +804,7 @@
 		created() {
 			this.subId = this.$route.query.templateId;
 			this.status = this.$route.query.status ? this.$route.query.status + "" : "1";
-		this.getListArrary(this.subId);
+			this.getListArrary(this.subId);
 		},
 		components: {
 
@@ -785,7 +816,8 @@
 			loCation,
 			uploadimg,
 			fractions,
-			comprehensive
+			comprehensive,
+			signature
 		}
 	}
 </script>
@@ -853,12 +885,18 @@
 		font-size: 16px;
 		font-weight: bold;
 	}
-	.topic .el-form-item__content>.itemmust{
-		top:-38px;
+	
+	.topic .el-form-item__content>.itemmust {
+		top: -38px;
 	}
-		.el-radio:focus:not(.is-focus):not(:active):not(.is-disabled) .el-radio__inner {
-    box-shadow: none;
-}
+	
+	.el-radio:focus:not(.is-focus):not(:active):not(.is-disabled) .el-radio__inner {
+		box-shadow: none;
+	}
+	
+	.topic .avatar-uploader-icon {
+		line-height: 100px !important;
+	}
 </style>
 <style scoped="scoped" lang="scss">
 	* {
@@ -867,29 +905,27 @@
 	
 	.edit_tempbg {
 		background-color: #f3f3f3;
-		    min-width: 1000px;
-    height: 100%;
-    overflow-x: hidden;
-    padding-top: 30px;
-    position: relative;
+		min-width: 1000px;
+		height: 100%;
+		overflow-x: hidden;
+		padding-top: 30px;
+		position: relative;
 	}
 	
 	.top {
-		    margin-left:0 !important;
-		    margin-right:0 !important;
-    
-        position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: #fff;
-    height: 50px;
-    line-height: 50px;
-    z-index: 20;
+		margin-left: 0 !important;
+		margin-right: 0 !important;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		background: #fff;
+		height: 50px;
+		line-height: 50px;
+		z-index: 20;
 		>.el-col {
 			display: flex;
 			justify-content: center;
-			
 			height: 40px;
 			align-items: center;
 			&:nth-of-type(1) {
@@ -911,19 +947,19 @@
 		background-color: #f3f3f3;
 		height: 100%;
 		position: relative;*/
-		    width: 1000px;
-    height: 100%;
-    margin: 0 auto;
-    background: #fff;
-    padding-top: 90px;
-    overflow-x: hidden;
+		width: 1000px;
+		height: 100%;
+		margin: 0 auto;
+		background: #fff;
+		padding-top: 90px;
+		overflow-x: hidden;
 		>div {
 			background-color: #fff;
 		}
 	}
 	
 	.conTop {
-			    /*padding: 15px 0;
+		/*padding: 15px 0;
     background: #303033;
     color: #fff;
     font-size: 14px;
@@ -944,7 +980,7 @@
 		padding: 60px;
 		background-color: #fff;
 		font-size: 14px;
-		padding-top:0;
+		padding-top: 0;
 	}
 	
 	.conBottomT {
@@ -1041,7 +1077,8 @@
 		z-index: 3;
 		width: 50%;
 	}
-		.quetiondelete {
+	
+	.quetiondelete {
 		position: absolute;
 		top: 10px;
 		right: 60px;
@@ -1049,24 +1086,25 @@
 		height: 40px;
 		width: 40px;
 	}
+	
 	.quetiondelete i.el-icon-delete {
 		font-size: 24px;
 		color: #005ad4;
 	}
-	.outconTop{
-		position: absolute;
-    top: 45px;
-    left: 0;
-    width: 100%;
-    z-index: 20;
-    .conTop{
-    	    background: #000;
-    color: #fff;
-    text-align: right;
-    padding: 10px 20px;
-        width: 1000px;
-    margin: 0 auto;
-    }
-	}
 	
+	.outconTop {
+		position: absolute;
+		top: 45px;
+		left: 0;
+		width: 100%;
+		z-index: 20;
+		.conTop {
+			background: #000;
+			color: #fff;
+			text-align: right;
+			padding: 10px 20px;
+			width: 1000px;
+			margin: 0 auto;
+		}
+	}
 </style>

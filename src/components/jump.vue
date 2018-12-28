@@ -63,7 +63,7 @@
 			},
 		},
 		created(){
-			debugger 
+			
 			var ss=this.domains;
 		},
 		components:{

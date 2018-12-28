@@ -25,7 +25,7 @@
 						<el-dropdown-item @click.native="addItem(index,'uploadimg')">图片上传</el-dropdown-item>
 						<el-dropdown-item @click.native="addItem(index,'multistage')">多级下拉</el-dropdown-item>
 						<el-dropdown-item @click.native="addItem(index,'fractions')">分数题</el-dropdown-item>
-						<el-dropdown-item @click.native="addItem(index,'multistage')">电子签名</el-dropdown-item>
+						<el-dropdown-item @click.native="addItem(index,'signature')">电子签名</el-dropdown-item>
 					</el-dropdown-menu>
 				</el-dropdown>
 
@@ -317,8 +317,16 @@
 					type: 'warning'
 				}).then(() => {
 					let dmodel = this.comitem.qlist[qindex];
+					
+					
 					if(dmodel.id != 0) {
-						this.$post("/Home/Subject/deleteItem", {
+						var deleteitem=""
+						if(this.$route.query.templateId){
+						deleteitem="/Home/Tpl/deleteItem"
+					}else{
+						deleteitem="/Home/Subject/deleteItem"
+					}
+						this.$post(deleteitem, {
 							id: dmodel.id
 						}).then((res) => {});
 					}

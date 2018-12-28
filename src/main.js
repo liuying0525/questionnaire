@@ -1,3 +1,4 @@
+import  "babel-polyfill"
 import ElementUI from 'element-ui';
 import Vue from 'vue';
 import App from './App.vue';
