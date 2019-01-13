@@ -123,6 +123,7 @@
 				if(this.status != "1"&& !this.$route.query.templateId) {
 					return;
 				}
+				
 				item.edittextinput = !item.edittextinput;
 			},
 			dochange(item) {
@@ -142,6 +143,7 @@
 				if(this.status != "1" && !this.$route.query.templateId) {
 					return;
 				}
+//				debugger
 				item.show = item.edittextinput || !item.show;
 			},
 			submitForm(item) {

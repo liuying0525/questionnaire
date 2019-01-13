@@ -303,6 +303,7 @@
 	span>b {
 		color: #005ad4;
 		font-weight: normal;
+		margin-left:4px;
 	}
 	
 	.designAnicon,

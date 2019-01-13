@@ -307,6 +307,8 @@
 				for(let i in domainlist) {
 					if(domainlist[i].option_name == v) {
 						domainlist[i].default_choose = 1;
+					}else{
+						domainlist[i].default_choose = 0;
 					}
 				}
 			},
@@ -575,9 +577,12 @@
 	}
 	
 	.titlename .el-input__inner {
-		width: 40%;
+		width: 100%;
 		margin-top: 5px;
 		border: none;
+			overflow: hidden;
+text-overflow:ellipsis;
+white-space: nowrap;
 	}
 	
 	.topic .el-form-item__label {
@@ -773,6 +778,7 @@
 		right: 65px;
 		/*background: #005ad4;*/
 		color: #299bfc;
+		cursor: pointer;
 		/*z-index: 100;
 		padding: 15px 40px;*/
 	}
@@ -857,9 +863,13 @@
 	.compre .compretopright {
 		width: 15%;
 		display: inline-block;
-		span {
+		span{
 			width: 48%;
 			display: inline-block;
+			cursor: pointer;
+			&:hover{
+				color:#005ad4;
+			}
 		}
 	}
 	

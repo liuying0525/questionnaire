@@ -308,6 +308,8 @@
 				for(let i in domainlist) {
 					if(domainlist[i].option_name == v) {
 						domainlist[i].default_choose = 1;
+					}else{
+						domainlist[i].default_choose = 0;
 					}
 				}
 			},
@@ -338,7 +340,6 @@
 				var serial_number = listItem.serial_number;
 				listItem.changeButton = false;
 				if(type == 'up') {
-					debugger
 					let uitem = this.list[index].qlist[qindex - 1];
 					if(uitem != undefined && uitem != null) {
 						let usort = uitem.serial_number;
@@ -489,7 +490,6 @@
 				}
 				console.log(subModel);
 				this.$post("/Home/Tpl/createNewItem", subModel).then((res) => {
-					debugger
 					item.id = res.id;
 				});
 			},
@@ -532,6 +532,7 @@
 						let modoption = {};
 						modoption.id = this.list[i].id;
 						modoption.mod_name = this.list[i].mod_name;
+						modoption.serial_number=i+1;
 						modoption.item = [];
 
 						for(var j = 0; j < this.list[i].qlist.length; j++) {
@@ -730,6 +731,7 @@
 								}
 								let ly1 = fatheritem.option.filter(o => o.default_choose == 1);
 								(isingle.default_choose == "" && ly1.length > 0) && (isingle.default_choose = ly1[0].option_name);
+								
 								resList.push(isingle);
 							}
 							break;
@@ -874,11 +876,14 @@
 	}
 	
 	.titlename .el-input__inner {
-		width: 40%;
+		width: 100%;
 		margin-top: 5px;
 		border: none;
 		font-size: 14px;
 		font-weight: bold;
+			overflow: hidden;
+text-overflow:ellipsis;
+white-space: nowrap;
 	}
 	
 	.edit_item>.titlename .el-input__inner {
@@ -1045,6 +1050,7 @@
 		color: #fff;
 		z-index: 3;
 		padding: 15px 40px;
+		cursor: pointer;
 	}
 	
 	.el-dropdown-menu {
@@ -1085,6 +1091,7 @@
 		z-index: 3;
 		height: 40px;
 		width: 40px;
+		cursor: pointer;
 	}
 	
 	.quetiondelete i.el-icon-delete {

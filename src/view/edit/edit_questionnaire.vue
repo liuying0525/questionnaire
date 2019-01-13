@@ -337,6 +337,8 @@
 				for(let i in domainlist) {
 					if(domainlist[i].option_name == v) {
 						domainlist[i].default_choose = 1;
+					}else{
+						domainlist[i].default_choose = 0;
 					}
 				}
 			},
@@ -565,6 +567,7 @@
 						let modoption = {};
 						modoption.id = this.list[i].id;
 						modoption.mod_name = this.list[i].mod_name;
+						modoption.serial_number=i+1;
 						modoption.item = [];
 
 						for(var j = 0; j < this.list[i].qlist.length; j++) {
@@ -631,6 +634,7 @@
 							}
 							let ly1 = fatheritem.option.filter(o => o.default_choose == 1);
 							(isingle.default_choose == "" && ly1.length > 0) && (isingle.default_choose = ly1[0].option_name);
+							
 							ly.qlist.push(isingle);
 						}
 						break;
@@ -838,6 +842,7 @@
 									}
 								}
 								let copList = this.getItemOptions(modlist[k].mod[j].item);
+								icomprehensive.title = modlist[k].mod[j].mod_name;
 								icomprehensive.qlist = copList;
 								option.qlist.push(icomprehensive);
 							}
@@ -903,11 +908,14 @@
 	}
 	
 	.titlename .el-input__inner {
-		width: 40%;
+		width: 100%;
 		margin-top: 5px;
 		border: none;
 		font-size: 14px;
 		font-weight: bold;
+		overflow: hidden;
+text-overflow:ellipsis;
+white-space: nowrap;
 	}
 	
 	.edit_item>.titlename .el-input__inner {
@@ -1079,6 +1087,7 @@
 		color: #fff;
 		z-index: 3;
 		padding: 15px 40px;
+		cursor: pointer;
 	}
 	
 	.el-dropdown-menu {
@@ -1114,11 +1123,15 @@
 		z-index: 3;
 		height: 40px;
 		width: 40px;
+		cursor: pointer;
 	}
 	
 	.quetiondelete i.el-icon-delete {
 		font-size: 24px;
-		color: #005ad4;
+		color:#299BFC;
+		&:hover{
+			color: #005ad4;
+		}
 	}
 	.openModel{
 		/*position:absolute;*/
