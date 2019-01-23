@@ -67,7 +67,7 @@
 									</template>
 								
 									<template v-if="qitem.sub_cat=='comprehensive'">
-										<comprehensive @deleCom="delem" :comtaccord="comtaccord" :index="index" :comitem="qitem" :status="status" :qindex="qindex" @itemSortdown="itemSortdown"></comprehensive>
+										<comprehensive @deleCom="delem" :comtaccord="comtaccord" :index="index" :comitem="qitem" :status="status" :qindex="qindex" @itemSortdown="itemSortdown" @changeDomainRadio="changeDomainRadio" :qlist="item.qlist"></comprehensive>
 									</template>
 								</div>
 							</el-collapse-item>
@@ -326,7 +326,7 @@
 				
 			},
 			changeDomainRadio(index, qindex, v) {
-			
+//			debugger
 				if(v==this.list[index].qlist[qindex].default_choose){
 					this.list[index].qlist[qindex].default_choose="";
 				}else{

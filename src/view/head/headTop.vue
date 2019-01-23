@@ -138,4 +138,7 @@
 	.el-menu--horizontal>.el-menu-item {
 		height: 55px;
 	}
+	.el-menu.el-menu--horizontal{
+		border-bottom: none;
+	}
 </style>

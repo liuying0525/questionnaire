@@ -10,8 +10,8 @@
 				<li v-for="(domainitem,doindex) in domains" :key="doindex">
 					<span>{{domainitem.option_name}}</span>
 					<span>
-									<el-select v-model="domainitem.related_sub" placeholder="请选择" :disabled="!!domainitem.skip_sub">									
-											<el-option v-for="(itemoption,itindex) in qlist" :key="itindex" v-if="itemoption.id!=item.id" :label="(itindex+1)+itemoption.title" :value="(itindex+1)+itemoption.title">
+									<el-select v-model="domainitem.related_sub" placeholder="请选择" :disabled="domainitem.skip_sub!='0'&&!!domainitem.skip_sub&&domainitem.skip_sub!='请选择'">									
+											<el-option v-for="(itemoption,itindex) in qlist" :key="itindex" v-if="itemoption.id!=item.id" :label="(itindex+1)+itemoption.title" :value="itemoption.id">
 										</el-option>
 									</el-select>
 								</span>
@@ -60,6 +60,15 @@
 		},
 		created() {
 			//			this.selectedList();
+			var domains = this.domains;
+			var domainqlist = this.qlist;
+			for(var j = 0; j < domains.length; j++) {
+				if(domains[j].related_sub == "0" || domains[j].related_sub == "请选择" || domains[j].related_sub == "") {
+					domains[j].related_sub = "请选择";
+				} else {
+					domains[j].related_sub = parseInt(domains[j].related_sub);
+				}
+			}
 		},
 		components: {
 

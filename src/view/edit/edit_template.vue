@@ -448,7 +448,6 @@
 				});
 			},
 			submitForm(item, index) {
-
 				item.show = false;
 				item.edittextinput = false;
 				let subModel = JSON.parse(JSON.stringify(item));

@@ -84,7 +84,9 @@
 				if(this.status != "1") {
 					return;
 				}
+//				console.log(item.show)
 				item.show = item.edittextinput || !item.show;
+//				console.log(item.show)
 			},
 			submitForm(item) {
 				if(this.status != "1") {
@@ -166,12 +168,7 @@
 		display: none;
 	}
 	
-	.el-form>.el-form-item {
-		padding: 10px 5% 0;
-		border: 1px solid transparent;
-		margin-bottom: 5px;
-		padding-bottom: 40px;
-	}
+
 	
 	.el-form-item__label {}
 	
@@ -198,6 +195,13 @@
 		border: 1px dashed rgb(121, 121, 121);
 		height: auto;
 		padding: 10px 5%;
+	}
+	
+		.el-form>.el-form-item {
+		padding: 10px 5% 0;
+		border: 1px solid transparent;
+		margin-bottom: 5px;
+		padding-bottom: 40px;
 	}
 	
 	.el-form-item .el-checkbox {

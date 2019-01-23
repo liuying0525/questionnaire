@@ -119,7 +119,7 @@
 		},
 		methods: {
 			handleChange(val) {
-				console.log(val);
+//				console.log(val);
 			},
 			addfill(index) {
 				ofill.show=true;
@@ -298,10 +298,11 @@
 				this.comitem.qlist[qindex].option.push(options);
 			},
 			changeDomainRadio(index, qindex, v) {
-					if(v==this.list[index].qlist[qindex].default_choose){
-					this.list[index].qlist[qindex].default_choose="";
+//				debugger
+					if(v==this.comitem.qlist[qindex].default_choose){
+					this.comitem.qlist[qindex].default_choose="";
 				}else{
-					this.list[index].qlist[qindex].default_choose = v;
+					this.comitem.qlist[qindex].default_choose = v;
 				}
 				let domainlist = this.comitem.qlist[qindex].option;
 				for(let i in domainlist) {
@@ -525,7 +526,7 @@
 			}
 		},
 		mounted: function() {
-			console.log(this.activeNames);
+//			console.log(this.activeNames);
 		},
 		components: {
 			headTop,
@@ -597,11 +598,16 @@ white-space: nowrap;
     margin-left: 50px;
         margin-top: 5px;*/
 	}
-	
+	.topic .compre{
+		padding-top:10px;
+	}
+	.topic .compre>.el-form>.el-form-item{
+		margin-bottom:0;
+	}
 	.topic .compre>.el-form>.edit_item>.el-form-item__label {
 		width: 0;
 		text-align: right;
-		margin-left: 50px;
+		margin-left: 43px;
 		margin-top: 5px;
 		float: left;
 	}

@@ -19,7 +19,7 @@
 						<p v-text="contentText"></p>
 					</div>
 
-					<el-collapse v-model="activeNames" v-for="(item,index) in modList" :key="index" @change="handleChange">
+					<el-collapse v-model="activeNames" v-for="(item,index) in modList" :key="item.id" @change="handleChange">
 
 						<el-collapse-item :title="item.mod_name" :name="index">
 							<div class="collapseinner">
@@ -27,8 +27,8 @@
 									<!--<span>{{qitem.modorder}}、{{qitem.itemmodname}}</span>-->
 									<!--<span v-if="mitem.serial_number==mindex">{{mitem.serial_number}}、{{mitem.mod_name}}</span>-->
 								</el-col>
-								<el-row v-for="(qitem,qindex) in item.item" :key="qindex" v-bind:class="qitem.modorder?'bordernone':''">
-									<span v-if="qitem.modorder&&qitem.order==1" class="comvetitle">{{Number(qitem.modorder)+1}}、{{qitem.itemmodname}}</span>
+								<el-row v-for="(qitem,qindex) in item.item" :key="qitem.id" v-bind:class="qitem.modorder?'bordernone':''">
+									<span v-if="qitem.itemmodname&&qitem.order==1" class="comvetitle">{{Number(qitem.modorder)}}、{{qitem.itemmodname}}</span>
 									<el-col :span="24" class="itemtitle"><span>{{qitem.order}}</span><span>{{qitem.itemmodname?")":"、"}}</span><span>{{qitem.title}}：</span><span class="typetip">【{{qitem.cat}}】</span></el-col>
 
 									<el-col :span="24" v-if="qitem.sub_cat=='single'||qitem.sub_cat=='multiple'">
@@ -54,7 +54,7 @@
 											<el-table-column prop="answer_time" label="日期" width="180"></el-table-column>
 											<el-table-column label="详细内容" v-if="qitem.sub_cat=='uploadimg'">
 												<template slot-scope="scope">
-												<el-button v-if="imgitem" v-for="(imgitem,imgindex) in qitem.resultList[scope.$index].result"  @click="open4(imgitem)"  :key="imgindex">
+												<el-button v-if="imgitem" v-for="(imgitem,imgindex) in qitem.resultList[scope.$index].result"  @click="open4(imgitem)"  :key="imgitem.id">
 													<img :src="imgitem"  class="uploadimgList"/>
 												</el-button>
 												</template>
@@ -306,14 +306,24 @@
 						let opList = this.getItemOptions(modlist[k].item);
 						option.qlist = modlist[k].item;
 						modlist[k].item = opList;
+						for(var n = 0; n < modlist[k].item.length; n++) {
+							modlist[k].item[n].modorder=modlist[k].item[n].order;
+						}
+						
 					}
 					if(modlist[k].mod && modlist[k].mod.length != 0) {
+						
 						for(var j = 0; j < modlist[k].mod.length; j++) {
+							var sortList=[];
 							for(var v = 0; v < modlist[k].mod[j].item.length; v++) {
 								modlist[k].mod[j].item[v].itemmodname = modlist[k].mod[j].mod_name;
-								//debugger
-								modlist[k].mod[j].item[v].modorder = modlist[k].mod[j].serial_number
+//								debugger
+							modlist[k].mod[j].item[v].modorder = modlist[k].mod[j].serial_number;
 								modlist[k].item.push(modlist[k].mod[j].item[v]);
+								modlist[k].item.sort(function(a,b){
+										return a.modorder-b.modorder;
+								})
+								
 							}
 
 						}
@@ -330,6 +340,7 @@
 					//.debugger
 					this.modList.push(modlist[k]);
 					//var modList = this.modList;
+					
 
 				}
 				this.activeNames = activelist;

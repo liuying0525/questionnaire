@@ -12,8 +12,9 @@
 					<li v-for="(domainitem,index) in domains" :key="index">
 						<span>{{domainitem.option_name}}</span>
 						<span>
-							<el-select v-model="domainitem.skip_sub" placeholder="请选择" :disabled="!!domainitem.related_sub">
-								<el-option v-for="(itemoption,index) in qlist" v-if="itemoption.id!=item.id" :label="(index+1)+itemoption.title" :value="(index+1)+itemoption.title" :key="index">
+							<!--<el-select v-model="domainitem.skip_sub" placeholder="请选择"  :disabled="domainitem.related_sub!='0'&&!!domainitem.related_sub" >-->
+								<el-select v-model="domainitem.skip_sub" placeholder="请选择" :disabled="domainitem.related_sub!='0'&&!!domainitem.related_sub&&domainitem.related_sub!='请选择'" >
+								<el-option v-for="(itemoption,index) in qlist" v-if="itemoption.id!=item.id" :label="(index+1)+itemoption.title" :value="itemoption.id" :key="index">
 								</el-option>
 							</el-select>
 						</span>
@@ -33,6 +34,8 @@
 		data() {
 			return {
 				value: '',
+				splaceholder: '',
+				domainskip_sub: ""
 			}
 		},
 		props: {
@@ -51,8 +54,7 @@
 			qlist: {
 				type: Array,
 				default: []
-			},
-
+			}
 		},
 		methods: {
 			canclejump(item) {
@@ -60,13 +62,22 @@
 			},
 			surejump() {
 				this.$emit("surejump");
-			},
+			}
 		},
-		created(){
-			
-			var ss=this.domains;
+		created() {
+			var domains = this.domains;
+			var domainqlist = this.qlist;
+			console.log("domainqlist=="+domainqlist);
+			for(var j = 0; j < domains.length; j++) {
+				if(domains[j].skip_sub == "0" || domains[j].skip_sub == "请选择" || domains[j].skip_sub == "") {
+					domains[j].skip_sub = "请选择";
+				} else {
+					domains[j].skip_sub = parseInt(domains[j].skip_sub);
+				}
+			}
 		},
-		components:{
+		mounted() {},
+		components: {
 
 		}
 	}

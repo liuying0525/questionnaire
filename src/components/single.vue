@@ -43,7 +43,7 @@
 										</el-col>
 										<el-col :span="3">
 											<!--<el-radio-group v-model="item.default_choose" @change="gdochange">-->
-												<el-radio-group v-model="item.default_choose">
+											<el-radio-group v-model="item.default_choose">
 												<el-radio :label="domain.option_name" @click.native.prevent="gdochange(domain.option_name)"></el-radio>
 											</el-radio-group>
 										</el-col>
@@ -120,10 +120,10 @@
 		},
 		methods: {
 			showedit(item) {
-				if(this.status != "1"&& !this.$route.query.templateId) {
+				if(this.status != "1" && !this.$route.query.templateId) {
 					return;
 				}
-				
+
 				item.edittextinput = !item.edittextinput;
 			},
 			dochange(item) {
@@ -131,7 +131,7 @@
 				//				this.gdomack = item;
 			},
 			gdochange(item) {
-			
+
 				if(this.status != "1" && !this.$route.query.templateId) {
 					return;
 				}
@@ -143,15 +143,16 @@
 				if(this.status != "1" && !this.$route.query.templateId) {
 					return;
 				}
-//				debugger
+				//				debugger
+				//				console.log(item.show);
 				item.show = item.edittextinput || !item.show;
+				//				console.log(item.show);
 			},
 			submitForm(item) {
-				
+
 				if(this.status != "1" && !this.$route.query.templateId) {
 					return;
 				}
-				
 				this.$emit("submitForm", item, this.index);
 			},
 			removeDomain() {
@@ -166,7 +167,7 @@
 				this.$emit("removeDomain", this.index, this.qindex);
 			},
 			itemSortdown: function(index, qindex, type) {
-				if(this.status != "1" && this.type != '0'&& !this.$route.query.templateId) {
+				if(this.status != "1" && this.type != '0' && !this.$route.query.templateId) {
 
 					this.$message({
 						type: 'error',
@@ -177,7 +178,7 @@
 				this.$emit("itemSortdown", index, qindex, type);
 			},
 			domainSortdown: function(index, qindex, dindex, type) {
-				if(this.status != "1" && this.type != '0'&& !this.$route.query.templateId) {
+				if(this.status != "1" && this.type != '0' && !this.$route.query.templateId) {
 
 					this.$message({
 						type: 'error',
@@ -198,7 +199,7 @@
 				}
 			},
 			addDomain() {
-				if(this.status != "1" && this.type != '0'&& !this.$route.query.templateId) {
+				if(this.status != "1" && this.type != '0' && !this.$route.query.templateId) {
 
 					this.$message({
 						type: 'error',
@@ -209,7 +210,7 @@
 				this.$emit("addDomain", this.index, this.qindex);
 			},
 			removeDomainitem(index, qindex, dindex) {
-				if(this.status != "1" && this.type != '0'&& !this.$route.query.templateId) {
+				if(this.status != "1" && this.type != '0' && !this.$route.query.templateId) {
 
 					this.$message({
 						type: 'error',
@@ -220,7 +221,7 @@
 				this.$emit("removeDomainitem", index, qindex, dindex);
 			},
 			changeposition(item) {
-				if(this.status != "1" && this.type != '0'&& !this.$route.query.templateId) {
+				if(this.status != "1" && this.type != '0' && !this.$route.query.templateId) {
 
 					this.$message({
 						type: 'error',
@@ -230,8 +231,8 @@
 				}
 				item.changeButton = !item.changeButton;
 			},
-			jump() {
-				if(this.status != "1" && this.type != '0'&& !this.$route.query.templateId) {
+			jump(item) {
+				if(this.status != "1" && this.type != '0' && !this.$route.query.templateId) {
 
 					this.$message({
 						type: 'error',
@@ -239,10 +240,21 @@
 					});
 					return;
 				}
+
+				//
+				//				debugger
+				//				for(var i = 0; i < item.option.length; i++) {
+				//					if(item.option[i].skip_sub != "") {
+				//						var skipList = this.qlist[item.option[i].skip_sub];
+				//						item.option[i].skip_subName = (parseInt(item.option[i].skip_sub) + 1) + "" + skipList.title;
+				//					} else {
+				//						item.option[i].skip_subName = "请选择";
+				//					}
+				//				}
 				this.jumpshow = true;
 			},
 			relevance() {
-				if(this.status != "1" && this.type != '0'&& !this.$route.query.templateId) {
+				if(this.status != "1" && this.type != '0' && !this.$route.query.templateId) {
 
 					this.$message({
 						type: 'error',
@@ -343,6 +355,7 @@
 		border: 1px solid transparent;
 		height: auto;
 		/*margin-bottom:30px;*/
+		padding-bottom: 40px;
 	}
 	
 	.el-button {
@@ -485,17 +498,20 @@
 		margin: 0;
 		padding: 3px 0;
 	}
-	.singleedit .option_name .el-input{
-		width:90%;
+	
+	.singleedit .option_name .el-input {
+		width: 90%;
 	}
 	/*.singleedit .el-row > .el-col.grade{
 		text-align: left;
 	}*/
-	.singradio{
-		width:100%;
-		margin:10px 0;
+	
+	.singradio {
+		width: 100%;
+		margin: 10px 0;
 	}
-	.singradio+.singradio{
-		margin-left:0;
+	
+	.singradio+.singradio {
+		margin-left: 0;
 	}
 </style>

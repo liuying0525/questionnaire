@@ -8,7 +8,7 @@
 						<el-input type="text" v-model="loginForm.username" placeholder="请输入用户名..."><span>dsfsf</span></el-input>
 					</el-form-item>
 					<el-form-item prop="password">
-						<el-input type="password" placeholder="请输入密码..." v-model="loginForm.password"></el-input>
+						<el-input type="password" placeholder="请输入密码..." v-model="loginForm.password" @keyup.enter.native="loginin"></el-input>
 					</el-form-item>
 					<el-form-item>
 						<el-button type="primary" @click="loginin()" class="submit_btn" size="medium">登录</el-button>
@@ -73,6 +73,7 @@
 		mounted() {
 			this.show = true;
 			console.log("login mounted");
+			
 		}
 	}
 </script>

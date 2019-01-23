@@ -14,7 +14,7 @@
 				</el-col>
 			</el-row>
 			<el-row type="flex" justify="space-between">
-				<el-col :span="6" class="ontemplateBotL">
+				<el-col :span="8" class="ontemplateBotL">
 					<span @click="designAn(item)"><i class="designAnicon"></i>设计问卷</span>
 					<span @click="sendAn(item)"><i class="sendAn"></i>发送问卷</span>
 					<span @click="analyzeDown(item)"><i class="analyzeDown"></i>分析&下载</span>
@@ -444,6 +444,7 @@ window.location.reload();
 		}
 		.el-radio {
 			color: #fff;
+			width:40%;
 		}
 		.jumpitem {
 			position: absolute;
