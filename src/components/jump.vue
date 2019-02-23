@@ -97,7 +97,7 @@
 			z-index: 300;
 			top: 50%;
 			left: 50%;
-			width: 30%;
+		/*	width: 30%;*/
 			border: 1px dashed #303133;
 			background: #fff;
 			transform: translate(-50%, -50%);
@@ -123,6 +123,8 @@
 					text-align: center;
 					float: left;
 					width: 100%;
+					    display: flex;
+    justify-content: space-between;
 					&:nth-of-type(1) {
 						background: #409EFF;
 						padding: 0;
@@ -131,10 +133,8 @@
 						display: inline-block;
 						padding: 8px 0;
 						&:nth-of-type(1) {
-							width: 30%;
-							border-right: 1px solid #303133;
+							/*border-right: 1px solid #303133;*/
 						}
-						width: 69%;
 						float:left;
 					}
 				}

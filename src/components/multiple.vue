@@ -45,12 +45,12 @@
 									</el-row>
 								</el-form-item>
 								<div class="btngroup">
-									<el-button @click="addDomain" type="primary" plain>+新增选项</el-button>
-									<!--<el-button @click="jump()" type="primary" plain>+关联逻辑</el-button>
-									<el-button @click="jump()" type="primary" plain>+跳转逻辑</el-button>-->
-								</div>
+									<el-button type="primary" plain disabled>+新增选项</el-button>
+									<el-button @click="relevance" type="primary" plain>+关联逻辑</el-button>
+									<el-button type="primary" plain disabled>+跳转逻辑</el-button>														
+				<relevance :relevanceshow='relevanceshow' :domains="item.option" :item="item" @canclerelevance='canclerelevance' :qlist="qlist" @surerelevance="surerelevance"></relevance>
 							</div>
-							<p class="tips">注：关联逻辑与跳转逻辑只能设置其中一项</p>
+							</div>
 							<el-button type="primary" @click="submitForm(item)">保存</el-button>
 						</el-form-item>
 					</el-col>
@@ -64,9 +64,12 @@
 
 <script>
 	import headTop from 'view/head/headTop.vue';
+	import relevance from './relevance.vue';
 	export default {
 		data() {
-			return {}
+			return {
+					relevanceshow: false,
+			}
 		},
 		props: {
 			item: {
@@ -80,6 +83,10 @@
 			qindex: {
 				type: Number,
 				default: 0
+			},
+			qlist: {
+				type: Array,
+				default: () => []
 			},
 			taccord: {
 				type: String,
@@ -155,6 +162,23 @@
 					}
 				}
 			},
+			relevance() {
+				if(this.status != "1" && this.type != '0' && !this.$route.query.templateId) {
+
+					this.$message({
+						type: 'error',
+						message: '当前问卷状态无法进行此操作'
+					});
+					return;
+				}
+				this.relevanceshow = true;
+			},
+				surerelevance() {
+				this.relevanceshow = false;
+			},
+				canclerelevance(item) {
+				this.relevanceshow = false;
+			},
 			addDomain() {
 					if(this.status!="1"){
 						
@@ -191,7 +215,8 @@
 		},
 		created() {},
 		components: {
-			headTop
+			headTop,		
+			relevance
 		}
 	}
 </script>

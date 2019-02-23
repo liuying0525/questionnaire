@@ -68,7 +68,7 @@
 						</el-form-item>
 					</el-col>
 				</el-row>
-				<jump :jumpshow='jumpshow' :domains="item.option" :item="item" @canclejump='canclejump' :qlist="qlist" @surejump="surejump"></jump>
+<jump :jumpshow='jumpshow' :domains="item.option" :item="item" @canclejump='canclejump' :qlist="qlist" @surejump="surejump"></jump>
 				<relevance :relevanceshow='relevanceshow' :domains="item.option" :item="item" @canclerelevance='canclerelevance' :qlist="qlist" @surerelevance="surerelevance"></relevance>
 			</el-form-item>
 		</el-form>
@@ -271,18 +271,20 @@
 				this.jumpshow = false;
 			},
 			canclerelevance(item) {
-				for(let i in item.option) {
-					item.option[i].related_sub = "";
-				}
+				//				for(let i in item.option) {
+				//					item.option[i].related_sub = "";
+				//				}
 				this.relevanceshow = false;
 			},
 			surejump() {
 				this.jumpshow = false;
 			},
+			
 			surerelevance() {
+				//debugger
+				// 保存  选择的题目    选择的题目 sItem   选择的项 sOption  把对应的 关联ID 写入 option.related_sub  
 				this.relevanceshow = false;
 			}
-
 		},
 		components: {
 			headTop,

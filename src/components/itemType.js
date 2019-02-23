@@ -69,6 +69,7 @@ let omultistage = {
 	pid: 0,
 	poSition: '',
 	qtitle: 0,
+	option: [],
 	sub_cat: "multistage",
 	serial_number: 0,
 	is_must: false,

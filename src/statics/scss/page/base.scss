@@ -31,4 +31,16 @@ $font-size-small:12px;
     width:18%;
     margin-left:0 !important;
 }
+.btngroup {
+            display: flex;
+            justify-content: space-between;
+            .el-button {
+                width: 25% !important;
+        padding: 10px 0 !important;
+        margin-top: 20px !important;
+        display: block !important;
+            }
+    
+        }
+        
 

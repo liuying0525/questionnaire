@@ -31,28 +31,28 @@
 
 				<div class="topic" v-for="(qitem,qindex) in comitem.qlist" :key="qindex">
 					<template v-if="qitem.sub_cat=='fill'">
-						<fill :item="qitem" @removeDomain="removeDomain" :taccord="taccord" :type="type" :index="index" :qindex="qindex" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></fill>
+						<fill :item="qitem" @removeDomain="removeDomain" :taccord="taccord" :qlist="comitem.qlist" :type="type" :index="index" :qindex="qindex" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></fill>
 					</template>
 					<template v-if="qitem.sub_cat=='single'">
 						<single :item="qitem" @changeDomainRadio="changeDomainRadio" :type="type" :qlist="comitem.qlist" :taccord="taccord" @addDomain="addDomain" :index="index" :qindex="qindex" @removeDomainitem="removeDomainitem" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></single>
 					</template>
 					<template v-if="qitem.sub_cat=='multiple'">
-						<multiple :item="qitem" @addDomain="addDomain" :taccord="taccord" :type="type" :index="index" :qindex="qindex" @removeDomainitem="removeDomainitem" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></multiple>
+						<multiple :item="qitem" @addDomain="addDomain" :taccord="taccord" :qlist="comitem.qlist" :type="type" :index="index" :qindex="qindex" @removeDomainitem="removeDomainitem" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></multiple>
 					</template>
 					<template v-if="qitem.sub_cat=='multistage'">
-						<multistage :item="qitem" :taccord="taccord" :index="index" :type="type" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></multistage>
+						<multistage :item="qitem" :taccord="taccord" :index="index" :qlist="comitem.qlist" :type="type" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></multistage>
 					</template>
 					<template v-if="qitem.sub_cat=='loCation'">
-						<loCation :item="qitem" :taccord="taccord" :index="index" :type="type" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></loCation>
+						<loCation :item="qitem" :taccord="taccord" :index="index" :qlist="comitem.qlist" :type="type" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></loCation>
 					</template>
 					<template v-if="qitem.sub_cat=='uploadimg'">
-						<uploadimg :item="qitem" :taccord="taccord" :index="index" :type="type" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></uploadimg>
+						<uploadimg :item="qitem" :taccord="taccord" :index="index" :qlist="comitem.qlist" :type="type" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></uploadimg>
 					</template>
 					<template v-if="qitem.sub_cat=='fractions'">
-						<fractions :item="qitem" :taccord="taccord" :index="index" :type="type" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></fractions>
+						<fractions :item="qitem" :taccord="taccord" :index="index" :qlist="comitem.qlist" :type="type" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></fractions>
 					</template>
 					<template v-if="qitem.sub_cat=='signature'">
-						<signature :item="qitem" :taccord="taccord" :index="index" :type="type" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></signature>
+						<signature :item="qitem" :taccord="taccord" :index="index" :qlist="comitem.qlist" :type="type" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></signature>
 					</template>
 				</div>
 			</el-form-item>
@@ -101,6 +101,10 @@
 			comitem: {
 				type: Object,
 				default: {}
+			},
+				qlist: {
+				type: Array,
+				default: () => []
 			},
 			comtaccord: {
 				type: String,
