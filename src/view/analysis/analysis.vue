@@ -387,7 +387,7 @@
 		left:0;
 	}
 	.editTemContain .el-progress-bar{
-		    width: 100%;
+		    width: 95%;
     margin-right: -55px;   
 	}
 	
@@ -400,6 +400,7 @@
 <style scoped="scoped" lang="scss">
 	.el-main {
 		background-color: #f3f3f3;
+		
 		
 	}
 	
