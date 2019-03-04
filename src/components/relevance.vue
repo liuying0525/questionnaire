@@ -132,6 +132,7 @@
 			ckchange() {
 				if(this.sOption.indexOf(0) != -1) {
 					var fobj=this.slist.filter(o => o.id == this.sItem)[0];
+					
 					var result="请先保存["+fobj.serial_number+"_"+fobj.title+"]的选项"+fobj.title;
 					this.$alert(result, '提示', {
 						confirmButtonText: '确定',
