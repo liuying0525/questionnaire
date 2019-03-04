@@ -387,7 +387,7 @@
 		left:0;
 	}
 	.editTemContain .el-progress-bar{
-		    width: 100%;
+		    width: 95%;
     margin-right: -55px;   
 	}
 	
