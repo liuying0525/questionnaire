@@ -387,12 +387,14 @@
 		left:0;
 	}
 	.editTemContain .el-progress-bar{
-		width: 95%;
+		width: 100%;
+		padding-left:35px;
 	}
 	
-	/*.editTemContain .el-table[data-v-425f332e], .el-table th > .cell[data-v-425f332e]{
+	.editTemContain .el-table .cell{
 		text-align:left;
-	}*/
+		padding-left:0;
+	}
 </style>
 <style scoped="scoped" lang="scss">
 	.el-main {
