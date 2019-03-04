@@ -18,7 +18,7 @@
 				<li>
 					<span>题目选项：</span>
 					<span>					
-					<el-checkbox-group v-model="sOption">
+					<el-checkbox-group v-model="sOption" @change="ckchange">
 						<el-checkbox v-for="(checkoption,index) in coptions" :disabled="checkoption.skip_sub!='请选择'&&checkoption.skip_sub!=''" :label="checkoption.id" :key="index" class="multiplecheck" :value="checkoption.id">{{checkoption.option_name}}</el-checkbox>
 					</el-checkbox-group>
 					</span>
@@ -128,6 +128,18 @@
 			itemChange(obj) {
 				//选择不同的题目  显示  题目中的选项 
 				this.coptions = this.slist.filter(o => o.id == this.sItem)[0].option;
+			},
+			ckchange() {
+				if(this.sOption.indexOf(0) != -1) {
+					var fobj=this.slist.filter(o => o.id == this.sItem)[0];
+					var result="请先保存["+fobj.serial_number+"_"+fobj.title+"]的选项"+fobj.title;
+					this.$alert(result, '提示', {
+						confirmButtonText: '确定',
+						callback: action => {
+							//提交数据库，改变对象
+						}
+					});
+				}
 			}
 		},
 		created() {
@@ -158,7 +170,7 @@
 						//显示对应题目的选项
 						this.coptions = this.slist.filter(o => o.id == qsItem)[0].option;
 					}
-//					debugger
+					//					debugger
 					this.sItem = qsItem;
 					this.sOption = qsOption;
 					this.qsItem = qsItem;
