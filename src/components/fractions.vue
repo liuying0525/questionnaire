@@ -18,11 +18,11 @@
 					<span @click.prevent="removeDomain(index,qindex)">删除</span>
 					<span @click.prevent="changeposition(item)">位置变更</span>
 					<div class="changeposition" v-if="item.changeButton">
-						<el-button type="info" plain @click="itemSortdown(index,qindex,'up')">上移一题</el-button>
-						<el-button type="info" plain @click="itemSortdown(index,qindex,'down')">下移一题</el-button>
+						<el-button type="info" plain @click="itemSortdown(item,index,qindex,'up')">上移一题</el-button>
+						<el-button type="info" plain @click="itemSortdown(item,index,qindex,'down')">下移一题</el-button>
 						<div>移至【
 							<el-input v-model="item.poSition" class="inputposition"></el-input>】题
-							<el-button type="primary" plain class="positionsure" @click.native="itemSortdown(index,qindex,'jumpitem')">确定</el-button>
+							<el-button type="primary" plain class="positionsure" @click.native="itemSortdown(item,index,qindex,'jumpitem')">确定</el-button>
 						</div>
 					</div>
 				</div>
@@ -138,7 +138,7 @@
 				//					value: ''
 				//				});
 			},
-			itemSortdown: function(index, qindex, type) {
+			itemSortdown: function(item,index, qindex, type) {
 				if(this.status != "1") {
 
 					this.$message({
@@ -147,7 +147,9 @@
 					});
 					return;
 				}
-				this.$emit("itemSortdown", index, qindex, type);
+				this.$emit("itemSortdown",item, index, qindex, type);
+				item.show=false;
+				item.edittextinput=false;
 			},
 			changeposition(item) {
 				if(this.status != "1") {

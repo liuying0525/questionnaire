@@ -64,7 +64,7 @@
 									<signature :item="qitem" :taccord="taccord" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></signature>
 								</template>
 								<template v-if="qitem.sub_cat=='comprehensive'">
-									<comprehensive @deleCom="delem" :comtaccord="comtaccord" :index="index" :comitem="qitem" :qindex="qindex" @itemSortdown="itemSortdown" :type="type" :status="status"></comprehensive>
+									<comprehensive :item="qitem" @deleCom="delem" :comtaccord="comtaccord" :index="index" :comitem="qitem" :qindex="qindex" @itemSortdown="itemSortdown" :type="type" :status="status"></comprehensive>
 								</template>
 							</div>
 						</el-collapse-item>
@@ -334,7 +334,7 @@
 				let dlist = this.list[index].qlist[qindex].option.deleteIndex(dindex);
 				this.list[index].qlist[qindex].option = dlist;
 			},
-			itemSortdown(index, qindex, type) {
+			itemSortdown(item,index, qindex, type) {
 				var listItem = this.list[index].qlist[qindex];
 				var sortList = this.list[index].qlist;
 				var serial_number = listItem.serial_number;
@@ -401,6 +401,8 @@
 				});
 
 				this.list[index].qlist = sortList;
+				item.show=false;
+				item.edittextinput=false;
 
 			},
 			domainSortdown(index, qindex, dindex, type) {
@@ -516,7 +518,7 @@
 				});
 			},
 			finishSub() {
-				this.$confirm('您确定要完成问卷吗?', '提示', {
+				this.$confirm('您确定要完成模板吗?', '提示', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
 					type: 'warning'

@@ -67,7 +67,7 @@
 									</template>
 								
 									<template v-if="qitem.sub_cat=='comprehensive'">
-										<comprehensive @deleCom="delem" :comtaccord="comtaccord" :index="index" :comitem="qitem" :status="status" :qindex="qindex" @itemSortdown="itemSortdown" @changeDomainRadio="changeDomainRadio" :qlist="item.qlist"></comprehensive>
+										<comprehensive :item="qitem" @deleCom="delem" :comtaccord="comtaccord" :index="index" :comitem="qitem" :status="status" :qindex="qindex" @itemSortdown="itemSortdown" @changeDomainRadio="changeDomainRadio" :qlist="item.qlist"></comprehensive>
 									</template>
 								</div>
 							</el-collapse-item>
@@ -110,7 +110,8 @@
 				subId: "",
 				parentModle: 0,
 				serial_number: 0,
-				status: ""
+				status: "",
+				SubInfo:{}
 			}
 		},
 		methods: {
@@ -240,6 +241,7 @@
 					return;
 				}
 				this.list[index].qlist.splice(pindex, 1);
+				
 			},
 			addItem(index, type) {
 				let that = this;
@@ -371,7 +373,7 @@
 				let dlist = this.list[index].qlist[qindex].option.deleteIndex(dindex);
 				this.list[index].qlist[qindex].option = dlist;
 			},
-			itemSortdown(index, qindex, type) {
+			itemSortdown(item,index, qindex, type) {
 				if(this.status != "1") {
 					this.$message({
 						type: 'error',
@@ -445,6 +447,8 @@
 				});
 
 				this.list[index].qlist = sortList;
+				item.show=false;
+				item.edittextinput=false;
 
 			},
 			domainSortdown(index, qindex, dindex, type) {
@@ -599,6 +603,7 @@
 						}
 
 						SubInfo.mod.push(modoption);
+						this.SubInfo=SubInfo;
 
 					}
 					this.$post("/Home/Subject/finishSub", SubInfo).then((res) => {
@@ -706,7 +711,8 @@
 						this.$alert('删除成功！', '提示', {
 							confirmButtonText: '确定',
 							callback: action => {
-								this.getListArrary(this.subId); //								this.$emit("getList");
+							this.getListArrary(this.subId); 
+						
 							}
 						});
 					});

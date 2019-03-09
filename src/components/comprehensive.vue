@@ -7,11 +7,11 @@
 					<span @click.prevent="deletecomp" class="deletecomp">删除</span>
 					<span @click.prevent="changeposition(comitem)" class="oposition">位置变更</span>
 					<div class="changeposition" v-show="comitem.changeButton">
-						<el-button type="info" plain @click="itemSortdownc(index,qindex,'up')">上移一题</el-button>
-						<el-button type="info" plain @click="itemSortdownc(index,qindex,'down')">下移一题</el-button>
+						<el-button type="info" plain @click="itemSortdownc(item,index,qindex,'up')">上移一题</el-button>
+						<el-button type="info" plain @click="itemSortdownc(item,index,qindex,'down')">下移一题</el-button>
 						<div>移至【
 							<el-input v-model="comitem.poSition" class="inputposition"></el-input>】题
-							<el-button type="primary" plain class="positionsure" @click.native="itemSortdownc(index,qindex,'jumpitem')">确定</el-button>
+							<el-button type="primary" plain class="positionsure" @click.native="itemSortdownc(item,index,qindex,'jumpitem')">确定</el-button>
 						</div>
 					</div>
 				</div>
@@ -86,6 +86,10 @@
 			}
 		},
 		props: {
+			item: {
+				type: Object,
+				default: {}
+			},
 			index: {
 				type: Number,
 				default: 0
@@ -93,6 +97,10 @@
 			type: {
 				type: String,
 				default: ''
+			},
+				item: {
+				type: Object,
+				default: {}
 			},
 			qindex: {
 				type: Number,
@@ -337,7 +345,7 @@
 					this.comitem.qlist = nlist;
 				}).catch(() => {});
 			},
-			deletecomp() {
+			deletecomp(item) {
 					if(this.status != "1") {
 					this.$message({
 						type: 'error',
@@ -346,6 +354,16 @@
 					return;
 				}
 				this.$emit("deleCom", this.index, this.qindex);
+				if(this.$route.query.templateId){
+							this.$post("/Home/Tpl/deleteMod", {
+						"id": this.item.id
+					})
+				}else{
+						this.$post("/Home/Subject/deleteMod", {
+						"id": this.item.id
+					})
+				}
+				
 			},
 			changeposition(item) {
 				item.changeButton = !item.changeButton;
@@ -361,7 +379,7 @@
 				let dlist = this.comitem.qlist[qindex].domains.deleteIndex(dindex);
 				this.comitem.qlist[qindex].domains = dlist;
 			},
-			itemSortdownc(index, qindex, type) {
+			itemSortdownc(item,index, qindex, type) {
 					if(this.status != "1") {
 					this.$message({
 						type: 'error',
@@ -369,9 +387,9 @@
 					});
 					return;
 				}
-				this.$emit("itemSortdown", index, qindex, type);
+				this.$emit("itemSortdown", item,index, qindex, type);
 			},
-			itemSortdown: function(index, qindex, type) {
+			itemSortdown: function(item,index, qindex, type) {
 					if(this.status != "1") {
 					this.$message({
 						type: 'error',
@@ -444,6 +462,8 @@
 					return a.serial_number - b.serial_number;
 				});
 				this.comitem.qlist = sortList;
+					item.show=false;
+				item.edittextinput=false;
 			},
 			submitForm(item, index) {
 				let subModel = JSON.parse(JSON.stringify(item));

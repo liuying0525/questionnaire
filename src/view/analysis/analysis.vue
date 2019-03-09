@@ -41,7 +41,7 @@
 											<el-table-column label="比例">
 												<!--<template slot-scope="scope" v-if="scope.row.date!='本题有效填写人次'">-->
 												<template slot-scope="scope">
-													<el-progress :percentage="Number(scope.row.percent)*100||0" style="text-align: left;"></el-progress>
+													<el-progress :percentage="parseInt(scope.row.percent*10000)/100||0" style=""></el-progress>
 												</template>
 											</el-table-column>
 
@@ -387,12 +387,12 @@
 		left:0;
 	}
 	.editTemContain .el-progress-bar{
-		width: 100%;
-		padding-left:35px;
+		width: 95%;
+		padding-left:20px;
 	}
-	
+	.el-table td div.el-progress{text-align: left;}
 	.editTemContain .el-table .cell{
-		text-align:left;
+		
 		padding-left:0;
 	}
 </style>
