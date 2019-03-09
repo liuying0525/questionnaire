@@ -452,6 +452,7 @@
 			submitForm(item, index) {
 				item.show = false;
 				item.edittextinput = false;
+				debugger
 				let subModel = JSON.parse(JSON.stringify(item));
 				delete subModel.changeButton;
 				delete subModel.edittextinput;
@@ -700,7 +701,6 @@
 						}
 						this.list.push(option);
 						option.qlist.sort(function(a, b) {
-
 							return a.serial_number - b.serial_number;
 						});
 

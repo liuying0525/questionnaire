@@ -73,7 +73,7 @@
 	import fractions from 'components/fractions.vue';
 	import signature from 'components/signature.vue';
 	import { Message } from "element-ui";
-	import { ofill, osingle, omultiple, omultistage, ouploadimg, oloCation, ofractions,osignature } from "./itemType";
+	import { ofill, osingle, omultiple, omultistage, ouploadimg, oloCation, ofractions, osignature } from "./itemType";
 	export default {
 		data() {
 			return {
@@ -98,7 +98,7 @@
 				type: String,
 				default: ''
 			},
-				item: {
+			item: {
 				type: Object,
 				default: {}
 			},
@@ -114,11 +114,11 @@
 				type: String,
 				default: ""
 			},
-			status:{
+			status: {
 				type: String,
 				default: "1"
 			},
-			
+
 		},
 		created() {
 			//			debugger
@@ -127,107 +127,125 @@
 		},
 		methods: {
 			handleChange(val) {
-//				console.log(val);
+				//				console.log(val);
 			},
 			addfill(index) {
-				ofill.show=true;
-				ofill.edittextinput=true;
-				let ix = this.comitem.qlist.length + 1;
+				ofill.show = true;
+				ofill.edittextinput = true;
+				//let ix = this.comitem.qlist.length + 1;
+				let ix = this.comitem.qlist.length == 0 ? 1 : Math.max.apply(Math, this.comitem.qlist.map(function(item) {
+					return item.serial_number
+				})) + 1;
 				let ifill = JSON.parse(JSON.stringify(ofill));
-				ifill.ppid = this.$route.query.questionId?this.$route.query.questionId:this.$route.query.templateId;;
-				ifill.edittextinput=true;
+				ifill.ppid = this.$route.query.questionId ? this.$route.query.questionId : this.$route.query.templateId;;
+				ifill.edittextinput = true;
 				ifill.pid = this.comitem.id;
 				ifill.serial_number = ix;
 				ifill.qtitle = ix;
 				this.comitem.qlist.push(ifill);
 			},
 			addsingle(index) {
-				osingle.show=true;
-				osingle.edittextinput=true;
-				let ix = this.comitem.qlist.length + 1;
-				let isingle = JSON.parse(JSON.stringify(osingle));				
-				isingle.ppid = this.$route.query.questionId?this.$route.query.questionId:this.$route.query.templateId;;
-			
+				osingle.show = true;
+				osingle.edittextinput = true;
+				//				let ix = this.comitem.qlist.length + 1;
+				let ix = this.comitem.qlist.length == 0 ? 1 : Math.max.apply(Math, this.comitem.qlist.map(function(item) {
+					return item.serial_number
+				})) + 1;
+				let isingle = JSON.parse(JSON.stringify(osingle));
+				isingle.ppid = this.$route.query.questionId ? this.$route.query.questionId : this.$route.query.templateId;;
+
 				isingle.pid = this.comitem.id;
 				isingle.serial_number = ix;
 				isingle.qtitle = ix;
-				isingle.edittextinput=true;
+				isingle.edittextinput = true;
 				this.comitem.qlist.push(isingle);
 			},
 			addmultiple(index) {
-				omultiple.show=true;
-				omultiple.edittextinput=true;
-				let ix = this.comitem.qlist.length + 1;
+				omultiple.show = true;
+				omultiple.edittextinput = true;
+				let ix = this.comitem.qlist.length == 0 ? 1 : Math.max.apply(Math, this.comitem.qlist.map(function(item) {
+					return item.serial_number
+				})) + 1;
 				let imultiple = JSON.parse(JSON.stringify(omultiple));
-				imultiple.ppid = this.$route.query.questionId?this.$route.query.questionId:this.$route.query.templateId;;
+				imultiple.ppid = this.$route.query.questionId ? this.$route.query.questionId : this.$route.query.templateId;;
 				imultiple.pid = this.comitem.id;
 				imultiple.serial_number = ix;
 				imultiple.qtitle = ix;
-				imultiple.edittextinput=true;
+				imultiple.edittextinput = true;
 				this.comitem.qlist.push(imultiple);
 			},
 			addmultistage(index) {
-				omultistage.show=true;
-				omultistage.edittextinput=true;
-				let ix = this.comitem.qlist.length + 1;
+				omultistage.show = true;
+				omultistage.edittextinput = true;
+				let ix = this.comitem.qlist.length == 0 ? 1 : Math.max.apply(Math, this.comitem.qlist.map(function(item) {
+					return item.serial_number
+				})) + 1;
 				let imultistage = JSON.parse(JSON.stringify(omultistage));
-				imultistage.ppid = this.$route.query.questionId?this.$route.query.questionId:this.$route.query.templateId;
+				imultistage.ppid = this.$route.query.questionId ? this.$route.query.questionId : this.$route.query.templateId;
 				imultistage.pid = this.comitem.id;
 				imultistage.serial_number = ix;
 				imultistage.qtitle = ix;
-				imultistage.edittextinput=true;
+				imultistage.edittextinput = true;
 				this.comitem.qlist.push(imultistage);
 			},
 			adduploadimg(index) {
-				ouploadimg.show=true;
-				ouploadimg.edittextinput=true;
-				let ix = this.comitem.qlist.length + 1;
+				ouploadimg.show = true;
+				ouploadimg.edittextinput = true;
+				let ix = this.comitem.qlist.length == 0 ? 1 : Math.max.apply(Math, this.comitem.qlist.map(function(item) {
+					return item.serial_number
+				})) + 1;
 				let iuploadimg = JSON.parse(JSON.stringify(ouploadimg));
-				iuploadimg.ppid = this.$route.query.questionId?this.$route.query.questionId:this.$route.query.templateId;;
+				iuploadimg.ppid = this.$route.query.questionId ? this.$route.query.questionId : this.$route.query.templateId;;
 				iuploadimg.pid = this.comitem.id;
 				iuploadimg.serial_number = ix;
 				iuploadimg.qtitle = ix;
-				iuploadimg.edittextinput=true;
+				iuploadimg.edittextinput = true;
 				this.comitem.qlist.push(iuploadimg);
 			},
 			addloCation(index) {
-				oloCation.show=true;
-				oloCation.edittextinput=true;
-				let ix = this.comitem.qlist.length + 1;
+				oloCation.show = true;
+				oloCation.edittextinput = true;
+				let ix = this.comitem.qlist.length == 0 ? 1 : Math.max.apply(Math, this.comitem.qlist.map(function(item) {
+					return item.serial_number
+				})) + 1;
 				let iloCation = JSON.parse(JSON.stringify(oloCation));
-				iloCation.ppid = this.$route.query.questionId?this.$route.query.questionId:this.$route.query.templateId;;
+				iloCation.ppid = this.$route.query.questionId ? this.$route.query.questionId : this.$route.query.templateId;;
 				iloCation.pid = this.comitem.id;
 				iloCation.serial_number = ix;
 				iloCation.qtitle = ix;
-				iloCation.edittextinput=true;
+				iloCation.edittextinput = true;
 				this.comitem.qlist.push(iloCation);
 			},
 			addfractions(index) {
-				ofractions.show=true;
-				ofractions.edittextinput=true;
-				let ix = this.comitem.qlist.length + 1;
+				ofractions.show = true;
+				ofractions.edittextinput = true;
+				let ix = this.comitem.qlist.length == 0 ? 1 : Math.max.apply(Math, this.comitem.qlist.map(function(item) {
+					return item.serial_number
+				})) + 1;
 				let ifractions = JSON.parse(JSON.stringify(ofractions));
-				ifractions.ppid =this.$route.query.questionId;
+				ifractions.ppid = this.$route.query.questionId;
 				ifractions.pid = this.comitem.id;
 				ifractions.serial_number = ix;
 				ifractions.qtitle = ix;
-				ifractions.edittextinput=true;
+				ifractions.edittextinput = true;
 				this.comitem.qlist.push(ifractions);
 			},
-				addsignature(index) {
-				osignature.show=true;
-				osignature.edittextinput=true;
-				let ix = this.comitem.qlist.length + 1;
+			addsignature(index) {
+				osignature.show = true;
+				osignature.edittextinput = true;
+				let ix = this.comitem.qlist.length == 0 ? 1 : Math.max.apply(Math, this.comitem.qlist.map(function(item) {
+					return item.serial_number
+				})) + 1;
 				let isignature = JSON.parse(JSON.stringify(osignature));
-				isignature.ppid =this.$route.query.questionId;
+				isignature.ppid = this.$route.query.questionId;
 				isignature.pid = this.comitem.id;
 				isignature.serial_number = ix;
 				isignature.qtitle = ix;
-				isignature.edittextinput=true;
+				isignature.edittextinput = true;
 				this.comitem.qlist.push(isignature);
 			},
 			addItem(index, type) {
-					if(this.status != "1") {
+				if(this.status != "1") {
 					this.$message({
 						type: 'error',
 						message: '当前问卷状态无法进行此操作'
@@ -270,7 +288,7 @@
 							this.addfractions(index);
 						}
 						break;
-							case "signature":
+					case "signature":
 						{
 							this.addsignature(index);
 						}
@@ -286,7 +304,7 @@
 				this.activeNames.indexOf(index) == -1 && this.activeNames.push(index)
 			},
 			addDomain(index, qindex) {
-					if(this.status != "1") {
+				if(this.status != "1") {
 					this.$message({
 						type: 'error',
 						message: '当前问卷状态无法进行此操作'
@@ -301,22 +319,22 @@
 					default_choose: 0,
 					related_sub: '',
 					skip_sub: '',
-					score:0				
+					score: 0
 				}
 				this.comitem.qlist[qindex].option.push(options);
 			},
 			changeDomainRadio(index, qindex, v) {
-//				debugger
-					if(v==this.comitem.qlist[qindex].default_choose){
-					this.comitem.qlist[qindex].default_choose="";
-				}else{
+				//				debugger
+				if(v == this.comitem.qlist[qindex].default_choose) {
+					this.comitem.qlist[qindex].default_choose = "";
+				} else {
 					this.comitem.qlist[qindex].default_choose = v;
 				}
 				let domainlist = this.comitem.qlist[qindex].option;
 				for(let i in domainlist) {
 					if(domainlist[i].option_name == v) {
 						domainlist[i].default_choose = 1;
-					}else{
+					} else {
 						domainlist[i].default_choose = 0;
 					}
 				}
@@ -328,15 +346,14 @@
 					type: 'warning'
 				}).then(() => {
 					let dmodel = this.comitem.qlist[qindex];
-					
-					
+
 					if(dmodel.id != 0) {
-						var deleteitem=""
-						if(this.$route.query.templateId){
-						deleteitem="/Home/Tpl/deleteItem"
-					}else{
-						deleteitem="/Home/Subject/deleteItem"
-					}
+						var deleteitem = ""
+						if(this.$route.query.templateId) {
+							deleteitem = "/Home/Tpl/deleteItem"
+						} else {
+							deleteitem = "/Home/Subject/deleteItem"
+						}
 						this.$post(deleteitem, {
 							id: dmodel.id
 						}).then((res) => {});
@@ -346,7 +363,7 @@
 				}).catch(() => {});
 			},
 			deletecomp(item) {
-					if(this.status != "1") {
+				if(this.status != "1") {
 					this.$message({
 						type: 'error',
 						message: '当前问卷状态无法进行此操作'
@@ -354,22 +371,22 @@
 					return;
 				}
 				this.$emit("deleCom", this.index, this.qindex);
-				if(this.$route.query.templateId){
-							this.$post("/Home/Tpl/deleteMod", {
+				if(this.$route.query.templateId) {
+					this.$post("/Home/Tpl/deleteMod", {
 						"id": this.item.id
 					})
-				}else{
-						this.$post("/Home/Subject/deleteMod", {
+				} else {
+					this.$post("/Home/Subject/deleteMod", {
 						"id": this.item.id
 					})
 				}
-				
+
 			},
 			changeposition(item) {
 				item.changeButton = !item.changeButton;
 			},
 			removeDomainitem(index, qindex, dindex) {
-					if(this.status != "1") {
+				if(this.status != "1") {
 					this.$message({
 						type: 'error',
 						message: '当前问卷状态无法进行此操作'
@@ -379,18 +396,18 @@
 				let dlist = this.comitem.qlist[qindex].domains.deleteIndex(dindex);
 				this.comitem.qlist[qindex].domains = dlist;
 			},
-			itemSortdownc(item,index, qindex, type) {
-					if(this.status != "1") {
+			itemSortdownc(item, index, qindex, type) {
+				if(this.status != "1") {
 					this.$message({
 						type: 'error',
 						message: '当前问卷状态无法进行此操作'
 					});
 					return;
 				}
-				this.$emit("itemSortdown", item,index, qindex, type);
+				this.$emit("itemSortdown", item, index, qindex, type);
 			},
-			itemSortdown: function(item,index, qindex, type) {
-					if(this.status != "1") {
+			itemSortdown: function(item, index, qindex, type) {
+				if(this.status != "1") {
 					this.$message({
 						type: 'error',
 						message: '当前问卷状态无法进行此操作'
@@ -402,7 +419,7 @@
 				var serial_number = listItem.serial_number;
 				listItem.changeButton = false;
 				if(type == 'up') {
-					
+
 					let uitem = this.comitem.qlist[qindex - 1];
 					if(uitem != undefined && uitem != null) {
 						let usort = uitem.serial_number;
@@ -462,13 +479,13 @@
 					return a.serial_number - b.serial_number;
 				});
 				this.comitem.qlist = sortList;
-					item.show=false;
-				item.edittextinput=false;
+				item.show = false;
+				item.edittextinput = false;
 			},
 			submitForm(item, index) {
 				let subModel = JSON.parse(JSON.stringify(item));
 				item.show = false;
-			item.edittextinput=false;
+				item.edittextinput = false;
 				delete subModel.changeButton;
 				delete subModel.edittextinput;
 				delete subModel.show;
@@ -500,21 +517,19 @@
 						}
 						break;
 				}
-				if(this.$route.query.templateId){
-						this.$post("/Home/Tpl/createNewItem", subModel).then((res) => {
-					
-					item.id = res.id;
-				});
-				}else{
+				if(this.$route.query.templateId) {
+					this.$post("/Home/Tpl/createNewItem", subModel).then((res) => {
+						item.id = res.id;
+					});
+				} else {
 					this.$post("/Home/Subject/createNewItem", subModel).then((res) => {
-					
-					item.id = res.id;
-				});
+						item.id = res.id;
+					});
 				}
-				
+
 			},
 			domainSortdown(index, qindex, dindex, type) {
-					if(this.status != "1") {
+				if(this.status != "1") {
 					this.$message({
 						type: 'error',
 						message: '当前问卷状态无法进行此操作'
@@ -546,7 +561,7 @@
 			}
 		},
 		mounted: function() {
-//			console.log(this.activeNames);
+			//			console.log(this.activeNames);
 		},
 		components: {
 			headTop,
@@ -601,9 +616,9 @@
 		width: 100%;
 		margin-top: 5px;
 		border: none;
-			overflow: hidden;
-text-overflow:ellipsis;
-white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 	
 	.topic .el-form-item__label {
@@ -618,12 +633,15 @@ white-space: nowrap;
     margin-left: 50px;
         margin-top: 5px;*/
 	}
-	.topic .compre{
-		padding-top:10px;
+	
+	.topic .compre {
+		padding-top: 10px;
 	}
-	.topic .compre>.el-form>.el-form-item{
-		margin-bottom:0;
+	
+	.topic .compre>.el-form>.el-form-item {
+		margin-bottom: 0;
 	}
+	
 	.topic .compre>.el-form>.edit_item>.el-form-item__label {
 		width: 0;
 		text-align: right;
@@ -889,12 +907,12 @@ white-space: nowrap;
 	.compre .compretopright {
 		width: 15%;
 		display: inline-block;
-		span{
+		span {
 			width: 48%;
 			display: inline-block;
 			cursor: pointer;
-			&:hover{
-				color:#005ad4;
+			&:hover {
+				color: #005ad4;
 			}
 		}
 	}
