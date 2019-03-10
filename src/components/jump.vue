@@ -67,7 +67,6 @@
 		created() {
 			var domains = this.domains;
 			var domainqlist = this.qlist;
-			console.log("domainqlist=="+domainqlist);
 			for(var j = 0; j < domains.length; j++) {
 				if(domains[j].skip_sub == "0" || domains[j].skip_sub == "请选择" || domains[j].skip_sub == "") {
 					domains[j].skip_sub = "请选择";

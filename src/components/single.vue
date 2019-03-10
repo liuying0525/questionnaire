@@ -69,7 +69,7 @@
 					</el-col>
 				</el-row>
 				<jump :jumpshow='jumpshow' :domains="item.option" :item="item" @canclejump='canclejump' :qlist="qlist" @surejump="surejump"></jump>
-				<relevance :relevanceshow='relevanceshow' :domains="item.option" :item="item" @canclerelevance='canclerelevance' :qlist="qlist" @surerelevance="surerelevance"></relevance>
+				<relevance :relevanceshow='relevanceshow' :item="item" @canclerelevance='canclerelevance' :list="list" :qlist="qlist" :index="index" :qindex="qindex" @surerelevance="surerelevance"></relevance>
 			</el-form-item>
 		</el-form>
 	</div>
@@ -102,6 +102,10 @@
 				default: 0
 			},
 			qlist: {
+				type: Array,
+				default: () => []
+			},
+			list: {
 				type: Array,
 				default: () => []
 			},
@@ -166,7 +170,7 @@
 				}
 				this.$emit("removeDomain", this.index, this.qindex);
 			},
-			itemSortdown: function(item,index, qindex, type) {
+			itemSortdown: function(item, index, qindex, type) {
 				if(this.status != "1" && this.type != '0' && !this.$route.query.templateId) {
 
 					this.$message({
@@ -175,9 +179,9 @@
 					});
 					return;
 				}
-				this.$emit("itemSortdown", item,index, qindex, type);
-				item.show=false;
-				item.edittextinput=false;
+				this.$emit("itemSortdown", item, index, qindex, type);
+				item.show = false;
+				item.edittextinput = false;
 			},
 			domainSortdown: function(index, qindex, dindex, type) {
 				if(this.status != "1" && this.type != '0' && !this.$route.query.templateId) {
@@ -213,7 +217,6 @@
 			},
 			removeDomainitem(index, qindex, dindex) {
 				if(this.status != "1" && this.type != '0' && !this.$route.query.templateId) {
-
 					this.$message({
 						type: 'error',
 						message: '当前问卷状态无法进行此操作'

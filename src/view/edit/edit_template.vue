@@ -452,7 +452,6 @@
 			submitForm(item, index) {
 				item.show = false;
 				item.edittextinput = false;
-				debugger
 				let subModel = JSON.parse(JSON.stringify(item));
 				delete subModel.changeButton;
 				delete subModel.edittextinput;

@@ -31,7 +31,7 @@
 
 				<div class="topic" v-for="(qitem,qindex) in comitem.qlist" :key="qindex">
 					<template v-if="qitem.sub_cat=='fill'">
-						<fill :item="qitem" @removeDomain="removeDomain" :taccord="taccord" :type="type" :index="index" :qindex="qindex" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></fill>
+						<fill :item="qitem" @removeDomain="removeDomain" :taccord="taccord" :list="list" :type="type" :index="index" :qindex="qindex" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></fill>
 					</template>
 					<template v-if="qitem.sub_cat=='single'">
 						<single :item="qitem" @changeDomainRadio="changeDomainRadio" :type="type" :qlist="comitem.qlist" :taccord="taccord" @addDomain="addDomain" :index="index" :qindex="qindex" @removeDomainitem="removeDomainitem" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></single>
@@ -73,6 +73,7 @@
 	import fractions from 'components/fractions.vue';
 	import signature from 'components/signature.vue';
 	import { Message } from "element-ui";
+
 	import { ofill, osingle, omultiple, omultistage, ouploadimg, oloCation, ofractions, osignature } from "./itemType";
 	export default {
 		data() {
@@ -105,6 +106,10 @@
 			qindex: {
 				type: Number,
 				default: 0
+			},
+			list: {
+				type: Array,
+				default: () => []
 			},
 			comitem: {
 				type: Object,

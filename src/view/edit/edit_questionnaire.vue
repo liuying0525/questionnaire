@@ -42,10 +42,10 @@
 							<div class="topic" v-for="(qitem,qindex) in item.qlist" :key="qindex">
 
 								<template v-if="qitem.sub_cat=='fill'">
-									<fill :item="qitem" @removeDomain="removeDomain" :taccord="taccord" :index="index" :qindex="qindex" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></fill>
+									<fill :item="qitem" :list="list" :relatetype="relatetype" :qlist="item.qlist" @removeDomain="removeDomain" :taccord="taccord" :index="index" :qindex="qindex" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></fill>
 								</template>
 								<template v-if="qitem.sub_cat=='single'">
-									<single :item="qitem" :qlist="item.qlist" :taccord="taccord" @changeDomainRadio="changeDomainRadio" @addDomain="addDomain" :index="index" :qindex="qindex" @removeDomainitem="removeDomainitem" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></single>
+									<single :item="qitem" :list="list" :qlist="item.qlist" :taccord="taccord" @changeDomainRadio="changeDomainRadio" @addDomain="addDomain" :index="index" :qindex="qindex" @removeDomainitem="removeDomainitem" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></single>
 								</template>
 								<template v-if="qitem.sub_cat=='multiple'">
 									<multiple :item="qitem" @addDomain="addDomain" :taccord="taccord" :index="index" :qindex="qindex" @removeDomainitem="removeDomainitem" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></multiple>
@@ -111,7 +111,8 @@
 				parentModle: 0,
 				serial_number: 0,
 				status: "",
-				SubInfo: {}
+				SubInfo: {},
+				relatetype: "moloption" //mol 模块关联  moloption 模块题目关联 molcom综合题关联
 			}
 		},
 		methods: {
@@ -350,7 +351,6 @@
 
 			},
 			changeDomainRadio(index, qindex, v) {
-				//			debugger
 				if(v == this.list[index].qlist[qindex].default_choose) {
 					this.list[index].qlist[qindex].default_choose = "";
 				} else {
@@ -391,6 +391,7 @@
 					});
 					return;
 				}
+				debugger
 				let dlist = this.list[index].qlist[qindex].option.deleteIndex(dindex);
 				this.list[index].qlist[qindex].option = dlist;
 			},
@@ -576,6 +577,7 @@
 				console.log(subModel);
 				this.$post("/Home/Subject/createNewItem", subModel).then((res) => {
 					item.id = res.id;
+
 				});
 			},
 			finishSub() {
@@ -590,54 +592,13 @@
 						description: this.contentText,
 						mod: []
 					}
-					//					for(var i = 0; i < this.list.length; i++) {
-					//						let modoption = {};
-					//						modoption.id = this.list[i].id;
-					//						debugger
-					//						modoption.mod_name = this.list[i].mod_name;
-					//						modoption.serial_number = this.list[i].serial_number;
-					//						modoption.item = [];
-					//						for(var j = 0; j < this.list[i].qlist.length; j++) {
-					//
-					//							let jitem = {
-					//								id: this.list[i].qlist[j].id,
-					//								order: j + 1
-					//							}
-					//							modoption.item.push(jitem);
-					//							if(this.list[i].qlist[j].sub_cat == "comprehensive") {
-					//								//modoption.serial_number=j + 1;
-					//								let bmodoption = {};
-					//								//.id = this.list[i].qlist[j].id;
-					//								bmodoption.mod_name = this.list[i].qlist[j].title;
-					//								//bmodoption.serial_number = j + 1;
-					//								bmodoption.serial_number = this.list[i].qlist[j].serial_number;
-					//								bmodoption.item = [];
-					//								for(var b = 0; b < this.list[i].qlist[j].qlist.length; b++) {
-					//									let bitem = {
-					//										id: this.list[i].qlist[j].qlist[b].id,
-					//										order: b + 1
-					//									}
-					//									bmodoption.item.push(bitem);
-					//								}
-					//								SubInfo.mod.push(bmodoption);
-					//							}
-					//
-					//						}
-					//
-					//						SubInfo.mod.push(modoption);
-					//						this.SubInfo = SubInfo;
-					//
-					//					}
-
 					for(var i = 0; i < this.list.length; i++) {
 						let modoption = {};
 						modoption.id = this.list[i].id;
 						modoption.mod_name = this.list[i].mod_name;
 						modoption.serial_number = this.list[i].serial_number;
 						modoption.item = [];
-
 						for(var j = 0; j < this.list[i].qlist.length; j++) {
-							debugger
 							if(this.list[i].qlist[j].sub_cat == "comprehensive") {
 								let bmodoption = {};
 								bmodoption.id = this.list[i].qlist[j].id;
@@ -656,12 +617,12 @@
 								jitem.id = this.list[i].qlist[j].id;
 								jitem.order = this.list[i].qlist[j].serial_number;
 								modoption.item.push(jitem);
-								if(SubInfo.mod.filter(o=>o.id==modoption.id).len)
-								SubInfo.mod.push(modoption);
+								if(SubInfo.mod.filter(o => o.id == modoption.id).length == 0) {
+									SubInfo.mod.push(modoption);
+								}
 							}
 						}
 					}
-					console.log(SubInfo);
 					this.$post("/Home/Subject/finishSub", SubInfo).then((res) => {
 						this.$alert('操作成功！', '提示', {
 							confirmButtonText: '确定',
