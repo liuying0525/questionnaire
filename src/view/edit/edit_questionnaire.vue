@@ -20,6 +20,10 @@
 
 				<el-collapse v-model="activeNames" @change="handleChange">
 					<div class="edit_item" v-for="(item,index) in list" :key="index">
+						<template v-if="index!=0">
+							<el-button @click="relevance(item,index)" type="primary" plain class="molrelevance">关联逻辑</el-button>
+							<relevance :relevanceshow='relevanceshow' :qlist="qlist" :relatetype="'mol'" :list="list" :item="item" @canclerelevance='canclerelevance' :index="index" :qindex="qindex" @surerelevance="surerelevance"></relevance>	
+						</template>
 						<el-dropdown placement="bottom">
 							<span class="el-dropdown-link">
 						        	<i class="new"></i> 新建题目
@@ -45,29 +49,29 @@
 									<fill :item="qitem" :list="list" :relatetype="relatetype" :qlist="item.qlist" @removeDomain="removeDomain" :taccord="taccord" :index="index" :qindex="qindex" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></fill>
 								</template>
 								<template v-if="qitem.sub_cat=='single'">
-									<single :item="qitem" :list="list" :qlist="item.qlist" :taccord="taccord" @changeDomainRadio="changeDomainRadio" @addDomain="addDomain" :index="index" :qindex="qindex" @removeDomainitem="removeDomainitem" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></single>
+									<single :item="qitem" :list="list" :relatetype="relatetype" :qlist="item.qlist" :taccord="taccord" @changeDomainRadio="changeDomainRadio" @addDomain="addDomain" :index="index" :qindex="qindex" @removeDomainitem="removeDomainitem" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></single>
 								</template>
 								<template v-if="qitem.sub_cat=='multiple'">
-									<multiple :item="qitem" @addDomain="addDomain" :taccord="taccord" :index="index" :qindex="qindex" @removeDomainitem="removeDomainitem" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></multiple>
+									<multiple :item="qitem" :list="list" @addDomain="addDomain" :relatetype="relatetype" :qlist="item.qlist"  :taccord="taccord" :index="index" :qindex="qindex" @removeDomainitem="removeDomainitem" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></multiple>
 								</template>
 								<template v-if="qitem.sub_cat=='multistage'">
-									<multistage :item="qitem" :taccord="taccord" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></multistage>
+									<multistage :item="qitem" :list="list" :taccord="taccord" :relatetype="relatetype" :qlist="item.qlist"  :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></multistage>
 								</template>
 								<template v-if="qitem.sub_cat=='loCation'">
-									<loCation :item="qitem" :taccord="taccord" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></loCation>
+									<loCation :item="qitem" :list="list" :taccord="taccord" :relatetype="relatetype" :qlist="item.qlist"  :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></loCation>
 								</template>
 								<template v-if="qitem.sub_cat=='uploadimg'">
-									<uploadimg :item="qitem" :taccord="taccord" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></uploadimg>
+									<uploadimg :item="qitem" :list="list" :taccord="taccord"  :relatetype="relatetype" :qlist="item.qlist"  :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></uploadimg>
 								</template>
 								<template v-if="qitem.sub_cat=='fractions'">
-									<fractions :item="qitem" :taccord="taccord" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></fractions>
+									<fractions :item="qitem" :list="list" :taccord="taccord" :relatetype="relatetype" :qlist="item.qlist"  :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></fractions>
 								</template>
 								<template v-if="qitem.sub_cat=='signature'">
-									<signature :item="qitem" :taccord="taccord" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></signature>
+									<signature :item="qitem" :list="list" :taccord="taccord"  :relatetype="relatetype" :qlist="item.qlist" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></signature>
 								</template>
 
 								<template v-if="qitem.sub_cat=='comprehensive'">
-									<comprehensive :item="qitem" @deleCom="delem" :comtaccord="comtaccord" :index="index" :comitem="qitem" :status="status" :qindex="qindex" @itemSortdown="itemSortdown" @changeDomainRadio="changeDomainRadio" :qlist="item.qlist"></comprehensive>
+									<comprehensive :list="list" :relatetype="'molcom'" :item="qitem" :qlist="item.qlist" @deleCom="delem"  :comtaccord="comtaccord" :index="index" :comitem="qitem" :status="status" :qindex="qindex" @itemSortdown="itemSortdown" @changeDomainRadio="changeDomainRadio"></comprehensive>
 								</template>
 							</div>
 						</el-collapse-item>
@@ -97,7 +101,7 @@
 	import { Message } from "element-ui";
 	import comprehensive from 'components/comprehensive.vue';
 	import { ofill, osingle, omultiple, omultistage, ouploadimg, oloCation, ofractions, ocomprehensive, osignature } from "components/itemType";
-
+	import relevance from 'components/relevance.vue';
 	export default {
 		data() {
 			return {
@@ -105,6 +109,8 @@
 				questiontitle: '',
 				activeNames: [],
 				list: [],
+				qlist:[],
+				qindex:0,
 				taccord: "、",
 				comtaccord: "、",
 				subId: "",
@@ -112,7 +118,8 @@
 				serial_number: 0,
 				status: "",
 				SubInfo: {},
-				relatetype: "moloption" //mol 模块关联  moloption 模块题目关联 molcom综合题关联
+				relatetype: "moloption", //mol 模块关联  moloption 模块题目关联 molcom综合题关联
+				relevanceshow: false
 			}
 		},
 		methods: {
@@ -159,6 +166,24 @@
 				imultiple.qtitle = ix;
 				this.list[index].qlist.push(imultiple);
 
+			},
+			relevance(item,index) {
+				if(this.status != "1" && this.type != '0' && !this.$route.query.templateId) {
+
+					this.$message({
+						type: 'error',
+						message: '当前问卷状态无法进行此操作'
+					});
+					return;
+				}
+				this.relevanceshow = true;
+								
+			},
+			surerelevance() {
+				this.relevanceshow = false;
+			},
+			canclerelevance(item) {
+				this.relevanceshow = false;
 			},
 			addmultistage(index) {
 				omultistage.show = true;
@@ -897,7 +922,8 @@
 			uploadimg,
 			fractions,
 			comprehensive,
-			signature
+			signature,
+			relevance
 		}
 	}
 </script>
@@ -1135,7 +1161,7 @@
 		top: 0;
 		left: 50px;
 		z-index: 3;
-		width: 50%;
+		width: 45%;
 	}
 	
 	.quetiondelete {
@@ -1173,6 +1199,18 @@
 			padding: 10px 20px;
 			width: 1000px;
 			margin: 0 auto;
+		}
+	}
+	.molrelevance{
+		background:none;
+		border:none;
+		padding:0;
+		    position: absolute;
+    top: 20px;
+    right: 346px;
+		&:hover{
+			background:none;
+			color:#005ad4;
 		}
 	}
 </style>

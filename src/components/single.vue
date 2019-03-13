@@ -60,6 +60,9 @@
 									<el-button @click="addDomain" type="primary" plain>+新增选项</el-button>
 									<el-button @click="relevance" type="primary" plain>+关联逻辑</el-button>
 									<el-button @click="jump" type="primary" plain>+跳转逻辑</el-button>
+									<jump :jumpshow='jumpshow' :domains="item.option" :item="item" @canclejump='canclejump' :qlist="qlist" @surejump="surejump"></jump>
+									<relevance :relevanceshow='relevanceshow' :qlist="qlist" :relatetype="relatetype" :list="list" :item="item" @canclerelevance='canclerelevance' :index="index" :qindex="qindex" @surerelevance="surerelevance"></relevance>
+		
 								</div>
 
 							</div>
@@ -68,8 +71,6 @@
 						</el-form-item>
 					</el-col>
 				</el-row>
-				<jump :jumpshow='jumpshow' :domains="item.option" :item="item" @canclejump='canclejump' :qlist="qlist" @surejump="surejump"></jump>
-				<relevance :relevanceshow='relevanceshow' :item="item" @canclerelevance='canclerelevance' :list="list" :qlist="qlist" :index="index" :qindex="qindex" @surerelevance="surerelevance"></relevance>
 			</el-form-item>
 		</el-form>
 	</div>
@@ -110,6 +111,10 @@
 				default: () => []
 			},
 			taccord: {
+				type: String,
+				default: ""
+			},
+			relatetype: {
 				type: String,
 				default: ""
 			},

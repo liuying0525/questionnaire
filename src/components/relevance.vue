@@ -19,7 +19,7 @@
 					<span>题目选项：</span>
 					<span>					
 						<el-checkbox-group v-model="sOption" @change="ckchange">
-						  <el-checkbox v-for="(checkoption,index) in coptions" :disabled="checkoption.skip_sub!='请选择'&&checkoption.skip_sub!=''" :label="checkoption.id" :key="index" class="multiplecheck" :value="checkoption.id">{{checkoption.option_name}}</el-checkbox>
+						  <el-checkbox v-for="(checkoption,index) in coptions" :disabled="checkoption.skip_sub!='请选择'&&checkoption.skip_sub!=''&&checkoption.skip_sub!='0'" :label="checkoption.id" :key="index" class="multiplecheck" :value="checkoption.id">{{checkoption.option_name}}</el-checkbox>
 						</el-checkbox-group>
 					</span>
 				</li>
@@ -135,14 +135,14 @@
 				this.saveChangeMethod(sItem, sOption, "add");
 			},
 			itemChange(obj) {
-				this.sOption = [];
+//				this.sOption = [];
 				this.coptions = this.slist.filter(o => o.id == this.sItem)[0].coptions;
 			},
 			getMolRelate() {
 				for(var loption = 0; loption < this.index; loption++) {
 					var mid = this.list[loption].id + "";
 					var mname = jsNumDX(this.list[loption].serial_number) + "、" + this.list[loption].mod_name;
-					for(var i = 0; i < this.list[loption].qlist.length; i++) {
+					for(var i = 0; i < this.list[loption].qlist.length; i++) {				
 						if(this.list[loption].qlist[i].sub_cat == "single") {
 							var itemid = this.list[loption].qlist[i].id + "";
 							var itemname = this.list[loption].qlist[i].serial_number + ")、" + this.list[loption].qlist[i].title;
@@ -168,13 +168,16 @@
 						}
 					}
 				}
+				
 			},
 			getSelfRelate() {
-				var selfList = this.list[this.index].qlist.filter(o => o.serial_number < this.item.serial_number);
+				var selfList = this.list[this.index].qlist.filter(o => o.serial_number < this.item.serial_number);				
 				for(var loption = 0; loption < selfList.length; loption++) {
 					var mid = this.list[this.index].id + "";
 					var mname = jsNumDX(this.list[this.index].serial_number) + "、" + this.list[this.index].mod_name;
+					
 					if(selfList[loption].sub_cat == "single") {
+						
 						var itemid = selfList[loption].id + "";
 						var itemname = selfList[loption].serial_number + ")、" + selfList[loption].title;
 						var smodel = {};
@@ -198,9 +201,52 @@
 						}
 					}
 				}
+				
+			},
+			getComRelate(){
+				if(this.item.sub_cat!='comprehensive'){
+					var comList=this.list[this.index].qlist.filter(o => o.sub_cat == "comprehensive");
+				var comrelateList=comList.filter(o => o.id == this.item.pid);
+				if(comrelateList.length>0){
+						var SmallselfList = comList.filter(o => o.id == this.item.pid)[0].serial_number;
+						var selfList=comList.filter(o => o.serial_number <SmallselfList);}
+				}
+				console.log(selfList);
+				
+//				for(var loption = 0; loption < selfList.length; loption++) {
+//					var mid = this.list[this.index].id + "";
+//					var mname = jsNumDX(this.list[this.index].serial_number) + "、" + this.list[this.index].mod_name;
+//					
+//					if(selfList[loption].sub_cat == "single") {
+//						
+//						var itemid = selfList[loption].id + "";
+//						var itemname = selfList[loption].serial_number + ")、" + selfList[loption].title;
+//						var smodel = {};
+//						smodel.name = mname + "_" + itemname + "";
+//						smodel.id = mid + "_" + itemid + "";
+//						smodel.coptions = selfList[loption].option;
+//						this.slist.push(smodel);
+//					}
+//					if(selfList[loption].sub_cat == "comprehensive") {
+//						var comitemlist = selfList[loption].qlist.filter(o => o.sub_cat == "single" && o.serial_number<this.item.serial_number);
+//						for(var k = 0; k < comitemlist.length; k++) {
+//							var itemid = selfList[loption].id + "";
+//							var itemname = selfList[loption].serial_number + ")、" + selfList[loption].title;
+//							var comid = comitemlist[k].id + "";
+//							var comname = comitemlist[k].serial_number + "、" + comitemlist[k].title;
+//							var smodel = {};
+//							smodel.name = mname + "_" + itemname + "_" + comname;
+//							smodel.id = mid + "_" + itemid + "_" + comid;
+//							smodel.coptions = comitemlist[k].option;
+//							this.slist.push(smodel);
+//						}
+//					}
+//				}
+				
+				
+				
 			},
 			ckchange() {
-				debugger
 				if(this.sOption.indexOf(0) != -1) {
 					var saveModel = {};
 					var ares = this.sItem.split('_');
@@ -225,7 +271,7 @@
 							});
 							this.$post("/Home/Subject/createNewItem", saveModel).then((res) => {
 								var resModel = res.option;
-								return;
+//								return;
 								for(var k = 0; k < resModel.length; k++) {
 									var nsaveModel = saveMidfy.filter(o => o.order_num == resModel[k].order_num)[0];
 									newArraryDigtal.push(nsaveModel.id + "_" + resModel[k].id);
@@ -263,7 +309,9 @@
 					this.getMolRelate();
 				}
 				if(this.relatetype == "molcom") {
-
+					this.getMolRelate();
+					this.getComRelate();
+//this.getSelfRelate();
 				}
 			}
 		},
@@ -276,7 +324,7 @@
 				this.sItem = this.slist[0].id;
 				this.coptions = this.slist[0].coptions;
 			}
-			debugger
+//			debugger
 			var qsOption = [];
 			var qsItem = "";
 			var itemid = this.item.id + "";

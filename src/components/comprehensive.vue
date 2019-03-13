@@ -4,6 +4,8 @@
 			<el-form-item class="edit_item" :label="(qindex+1)+comtaccord">
 				<el-input v-model="comitem.title" placeholder="综合题名称" class="titlename"></el-input>
 				<div class="compretopright">
+					<el-button @click="relevance" type="primary" plain class="comrelevance">关联逻辑</el-button>
+					<relevance :relevanceshow='relevanceshow' :qlist="qlist" :relatetype="relatetype" :list="list" :item="item" @canclerelevance='canclerelevance' :index="index" :qindex="qindex" @surerelevance="surerelevance"></relevance>					
 					<span @click.prevent="deletecomp" class="deletecomp">删除</span>
 					<span @click.prevent="changeposition(comitem)" class="oposition">位置变更</span>
 					<div class="changeposition" v-show="comitem.changeButton">
@@ -31,28 +33,28 @@
 
 				<div class="topic" v-for="(qitem,qindex) in comitem.qlist" :key="qindex">
 					<template v-if="qitem.sub_cat=='fill'">
-						<fill :item="qitem" @removeDomain="removeDomain" :taccord="taccord" :list="list" :type="type" :index="index" :qindex="qindex" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></fill>
+						<fill :item="qitem" @removeDomain="removeDomain" :taccord="taccord" :list="list" :qlist="comitem.qlist" :type="type" :index="index" :qindex="qindex" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status" :relatetype="relatetype"></fill>
 					</template>
 					<template v-if="qitem.sub_cat=='single'">
-						<single :item="qitem" @changeDomainRadio="changeDomainRadio" :type="type" :qlist="comitem.qlist" :taccord="taccord" @addDomain="addDomain" :index="index" :qindex="qindex" @removeDomainitem="removeDomainitem" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></single>
+						<single :item="qitem" @changeDomainRadio="changeDomainRadio" :list="list" :relatetype="relatetype" :type="type" :qlist="comitem.qlist" :taccord="taccord" @addDomain="addDomain" :index="index" :qindex="qindex" @removeDomainitem="removeDomainitem" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></single>
 					</template>
 					<template v-if="qitem.sub_cat=='multiple'">
-						<multiple :item="qitem" @addDomain="addDomain" :taccord="taccord" :type="type" :index="index" :qindex="qindex" @removeDomainitem="removeDomainitem" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></multiple>
+						<multiple :item="qitem" @addDomain="addDomain" :list="list" :taccord="taccord" :type="type" :relatetype="relatetype" :qlist="comitem.qlist" :index="index" :qindex="qindex" @removeDomainitem="removeDomainitem" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></multiple>
 					</template>
 					<template v-if="qitem.sub_cat=='multistage'">
-						<multistage :item="qitem" :taccord="taccord" :index="index" :type="type" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></multistage>
+						<multistage :item="qitem" :taccord="taccord" :list="list" :index="index" :type="type" :relatetype="relatetype" :qlist="comitem.qlist"  :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></multistage>
 					</template>
 					<template v-if="qitem.sub_cat=='loCation'">
-						<loCation :item="qitem" :taccord="taccord" :index="index" :type="type" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></loCation>
+						<loCation :item="qitem" :taccord="taccord" :list="list" :index="index" :type="type" :relatetype="relatetype" :qlist="comitem.qlist"  :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></loCation>
 					</template>
 					<template v-if="qitem.sub_cat=='uploadimg'">
-						<uploadimg :item="qitem" :taccord="taccord" :index="index" :type="type" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></uploadimg>
+						<uploadimg :item="qitem" :taccord="taccord" :list="list" :index="index" :type="type" :relatetype="relatetype" :qlist="comitem.qlist"  :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></uploadimg>
 					</template>
 					<template v-if="qitem.sub_cat=='fractions'">
-						<fractions :item="qitem" :taccord="taccord" :index="index" :type="type" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></fractions>
+						<fractions :item="qitem" :taccord="taccord" :list="list" :index="index" :type="type" :relatetype="relatetype" :qlist="comitem.qlist"  :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></fractions>
 					</template>
 					<template v-if="qitem.sub_cat=='signature'">
-						<signature :item="qitem" :taccord="taccord" :index="index" :type="type" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></signature>
+						<signature :item="qitem" :taccord="taccord" :list="list" :index="index" :type="type" :relatetype="relatetype" :qlist="comitem.qlist"  :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></signature>
 					</template>
 				</div>
 			</el-form-item>
@@ -73,7 +75,7 @@
 	import fractions from 'components/fractions.vue';
 	import signature from 'components/signature.vue';
 	import { Message } from "element-ui";
-
+	import relevance from './relevance.vue';
 	import { ofill, osingle, omultiple, omultistage, ouploadimg, oloCation, ofractions, osignature } from "./itemType";
 	export default {
 		data() {
@@ -83,7 +85,8 @@
 				activeNames: [],
 				region: "",
 				modelId: "",
-				taccord: ") "
+				taccord: ") ",
+				relevanceshow: false
 			}
 		},
 		props: {
@@ -99,6 +102,10 @@
 				type: String,
 				default: ''
 			},
+			relatetype: {
+				type: String,
+				default: ""
+			},
 			item: {
 				type: Object,
 				default: {}
@@ -108,6 +115,10 @@
 				default: 0
 			},
 			list: {
+				type: Array,
+				default: () => []
+			},
+			qlist: {
 				type: Array,
 				default: () => []
 			},
@@ -248,6 +259,23 @@
 				isignature.qtitle = ix;
 				isignature.edittextinput = true;
 				this.comitem.qlist.push(isignature);
+			},
+				relevance() {
+				if(this.status != "1" && this.type != '0' && !this.$route.query.templateId) {
+
+					this.$message({
+						type: 'error',
+						message: '当前问卷状态无法进行此操作'
+					});
+					return;
+				}
+				this.relevanceshow = true;
+			},
+			surerelevance() {
+				this.relevanceshow = false;
+			},
+			canclerelevance(item) {
+				this.relevanceshow = false;
 			},
 			addItem(index, type) {
 				if(this.status != "1") {
@@ -578,7 +606,8 @@
 			loCation,
 			uploadimg,
 			fractions,
-			signature
+			signature,
+			relevance
 		}
 	}
 </script>
@@ -662,7 +691,7 @@
 	
 	.topic .compre .titlename {
 		position: initial;
-		width: 60%;
+		width: 45%;
 	}
 	/*.compre .el-dropdown{
 		position: inherit !important;
@@ -910,11 +939,12 @@
 	}
 	
 	.compre .compretopright {
-		width: 15%;
+		width: 33%;
 		display: inline-block;
 		span {
-			width: 48%;
+			width: 30%;
 			display: inline-block;
+			text-align: center;
 			cursor: pointer;
 			&:hover {
 				color: #005ad4;
@@ -938,6 +968,17 @@
 			margin: 0;
 			border: none;
 			padding: 0 5px;
+		}
+	}
+	.comrelevance{
+		background:none;
+		border:none;
+		display: inline-block;
+		padding:0;
+		width:28%;
+		&:hover{
+			background: none;
+			    color:#005ad4;
 		}
 	}
 </style>

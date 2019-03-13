@@ -39,6 +39,12 @@
 									</el-select>
 								</el-row>
 							</div>
+							<div class="btngroup">
+								<el-button type="primary" plain disabled>+新增选项</el-button>
+								<el-button @click="relevance" type="primary" plain>+关联逻辑</el-button>
+								<el-button type="primary" plain disabled>+跳转逻辑</el-button>
+								<relevance :relevanceshow='relevanceshow' :qlist="qlist" :relatetype="relatetype" :list="list" :item="item" @canclerelevance='canclerelevance' :index="index" :qindex="qindex" @surerelevance="surerelevance"></relevance>
+							</div>
 							<el-button type="primary" @click="submitForm(item)">保存</el-button>
 						</el-form-item>
 					</el-col>
@@ -52,12 +58,14 @@
 
 <script>
 	import headTop from 'view/head/headTop.vue';
+	import relevance from './relevance.vue';
 	export default {
 		data() {
 			return {
 				poSition: '',
 				cformlistFour: {},
-				imageUrl: []
+				imageUrl: [],
+				relevanceshow: false
 			}
 		},
 		props: {
@@ -76,6 +84,18 @@
 			taccord: {
 				type: String,
 				default: ""
+			},
+			list: {
+				type: Array,
+				default: () => []
+			},
+			relatetype: {
+				type: String,
+				default: ""
+			},
+			qlist: {
+				type: Array,
+				default: () => []
 			},
 			status: {
 				type: String,
@@ -126,6 +146,23 @@
 						ctx.getAreaListDataSearch(vc, 1);
 					}
 				}
+			},
+			relevance() {
+				if(this.status != "1" && this.type != '0' && !this.$route.query.templateId) {
+
+					this.$message({
+						type: 'error',
+						message: '当前问卷状态无法进行此操作'
+					});
+					return;
+				}
+				this.relevanceshow = true;
+			},
+			surerelevance() {
+				this.relevanceshow = false;
+			},
+			canclerelevance(item) {
+				this.relevanceshow = false;
 			},
 			addDomain() { //这个相当于是item就是formlistOne的每一项
 				if(this.status != "1") {
@@ -187,7 +224,8 @@
 			this.cformlistFour = this.formlistFour;
 		},
 		components: {
-			headTop
+			headTop,
+			relevance
 		}
 	}
 </script>
