@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<el-form>
-			<el-form-item :label="(qindex+1)+taccord+item.title+':'" :key="index" @mouseover.native.prevent="showcart(item)" @mouseout.native.prevent="showcart(item)" :class="{'bordernone':item.edittextinput,'itemborder':item.show,'itemmust':item.is_must}">
+			<el-form-item :label="item.qtitle+taccord+item.title+':'" :key="index" @mouseover.native.prevent="showcart(item)" @mouseout.native.prevent="showcart(item)" :class="{'bordernone':item.edittextinput,'itemborder':item.show,'itemmust':item.is_must}">
 				<!--<i v-if="item.is_must" v-text="'*'" class="itemmust"></i>-->
 				<el-row justify="start">
 
@@ -41,9 +41,9 @@
 							</div>
 							<div class="btngroup">
 								<el-button type="primary" plain disabled>+新增选项</el-button>
-								<el-button @click="relevance" type="primary" plain>+关联逻辑</el-button>
+								<el-button @click="relevance(item)" type="primary" plain>+关联逻辑</el-button>
 								<el-button type="primary" plain disabled>+跳转逻辑</el-button>
-								<relevance :relevanceshow='relevanceshow' :qlist="qlist" :relatetype="relatetype" :list="list" :item="item" @canclerelevance='canclerelevance' :index="index" :qindex="qindex" @surerelevance="surerelevance"></relevance>
+								<relevance :qlist="qlist" :relatetype="relatetype" :list="list" :item="item" @canclerelevance='canclerelevance' :index="index" :qindex="qindex" @surerelevance="surerelevance"></relevance>
 							</div>
 							<el-button type="primary" @click="submitForm(item)">保存</el-button>
 						</el-form-item>
@@ -64,8 +64,7 @@
 			return {
 				poSition: '',
 				cformlistFour: {},
-				imageUrl: [],
-				relevanceshow: false
+				imageUrl: []
 			}
 		},
 		props: {
@@ -147,7 +146,7 @@
 					}
 				}
 			},
-			relevance() {
+			relevance(item) {
 				if(this.status != "1" && this.type != '0' && !this.$route.query.templateId) {
 
 					this.$message({
@@ -156,13 +155,17 @@
 					});
 					return;
 				}
-				this.relevanceshow = true;
+				item.relevanceshow = true;
 			},
-			surerelevance() {
-				this.relevanceshow = false;
+			surerelevance(item) {
+				item.relevanceshow = false;
+					this.item.show=true;
+				this.item.edittextinput = true;
 			},
 			canclerelevance(item) {
-				this.relevanceshow = false;
+				item.relevanceshow = false;
+					this.item.show=true;
+				this.item.edittextinput = true;
 			},
 			addDomain() { //这个相当于是item就是formlistOne的每一项
 				if(this.status != "1") {
@@ -293,8 +296,10 @@
 		display: none;
 	}
 	
-	.el-form>.el-form-item {
-		padding: 10px 5% 0;
+	.topic .el-form>.el-form-item {
+		    margin: 0 auto;
+    width: 90%;
+    padding: 10px 10px 0;
 		border: 1px solid transparent;
 		margin-bottom: 5px;
 		padding-bottom: 40px;

@@ -1,6 +1,8 @@
 import axios from "axios";
 import { Message, Loading } from "element-ui";
 import storage from 'javascripts/utils/storage';
+import routes from 'javascripts/routers';
+
 
 let
 	cfig = {
@@ -104,9 +106,9 @@ function getObjectList(data) {
 	return res;
 }
 
-export function post(url, data = {}) {
+export function post(url, data = {},timeout={}) {
 	return new Promise((resolve, reject) => {
-		axios.post(cfig.root + url, data)
+		axios.post(cfig.root + url, data,timeout)
 			.then(response => {
 				if(response.data) {
 					resolve(response.data.data);

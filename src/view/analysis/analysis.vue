@@ -9,6 +9,9 @@
 					<el-col :span="12" class="toprightbt">
 						<!--<el-button class="downloadicon" bindtap="downreport">下载此报告</el-button>
 						<el-button class="lasticon" bindtap="downoriginal">下载原始问卷</el-button>-->
+						<el-button class="downloadicon" @click.prevent="downloadanswer" :href="report">下载原始答案</el-button>
+						
+						
 						<el-button class="downloadicon" @click.prevent="downreport" :href="report">下载此报告</el-button>
 						<el-button class="lasticon" @click.prevent="downoriginal" :href="original">下载原始问卷</el-button>
 					</el-col>
@@ -109,8 +112,12 @@
 	import topic from 'components/topic.vue';
 	import { jsNumDX } from 'javascripts/utils/index';
 	import { Message } from "element-ui";
+	import JSZip from "jszip";
+	import axios from "axios";
+	
 
 	import { ofill, osingle, omultiple, omultistage, ouploadimg, oloCation, ofractions, ocomprehensive } from "components/itemType";
+
 	export default {
 		data() {
 			return {
@@ -259,6 +266,19 @@
 					
 				})
 			},
+				downreport(){
+				var _this=this;
+				this.$post("/Home/Download/analysis", {
+					id: this.$route.query.questionId
+				}).then((res) => {
+					
+					location.href=process.env.http.root.replace("index.php","")+"/"+res.path;
+					
+					
+					//_this.report=res.path;
+					
+				})
+			},
 			downoriginal(){
 			this.jumpshow=true;
 			},
@@ -274,6 +294,36 @@
 					location.href=process.env.http.root.replace("index.php","")+"/"+res.path;
 				})
 				this.jumpshow=false;
+			},
+
+				downloadanswer(){
+				var _this=this;
+					this.$confirm('下载答卷需要耗时很久，您确定下载么?', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+							this.$post("/Home/DLOriginal/original", {
+					id: this.$route.query.questionId
+				},{timeout: 100000}).then((res) => {
+			
+				if(res.paths.length>1){
+					for(var i=0;i<res.paths.length;i++){
+						window.open(process.env.http.root.replace("index.php","")+"/"+res.paths[i])
+					}
+				}else{
+					location.href=process.env.http.root.replace("index.php","")+"/"+res.paths;
+				}
+//					location.href=process.env.http.root.replace("index.php","")+"/"+res.paths;
+					
+					
+				})
+				}).catch(() => {});
+				
+				
+				
+				
+	
 			}
 		},
 		mounted: function() {

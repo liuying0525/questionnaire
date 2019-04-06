@@ -1,11 +1,15 @@
 <template>
-	<div v-show="relevanceshow" class="relevance">
+	<div v-show="item.relevanceshow" class="relevance">
 		<div class="relevanceitem">
 			<p>关联逻辑设置：</p>
 			<ul class="relevanceitemcontent">
 				<li>
 					<span>当前题目：</span>
-					<span>{{item.serial_number}}、{{item.title}}</span>
+					<span v-if="item.mod_name">{{item.qtitle}}、{{item.mod_name}}</span>
+					<!--<span v-else-if="list[index].qlist[qindex]&&list[index].qlist[qindex].sub_cat=='comprehensive'">{{item.serial_number}}){{item.title}}</span>-->
+					<span v-else-if="relatetype=='molcom'&&item.sub_cat!='comprehensive'">{{item.serial_number}}){{item.title}}</span>
+					<span v-else>{{item.serial_number}}、{{item.title}}</span>
+
 				</li>
 				<li>
 					<span>关联题目：</span>
@@ -19,13 +23,14 @@
 					<span>题目选项：</span>
 					<span>					
 						<el-checkbox-group v-model="sOption" @change="ckchange">
+							
 						  <el-checkbox v-for="(checkoption,index) in coptions" :disabled="checkoption.skip_sub!='请选择'&&checkoption.skip_sub!=''&&checkoption.skip_sub!='0'" :label="checkoption.id" :key="index" class="multiplecheck" :value="checkoption.id">{{checkoption.option_name}}</el-checkbox>
 						</el-checkbox-group>
 					</span>
 				</li>
 			</ul>
 			<el-button @click="canclerelevance(item)" size="medium">取消</el-button>
-			<el-button size="medium" @click="surerelevance">确定</el-button>
+			<el-button size="medium" @click="surerelevance(item)">确定</el-button>
 		</div>
 	</div>
 </template>
@@ -42,17 +47,14 @@
 				coptions: [], //选择一道题 对应的有那些选项
 				slist: [], // 可选择的题目
 				qsItem: "", // 是否设置过 
-				qsOption: []
+				qsOption: [],
+				initializeItem: "" //记住第一次选择的值
 			}
 		},
 		props: {
 			item: {
 				type: Object,
 				default: {}
-			},
-			relevanceshow: {
-				type: Boolean,
-				default: false
 			},
 			list: {
 				type: Array,
@@ -75,16 +77,25 @@
 				default: ""
 			}
 		},
+		watch: {
+			"item.relevanceshow": function(oldvalue, newvalue) {
+				if(oldvalue) {
+					this.iniPageList();
+				}
+			}
+		},
 		methods: {
 			canclerelevance(item) {
 				this.$emit("canclerelevance", item);
 			},
-			surerelevance() {
+			surerelevance(item) {
 				// 保存 设置过的值  this.sItem, this.sOption, this.qsItem, this.qsOption
+
 				this.saveModelInfo(this.sItem, this.sOption, this.qsItem, this.qsOption);
-				this.$emit("surerelevance");
+				this.$emit("surerelevance", item);
 				this.qsItem = this.sItem;
 				this.qsOption = this.sOption;
+
 			},
 			dArrary(obj, arr) {
 				var ary = [];
@@ -122,9 +133,16 @@
 
 				}
 				// 保存设置的值  到数据库   mqitem对象
-				this.$post("/Home/Subject/createNewItem", saveModel).then((res) => {
-					console.log("add=" + add);
-				});
+				if(this.$route.query.templateId) {
+					this.$post("/Home/Tpl/createNewItem", saveModel).then((res) => {
+						console.log("add=" + add);
+					});
+				} else {
+					this.$post("/Home/Subject/createNewItem", saveModel).then((res) => {
+						console.log("add=" + add);
+					});
+				}
+
 			},
 			saveModelInfo(sItem, sOption, qsItem, qsOption) {
 				// 先删除  设置题目中  设置过的 关联
@@ -135,30 +153,35 @@
 				this.saveChangeMethod(sItem, sOption, "add");
 			},
 			itemChange(obj) {
-//				this.sOption = [];
+				//				this.sOption = [];
 				this.coptions = this.slist.filter(o => o.id == this.sItem)[0].coptions;
 			},
 			getMolRelate() {
+				//				debugger
 				for(var loption = 0; loption < this.index; loption++) {
 					var mid = this.list[loption].id + "";
 					var mname = jsNumDX(this.list[loption].serial_number) + "、" + this.list[loption].mod_name;
-					for(var i = 0; i < this.list[loption].qlist.length; i++) {				
+					for(var i = 0; i < this.list[loption].qlist.length; i++) {
 						if(this.list[loption].qlist[i].sub_cat == "single") {
 							var itemid = this.list[loption].qlist[i].id + "";
-							var itemname = this.list[loption].qlist[i].serial_number + ")、" + this.list[loption].qlist[i].title;
+							var itemname = this.list[loption].qlist[i].serial_number + "、" + this.list[loption].qlist[i].title;
 							var smodel = {};
 							smodel.name = mname + "_" + itemname + "";
 							smodel.id = mid + "_" + itemid + "";
-							smodel.coptions = this.list[loption].qlist[i].option;
+							if(this.list[loption].qlist[i].hasOwnProperty("option")) {
+								smodel.coptions = this.list[loption].qlist[i].option;
+							}
+
 							this.slist.push(smodel);
+
 						}
 						if(this.list[loption].qlist[i].sub_cat == "comprehensive") {
 							var comitemlist = this.list[loption].qlist[i].qlist.filter(o => o.sub_cat == "single");
 							for(var k = 0; k < comitemlist.length; k++) {
 								var itemid = this.list[loption].qlist[i].id + "";
-								var itemname = this.list[loption].qlist[i].serial_number + ")、" + this.list[loption].qlist[i].title;
+								var itemname = this.list[loption].qlist[i].serial_number + "、" + this.list[loption].qlist[i].title;
 								var comid = comitemlist[k].id + "";
-								var comname = comitemlist[k].serial_number + "、" + comitemlist[k].title;
+								var comname = comitemlist[k].serial_number + ")" + comitemlist[k].title;
 								var smodel = {};
 								smodel.name = mname + "_" + itemname + "_" + comname;
 								smodel.id = mid + "_" + itemid + "_" + comid;
@@ -168,18 +191,33 @@
 						}
 					}
 				}
-				
+
 			},
 			getSelfRelate() {
-				var selfList = this.list[this.index].qlist.filter(o => o.serial_number < this.item.serial_number);				
+				if(this.item.sub_cat != "comprehensive" && this.item.pid != this.list[this.index].id) {
+
+					var firstnum = this.list[this.index].qlist[0].serial_number;
+					var comitem = this.list[this.index].qlist.filter(o => (o.id == this.item.pid && o.sub_cat == "comprehensive"));
+					var comitemnum = comitem[0].serial_number;
+					var selfList = this.list[this.index].qlist.filter(o => o.serial_number < comitemnum && o.serial_number >= firstnum);
+					var comList = comitem[0].qlist.filter(o => o.serial_number < this.item.serial_number);
+					var recomList = comitem.map(function(item) {
+						return item
+					})
+					recomList.qlist = comList;
+					selfList = selfList.concat(recomList);
+
+				} else {
+					var selfList = this.list[this.index].qlist.filter(o => o.serial_number < this.item.serial_number);
+				}
 				for(var loption = 0; loption < selfList.length; loption++) {
 					var mid = this.list[this.index].id + "";
 					var mname = jsNumDX(this.list[this.index].serial_number) + "、" + this.list[this.index].mod_name;
-					
+
 					if(selfList[loption].sub_cat == "single") {
-						
+
 						var itemid = selfList[loption].id + "";
-						var itemname = selfList[loption].serial_number + ")、" + selfList[loption].title;
+						var itemname = selfList[loption].serial_number + "、" + selfList[loption].title;
 						var smodel = {};
 						smodel.name = mname + "_" + itemname + "";
 						smodel.id = mid + "_" + itemid + "";
@@ -187,12 +225,12 @@
 						this.slist.push(smodel);
 					}
 					if(selfList[loption].sub_cat == "comprehensive") {
-						var comitemlist = selfList[loption].qlist.filter(o => o.sub_cat == "single");
+						var comitemlist = selfList[loption].qlist.filter(o => o.sub_cat == "single" && o.serial_number < this.item.serial_number);
 						for(var k = 0; k < comitemlist.length; k++) {
 							var itemid = selfList[loption].id + "";
-							var itemname = selfList[loption].serial_number + ")、" + selfList[loption].title;
+							var itemname = selfList[loption].serial_number + "、" + selfList[loption].title;
 							var comid = comitemlist[k].id + "";
-							var comname = comitemlist[k].serial_number + "、" + comitemlist[k].title;
+							var comname = comitemlist[k].serial_number + ")" + comitemlist[k].title;
 							var smodel = {};
 							smodel.name = mname + "_" + itemname + "_" + comname;
 							smodel.id = mid + "_" + itemid + "_" + comid;
@@ -201,52 +239,18 @@
 						}
 					}
 				}
-				
-			},
-			getComRelate(){
-				if(this.item.sub_cat!='comprehensive'){
-					var comList=this.list[this.index].qlist.filter(o => o.sub_cat == "comprehensive");
-				var comrelateList=comList.filter(o => o.id == this.item.pid);
-				if(comrelateList.length>0){
-						var SmallselfList = comList.filter(o => o.id == this.item.pid)[0].serial_number;
-						var selfList=comList.filter(o => o.serial_number <SmallselfList);}
-				}
-				console.log(selfList);
-				
-//				for(var loption = 0; loption < selfList.length; loption++) {
-//					var mid = this.list[this.index].id + "";
-//					var mname = jsNumDX(this.list[this.index].serial_number) + "、" + this.list[this.index].mod_name;
-//					
-//					if(selfList[loption].sub_cat == "single") {
-//						
-//						var itemid = selfList[loption].id + "";
-//						var itemname = selfList[loption].serial_number + ")、" + selfList[loption].title;
-//						var smodel = {};
-//						smodel.name = mname + "_" + itemname + "";
-//						smodel.id = mid + "_" + itemid + "";
-//						smodel.coptions = selfList[loption].option;
-//						this.slist.push(smodel);
-//					}
-//					if(selfList[loption].sub_cat == "comprehensive") {
-//						var comitemlist = selfList[loption].qlist.filter(o => o.sub_cat == "single" && o.serial_number<this.item.serial_number);
-//						for(var k = 0; k < comitemlist.length; k++) {
-//							var itemid = selfList[loption].id + "";
-//							var itemname = selfList[loption].serial_number + ")、" + selfList[loption].title;
-//							var comid = comitemlist[k].id + "";
-//							var comname = comitemlist[k].serial_number + "、" + comitemlist[k].title;
-//							var smodel = {};
-//							smodel.name = mname + "_" + itemname + "_" + comname;
-//							smodel.id = mid + "_" + itemid + "_" + comid;
-//							smodel.coptions = comitemlist[k].option;
-//							this.slist.push(smodel);
-//						}
-//					}
-//				}
-				
-				
-				
+
 			},
 			ckchange() {
+				var newSoption = [];
+				for(var km = 0; km < this.sOption.length; km++) {
+					if(this.coptions.filter(o => o.id == this.sOption[km]).length > 0) {
+						newSoption.push(this.sOption[km]);
+					}
+				}
+				this.sOption = newSoption;
+				//只能选择一个关联题目
+
 				if(this.sOption.indexOf(0) != -1) {
 					var saveModel = {};
 					var ares = this.sItem.split('_');
@@ -256,6 +260,7 @@
 					if(ares.length == 3) {
 						saveModel = this.list.filter(o => o.id == ares[0])[0].qlist.filter(o => o.id == ares[1])[0].qlist.filter(o => o.id == ares[2])[0];
 					}
+
 					var tipModel = this.slist.filter(o => o.id == this.sItem);
 					var result = "请先保存[" + tipModel[0].name + "]的新选项!";
 					var saveMidfy = saveModel.option;
@@ -269,9 +274,15 @@
 								text: '同步更新中……',
 								background: 'rgba(0, 0, 0, 0.7)'
 							});
-							this.$post("/Home/Subject/createNewItem", saveModel).then((res) => {
+							if(this.$route.query.templateId) {
+
+								var url = "/Home/Tpl/createNewItem"
+							} else {
+								var url = "/Home/Subject/createNewItem"
+							}
+
+							this.$post(url, saveModel).then((res) => {
 								var resModel = res.option;
-//								return;
 								for(var k = 0; k < resModel.length; k++) {
 									var nsaveModel = saveMidfy.filter(o => o.order_num == resModel[k].order_num)[0];
 									newArraryDigtal.push(nsaveModel.id + "_" + resModel[k].id);
@@ -300,7 +311,17 @@
 					}
 				}
 			},
+			initlinze() {
+				this.sItem = "";
+				this.sOption = []; //选择的 选项
+				this.coptions = []; //选择一道题 对应的有那些选项
+				this.slist = []; // 可选择的题目
+				this.qsItem = ""; // 是否设置过 
+				this.qsOption = [];
+				this.initializeItem = ""; //记住第一次选择的值
+			},
 			iniPageList() {
+				this.initlinze();
 				if(this.relatetype == "moloption") {
 					this.getMolRelate();
 					this.getSelfRelate();
@@ -310,41 +331,38 @@
 				}
 				if(this.relatetype == "molcom") {
 					this.getMolRelate();
-					this.getComRelate();
-//this.getSelfRelate();
+					this.getSelfRelate();
+				}
+				if(this.slist.length > 0) {
+					this.sItem = this.slist[0].id;
+					this.coptions = this.slist[0].coptions;
+				}
+				var qsOption = [];
+				var qsItem = "";
+				var itemid = this.item.id + "";
+				for(let qm = 0; qm < this.slist.length; qm++) {
+					for(let qk = 0; qk < this.slist[qm].coptions.length; qk++) {
+						if(this.slist[qm].coptions[qk].related_sub.split(',').indexOf(itemid) != -1) {
+							qsOption.push(this.slist[qm].coptions[qk].id);
+							qsItem = this.slist[qm].id;
+						}
+					}
+				}
+				if(qsItem != "") {
+					if(this.sItem != qsItem) {
+						this.coptions = this.slist.filter(o => o.id == qsItem)[0].coptions;
+					}
+					this.sItem = qsItem;
+					this.sOption = qsOption;
+					this.qsItem = qsItem;
+					this.qsOption = qsOption;
 				}
 			}
 		},
-		created() {
-			// mol 模块关联  moloption 模块题目关联 molcom综合题关联
-			//debugger
-
+		mounted() {
+			// mol 模块关联  moloption 模块题目关联 molcom综合题关
+			console.log(this.item);
 			this.iniPageList();
-			if(this.slist.length > 0) {
-				this.sItem = this.slist[0].id;
-				this.coptions = this.slist[0].coptions;
-			}
-//			debugger
-			var qsOption = [];
-			var qsItem = "";
-			var itemid = this.item.id + "";
-			for(let qm = 0; qm < this.slist.length; qm++) {
-				for(let qk = 0; qk < this.slist[qm].coptions.length; qk++) {
-					if(this.slist[qm].coptions[qk].related_sub.split(',').indexOf(itemid) != -1) {
-						qsOption.push(this.slist[qm].coptions[qk].id);
-						qsItem = this.slist[qm].id;
-					}
-				}
-			}
-			if(qsItem != "") {
-				if(this.sItem != qsItem) {
-					this.coptions = this.slist.filter(o => o.id == qsItem)[0].coptions;
-				}
-				this.sItem = qsItem;
-				this.sOption = qsOption;
-				this.qsItem = qsItem;
-				this.qsOption = qsOption;
-			}
 		},
 		components: {
 

@@ -2,7 +2,7 @@
 	<div>
 		<el-form class="fillcontent">
 			<!--v-for="(item,index) in formlist" :key="index"-->
-			<el-form-item :label="(qindex+1)+taccord+item.title+':'" @mouseover.native.prevent="showcart(item)" @mouseout.native.prevent="showcart(item)" :class="{'bordernone':item.edittextinput,'itemborder':item.show,'itemmust':item.is_must}">
+			<el-form-item :label="item.qtitle+taccord+item.title+':'" @mouseover.native.prevent="showcart(item)" @mouseout.native.prevent="showcart(item)" :class="{'bordernone':item.edittextinput,'itemborder':item.show,'itemmust':item.is_must}">
 				<!--<i v-if="item.is_must" v-text="'*'" class="itemmust"></i>-->
 				<el-input></el-input>
 				<div v-show="item.show" class="transition-box">
@@ -91,7 +91,6 @@
 			}
 		},
 		created() {
-
 		},
 		methods: {
 			showedit(item) {
@@ -156,11 +155,15 @@
 				}
 				this.relevanceshow = true;
 			},
-			surerelevance() {
-				this.relevanceshow = false;
+			surerelevance(item) {
+				item.relevanceshow = false;
+//					this.item.show=true;
+//				this.item.edittextinput = true;
 			},
 			canclerelevance(item) {
-				this.relevanceshow = false;
+				item.relevanceshow = false;
+//					this.item.show=true;
+//				this.item.edittextinput = true;
 			},
 			changeposition(item) {
 				if(this.status != "1") {
@@ -214,6 +217,15 @@
 	
 	.el-form-item__label {}
 	
+		.topic .el-form>.el-form-item {
+		    margin: 0 auto;
+    width: 90%;
+    padding: 10px 10px 0;
+		border: 1px solid transparent;
+		margin-bottom: 5px;
+		padding-bottom: 40px;
+	}
+	
 	.el-form>.el-form-item.itemborder {
 		border: 1px solid #eee;
 		padding-bottom: 0;
@@ -239,13 +251,7 @@
 		padding: 10px 5%;
 	}
 	
-	.el-form>.el-form-item {
-		padding: 10px 5% 0;
-		border: 1px solid transparent;
-		margin-bottom: 5px;
-		padding-bottom: 40px;
-	}
-	
+
 	.el-form-item .el-checkbox {
 		margin-left: 10%;
 		position: relative;

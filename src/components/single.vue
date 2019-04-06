@@ -1,7 +1,8 @@
 <template>
 	<div>
 		<el-form>
-			<el-form-item :label="(qindex+1)+taccord+item.title+':'" @mouseover.native.prevent="showcart(item)" @mouseout.native.prevent="showcart(item)" :class="{'bordernone':item.edittextinput,'itemborder':item.show,'itemmust':item.is_must}">
+			<!--<el-form-item :label="(qindex+1)+taccord+item.title+':'" @mouseover.native.prevent="showcart(item)" @mouseout.native.prevent="showcart(item)" :class="{'bordernone':item.edittextinput,'itemborder':item.show,'itemmust':item.is_must}">-->
+				<el-form-item :label="item.qtitle+taccord+item.title+':'" @mouseover.native.prevent="showcart(item)" @mouseout.native.prevent="showcart(item)" :class="{'bordernone':item.edittextinput,'itemborder':item.show,'itemmust':item.is_must}">					
 				<!--<i v-if="item.is_must" v-text="'*'" class="itemmust"></i>-->
 				<el-radio-group v-model="item.default_choose" @change="dochange">
 					<el-radio :label="im.option_name" v-for="(im,inx) in item.option" :key="inx" class="singradio">{{im.option_name}}</el-radio>
@@ -58,7 +59,7 @@
 
 								<div class="btngroup">
 									<el-button @click="addDomain" type="primary" plain>+新增选项</el-button>
-									<el-button @click="relevance" type="primary" plain>+关联逻辑</el-button>
+									<el-button @click="relevance(item)" type="primary" plain>+关联逻辑</el-button>
 									<el-button @click="jump" type="primary" plain>+跳转逻辑</el-button>
 									<jump :jumpshow='jumpshow' :domains="item.option" :item="item" @canclejump='canclejump' :qlist="qlist" @surejump="surejump"></jump>
 									<relevance :relevanceshow='relevanceshow' :qlist="qlist" :relatetype="relatetype" :list="list" :item="item" @canclerelevance='canclerelevance' :index="index" :qindex="qindex" @surerelevance="surerelevance"></relevance>
@@ -263,7 +264,7 @@
 				//				}
 				this.jumpshow = true;
 			},
-			relevance() {
+			relevance(item) {
 				if(this.status != "1" && this.type != '0' && !this.$route.query.templateId) {
 
 					this.$message({
@@ -272,7 +273,7 @@
 					});
 					return;
 				}
-				this.relevanceshow = true;
+				item.relevanceshow = true;
 			},
 			canclejump(item) {
 				for(let i in item.option) {
@@ -284,13 +285,20 @@
 				for(let i in item.option) {
 					item.option[i].related_sub = "";
 				}
-				this.relevanceshow = false;
+				item.relevanceshow = false;
+					this.item.show=true;
+				this.item.edittextinput = true;
 			},
 			surejump() {
 				this.jumpshow = false;
+					this.item.show=true;
+				this.item.edittextinput = true;
 			},
-			surerelevance() {
-				this.relevanceshow = false;
+			surerelevance(item) {
+				item.relevanceshow = false;
+				
+				this.item.show=true;
+				this.item.edittextinput = true;
 			}
 
 		},
@@ -347,8 +355,10 @@
 		display: none;
 	}
 	
-	.el-form>.el-form-item {
-		padding: 10px 5% 0;
+	.topic .el-form>.el-form-item {
+		    margin: 0 auto;
+    width: 90%;
+    padding: 10px 10px 0;
 		border: 1px solid transparent;
 		margin-bottom: 5px;
 		padding-bottom: 40px;

@@ -11,7 +11,8 @@ let ofill = {
 	title: '标题',
 	show: false,
 	edittextinput: false,
-	changeButton: false
+	changeButton: false,
+	relevanceshow:false
 };
 
 let osingle = {
@@ -28,6 +29,7 @@ let osingle = {
 	edittextinput: false,
 	changeButton: false,
 	default_choose: '',
+	relevanceshow:false,
 	option: [{
 		id: 0,
 		order_num: 1,
@@ -52,6 +54,7 @@ let omultiple = {
 	show: false,
 	edittextinput: false,
 	changeButton: false,
+	relevanceshow:false,
 	option: [{
 		id: 0,
 		order_num: 1,
@@ -76,6 +79,7 @@ let omultistage = {
 	show: false,
 	edittextinput: false,
 	changeButton: false,
+	relevanceshow:false,
 	doptions: [{
 			value: '2',
 			label: '2级',
@@ -133,6 +137,7 @@ let ouploadimg = {
 	show: false,
 	edittextinput: false,
 	changeButton: false,
+	relevanceshow:false,
 	option: [{
 		option_name: '1'
 	}]
@@ -152,6 +157,7 @@ let oloCation = {
 	show: false,
 	edittextinput: false,
 	changeButton: false,
+	relevanceshow:false,
 };
 
 let ofractions = {
@@ -169,7 +175,8 @@ let ofractions = {
 	title: '标题',
 	show: false,
 	edittextinput: false,
-	changeButton: false
+	changeButton: false,
+	relevanceshow:false,
 };
 
 let osignature={
@@ -186,6 +193,7 @@ let osignature={
 	show: false,
 	edittextinput: false,
 	changeButton: false,
+	relevanceshow:false,
 };
 
 let ocomprehensive = {
@@ -201,7 +209,8 @@ let ocomprehensive = {
 	title: "综合题名称",
 	show: false,
 	edittextinput: false,
-	changeButton: false
+	changeButton: false,
+	relevanceshow:false,
 };
 
 export {

@@ -1,11 +1,11 @@
 <template>
 	<div class="compre">
 		<el-form v-model="activeNames" @change="handleChange">
-			<el-form-item class="edit_item" :label="(qindex+1)+comtaccord">
+			<el-form-item class="edit_item" :label="item.qtitle+comtaccord">
 				<el-input v-model="comitem.title" placeholder="综合题名称" class="titlename"></el-input>
 				<div class="compretopright">
-					<el-button @click="relevance" type="primary" plain class="comrelevance">关联逻辑</el-button>
-					<relevance :relevanceshow='relevanceshow' :qlist="qlist" :relatetype="relatetype" :list="list" :item="item" @canclerelevance='canclerelevance' :index="index" :qindex="qindex" @surerelevance="surerelevance"></relevance>					
+					<el-button @click="relevance(item)" type="primary" plain class="comrelevance">关联逻辑</el-button>
+					<relevance :qlist="qlist" :relatetype="relatetype" :list="list" :item="item" @canclerelevance='canclerelevance' :index="index" :qindex="qindex" @surerelevance="surerelevance"></relevance>
 					<span @click.prevent="deletecomp" class="deletecomp">删除</span>
 					<span @click.prevent="changeposition(comitem)" class="oposition">位置变更</span>
 					<div class="changeposition" v-show="comitem.changeButton">
@@ -42,19 +42,19 @@
 						<multiple :item="qitem" @addDomain="addDomain" :list="list" :taccord="taccord" :type="type" :relatetype="relatetype" :qlist="comitem.qlist" :index="index" :qindex="qindex" @removeDomainitem="removeDomainitem" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></multiple>
 					</template>
 					<template v-if="qitem.sub_cat=='multistage'">
-						<multistage :item="qitem" :taccord="taccord" :list="list" :index="index" :type="type" :relatetype="relatetype" :qlist="comitem.qlist"  :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></multistage>
+						<multistage :item="qitem" :taccord="taccord" :list="list" :index="index" :type="type" :relatetype="relatetype" :qlist="comitem.qlist" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></multistage>
 					</template>
 					<template v-if="qitem.sub_cat=='loCation'">
-						<loCation :item="qitem" :taccord="taccord" :list="list" :index="index" :type="type" :relatetype="relatetype" :qlist="comitem.qlist"  :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></loCation>
+						<loCation :item="qitem" :taccord="taccord" :list="list" :index="index" :type="type" :relatetype="relatetype" :qlist="comitem.qlist" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></loCation>
 					</template>
 					<template v-if="qitem.sub_cat=='uploadimg'">
-						<uploadimg :item="qitem" :taccord="taccord" :list="list" :index="index" :type="type" :relatetype="relatetype" :qlist="comitem.qlist"  :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></uploadimg>
+						<uploadimg :item="qitem" :taccord="taccord" :list="list" :index="index" :type="type" :relatetype="relatetype" :qlist="comitem.qlist" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></uploadimg>
 					</template>
 					<template v-if="qitem.sub_cat=='fractions'">
-						<fractions :item="qitem" :taccord="taccord" :list="list" :index="index" :type="type" :relatetype="relatetype" :qlist="comitem.qlist"  :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></fractions>
+						<fractions :item="qitem" :taccord="taccord" :list="list" :index="index" :type="type" :relatetype="relatetype" :qlist="comitem.qlist" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></fractions>
 					</template>
 					<template v-if="qitem.sub_cat=='signature'">
-						<signature :item="qitem" :taccord="taccord" :list="list" :index="index" :type="type" :relatetype="relatetype" :qlist="comitem.qlist"  :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></signature>
+						<signature :item="qitem" :taccord="taccord" :list="list" :index="index" :type="type" :relatetype="relatetype" :qlist="comitem.qlist" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></signature>
 					</template>
 				</div>
 			</el-form-item>
@@ -159,6 +159,8 @@
 				ifill.serial_number = ix;
 				ifill.qtitle = ix;
 				this.comitem.qlist.push(ifill);
+				this.resetComOrder(this.comitem.qlist);
+				return ifill;
 			},
 			addsingle(index) {
 				osingle.show = true;
@@ -175,6 +177,8 @@
 				isingle.qtitle = ix;
 				isingle.edittextinput = true;
 				this.comitem.qlist.push(isingle);
+				this.resetComOrder(this.comitem.qlist);
+				return isingle;
 			},
 			addmultiple(index) {
 				omultiple.show = true;
@@ -189,6 +193,8 @@
 				imultiple.qtitle = ix;
 				imultiple.edittextinput = true;
 				this.comitem.qlist.push(imultiple);
+				this.resetComOrder(this.comitem.qlist);
+				return imultiple;
 			},
 			addmultistage(index) {
 				omultistage.show = true;
@@ -203,6 +209,8 @@
 				imultistage.qtitle = ix;
 				imultistage.edittextinput = true;
 				this.comitem.qlist.push(imultistage);
+				this.resetComOrder(this.comitem.qlist);
+				return imultistage;
 			},
 			adduploadimg(index) {
 				ouploadimg.show = true;
@@ -217,6 +225,8 @@
 				iuploadimg.qtitle = ix;
 				iuploadimg.edittextinput = true;
 				this.comitem.qlist.push(iuploadimg);
+				this.resetComOrder(this.comitem.qlist);
+				return iuploadimg
 			},
 			addloCation(index) {
 				oloCation.show = true;
@@ -231,6 +241,8 @@
 				iloCation.qtitle = ix;
 				iloCation.edittextinput = true;
 				this.comitem.qlist.push(iloCation);
+				this.resetComOrder(this.comitem.qlist);
+				return iloCation;
 			},
 			addfractions(index) {
 				ofractions.show = true;
@@ -245,6 +257,8 @@
 				ifractions.qtitle = ix;
 				ifractions.edittextinput = true;
 				this.comitem.qlist.push(ifractions);
+				this.resetComOrder(this.comitem.qlist);
+				return ifractions;
 			},
 			addsignature(index) {
 				osignature.show = true;
@@ -259,8 +273,10 @@
 				isignature.qtitle = ix;
 				isignature.edittextinput = true;
 				this.comitem.qlist.push(isignature);
+				this.resetComOrder(this.comitem.qlist);
+				return isignature;
 			},
-				relevance() {
+			relevance(item) {
 				if(this.status != "1" && this.type != '0' && !this.$route.query.templateId) {
 
 					this.$message({
@@ -269,15 +285,30 @@
 					});
 					return;
 				}
-				this.relevanceshow = true;
+				item.relevanceshow = true;
 			},
-			surerelevance() {
-				this.relevanceshow = false;
+			surerelevance(item) {
+				item.relevanceshow = false;
+				this.item.show = true;
+				this.item.edittextinput = true;
 			},
 			canclerelevance(item) {
-				this.relevanceshow = false;
+				item.relevanceshow = false;
+				this.item.show = true;
+				this.item.edittextinput = true;
+			},
+			resetComOrder(list) {
+				var orderId = 1;
+				for(var k = 0; k < list.length; k++) {
+					list.sort(function(a, b) {
+						return a.serial_number - b.serial_number;
+					});
+					list[k].qtitle = orderId;
+					orderId++;
+				}
 			},
 			addItem(index, type) {
+				var that = this;
 				if(this.status != "1") {
 					this.$message({
 						type: 'error',
@@ -285,56 +316,68 @@
 					});
 					return;
 				}
-				switch(type) {
-					case "fill":
-						{
-							this.addfill(index);
-						}
-						break;
-					case "single":
-						{
-							this.addsingle(index);
-						}
-						break;
-					case "multiple":
-						{
-							this.addmultiple(index);
-						}
-						break;
-					case "multistage":
-						{
-							this.addmultistage(index);
-						}
-						break;
-					case "uploadimg":
-						{
-							this.adduploadimg(index);
-						}
-						break;
-					case "loCation":
-						{
-							this.addloCation(index);
-						}
-						break;
-					case "fractions":
-						{
-							this.addfractions(index);
-						}
-						break;
-					case "signature":
-						{
-							this.addsignature(index);
-						}
-						break;
-					case "comprehensive":
-						{
-							this.addcomprehensive(index);
-						}
-						break;
-					default:
-						break;
-				}
-				this.activeNames.indexOf(index) == -1 && this.activeNames.push(index)
+				let item = new Promise((resolve, reject) => {
+					let additem;
+					switch(type) {
+						case "fill":
+							{
+								additem = this.addfill(index);
+							}
+							break;
+						case "single":
+							{
+								additem = this.addsingle(index);
+							}
+							break;
+						case "multiple":
+							{
+								additem = this.addmultiple(index);
+							}
+							break;
+						case "multistage":
+							{
+								additem = this.addmultistage(index);
+							}
+							break;
+						case "uploadimg":
+							{
+								additem = this.adduploadimg(index);
+							}
+							break;
+						case "loCation":
+							{
+								additem = this.addloCation(index);
+							}
+							break;
+						case "fractions":
+							{
+
+								additem = this.addfractions(index);
+							}
+							break;
+						case "signature":
+							{
+								additem = this.addsignature(index);
+							}
+							break;
+						case "comprehensive":
+							{
+								additem = this.addcomprehensive(index);
+							}
+							break;
+						default:
+							break;
+					}
+					this.activeNames.indexOf(index) == -1 && this.activeNames.push(index);
+					resolve(additem);
+				})
+
+				item.then(function(additem) {
+
+					that.submitForm(additem, index);
+				}).catch(function() {
+					//failure
+				})
 			},
 			addDomain(index, qindex) {
 				if(this.status != "1") {
@@ -393,6 +436,7 @@
 					}
 					let nlist = this.comitem.qlist.deleteIndex(qindex);
 					this.comitem.qlist = nlist;
+					this.resetComOrder(this.comitem.qlist);
 				}).catch(() => {});
 			},
 			deletecomp(item) {
@@ -553,10 +597,23 @@
 				if(this.$route.query.templateId) {
 					this.$post("/Home/Tpl/createNewItem", subModel).then((res) => {
 						item.id = res.id;
+						if(res.option.length > 0) {
+							for(var i = 0; i < res.option.length; i++) {
+								item.option[i].id = res.option.filter(o => o.order_num == item.option[i].order_num)[0].id;
+							}
+						}
+
 					});
 				} else {
 					this.$post("/Home/Subject/createNewItem", subModel).then((res) => {
 						item.id = res.id;
+						if(res.option.length > 0) {
+							for(var i = 0; i < res.option.length; i++) {
+
+								item.option[i].id = res.option.filter(o => o.order_num == item.option[i].order_num)[0].id;
+							}
+						}
+
 					});
 				}
 
@@ -969,16 +1026,20 @@
 			border: none;
 			padding: 0 5px;
 		}
+		.edit_item /deep/ .el-form-item__label {
+			padding: 0 25px 0 0;
+		}
 	}
-	.comrelevance{
-		background:none;
-		border:none;
+	
+	.comrelevance {
+		background: none;
+		border: none;
 		display: inline-block;
-		padding:0;
-		width:28%;
-		&:hover{
+		padding: 0;
+		width: 28%;
+		&:hover {
 			background: none;
-			    color:#005ad4;
+			color: #005ad4;
 		}
 	}
 </style>

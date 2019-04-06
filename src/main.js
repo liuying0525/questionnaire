@@ -10,6 +10,7 @@ import 'scss/common.scss';
 import 'element-ui/lib/theme-chalk/index.css';
 import { utils } from 'javascripts/utils';
 import { Message } from "element-ui";
+import storage from 'javascripts/utils/storage';
 
 const router = new VueRouter({
 	routes

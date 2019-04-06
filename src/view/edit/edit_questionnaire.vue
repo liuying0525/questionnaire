@@ -22,7 +22,9 @@
 					<div class="edit_item" v-for="(item,index) in list" :key="index">
 						<template v-if="index!=0">
 							<el-button @click="relevance(item,index)" type="primary" plain class="molrelevance">关联逻辑</el-button>
-							<relevance :relevanceshow='relevanceshow' :qlist="qlist" :relatetype="'mol'" :list="list" :item="item" @canclerelevance='canclerelevance' :index="index" :qindex="qindex" @surerelevance="surerelevance"></relevance>	
+
+							<relevance :qlist="qlist" :relatetype="'mol'" :list="list" :item="item" @canclerelevance='canclerelevance' :index="index" :qindex="qindex" @surerelevance="surerelevance"></relevance>
+
 						</template>
 						<el-dropdown placement="bottom">
 							<span class="el-dropdown-link">
@@ -52,26 +54,26 @@
 									<single :item="qitem" :list="list" :relatetype="relatetype" :qlist="item.qlist" :taccord="taccord" @changeDomainRadio="changeDomainRadio" @addDomain="addDomain" :index="index" :qindex="qindex" @removeDomainitem="removeDomainitem" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></single>
 								</template>
 								<template v-if="qitem.sub_cat=='multiple'">
-									<multiple :item="qitem" :list="list" @addDomain="addDomain" :relatetype="relatetype" :qlist="item.qlist"  :taccord="taccord" :index="index" :qindex="qindex" @removeDomainitem="removeDomainitem" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></multiple>
+									<multiple :item="qitem" :list="list" @addDomain="addDomain" :relatetype="relatetype" :qlist="item.qlist" :taccord="taccord" :index="index" :qindex="qindex" @removeDomainitem="removeDomainitem" @removeDomain="removeDomain" @domainSortdown="domainSortdown" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></multiple>
 								</template>
 								<template v-if="qitem.sub_cat=='multistage'">
-									<multistage :item="qitem" :list="list" :taccord="taccord" :relatetype="relatetype" :qlist="item.qlist"  :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></multistage>
+									<multistage :item="qitem" :list="list" :taccord="taccord" :relatetype="relatetype" :qlist="item.qlist" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></multistage>
 								</template>
 								<template v-if="qitem.sub_cat=='loCation'">
-									<loCation :item="qitem" :list="list" :taccord="taccord" :relatetype="relatetype" :qlist="item.qlist"  :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></loCation>
+									<loCation :item="qitem" :list="list" :taccord="taccord" :relatetype="relatetype" :qlist="item.qlist" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></loCation>
 								</template>
 								<template v-if="qitem.sub_cat=='uploadimg'">
-									<uploadimg :item="qitem" :list="list" :taccord="taccord"  :relatetype="relatetype" :qlist="item.qlist"  :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></uploadimg>
+									<uploadimg :item="qitem" :list="list" :taccord="taccord" :relatetype="relatetype" :qlist="item.qlist" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></uploadimg>
 								</template>
 								<template v-if="qitem.sub_cat=='fractions'">
-									<fractions :item="qitem" :list="list" :taccord="taccord" :relatetype="relatetype" :qlist="item.qlist"  :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></fractions>
+									<fractions :item="qitem" :list="list" :taccord="taccord" :relatetype="relatetype" :qlist="item.qlist" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></fractions>
 								</template>
 								<template v-if="qitem.sub_cat=='signature'">
-									<signature :item="qitem" :list="list" :taccord="taccord"  :relatetype="relatetype" :qlist="item.qlist" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></signature>
+									<signature :item="qitem" :list="list" :taccord="taccord" :relatetype="relatetype" :qlist="item.qlist" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></signature>
 								</template>
 
 								<template v-if="qitem.sub_cat=='comprehensive'">
-									<comprehensive :list="list" :relatetype="'molcom'" :item="qitem" :qlist="item.qlist" @deleCom="delem"  :comtaccord="comtaccord" :index="index" :comitem="qitem" :status="status" :qindex="qindex" @itemSortdown="itemSortdown" @changeDomainRadio="changeDomainRadio"></comprehensive>
+									<comprehensive :list="list" :relatetype="'molcom'" :item="qitem" :qlist="item.qlist" @deleCom="delem" :comtaccord="comtaccord" :index="index" :comitem="qitem" :status="status" :qindex="qindex" @itemSortdown="itemSortdown" @changeDomainRadio="changeDomainRadio"></comprehensive>
 								</template>
 							</div>
 						</el-collapse-item>
@@ -88,7 +90,7 @@
 </template>
 
 <script>
-	import { jsNumDX } from 'javascripts/utils/index';
+	import { jsNumDX, storage } from 'javascripts/utils/index';
 	import topic from 'components/topic.vue';
 	import fill from 'components/fill.vue';
 	import single from 'components/single.vue';
@@ -109,8 +111,8 @@
 				questiontitle: '',
 				activeNames: [],
 				list: [],
-				qlist:[],
-				qindex:0,
+				qlist: [],
+				qindex: 0,
 				taccord: "、",
 				comtaccord: "、",
 				subId: "",
@@ -119,7 +121,6 @@
 				status: "",
 				SubInfo: {},
 				relatetype: "moloption", //mol 模块关联  moloption 模块题目关联 molcom综合题关联
-				relevanceshow: false
 			}
 		},
 		methods: {
@@ -127,10 +128,24 @@
 				console.log(val);
 			},
 			addfill(index) {
-				//let ix = this.list[index].qlist.length + 1;
-				let ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
-					return item.serial_number
-				})) + 1;
+				let ix = 0;
+				if(index != 0 && this.list[index].qlist.length == 0) {
+					let lastList = this.list.filter(o => (o.serial_number - 1) < index && o.qlist.length != 0)
+					if(lastList.length > 0) {
+						ix = Math.max.apply(null, lastList[lastList.length - 1].qlist.map(function(item) {
+							return item.serial_number
+						})) + 1;
+					} else {
+						ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(null, this.list[index].qlist.map(function(item) {
+							return item.serial_number
+						})) + 1;
+					}
+
+				} else {
+					ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(null, this.list[index].qlist.map(function(item) {
+						return item.serial_number
+					})) + 1;
+				}
 				ofill.show = true;
 				ofill.edittextinput = true;
 				let ifill = JSON.parse(JSON.stringify(ofill));
@@ -139,126 +154,378 @@
 				ifill.serial_number = ix;
 				ifill.qtitle = ix;
 				this.list[index].qlist.push(ifill);
+				//				if(this.list.length - 1 > index) {
+				//					var nextList = this.list.filter(o => (o.serial_number - 1) > index);
+				//					for(var i = 0; i < nextList.length; i++) {
+				//						if(nextList[i].qlist.length > 0) {
+				//							for(var v = 0; v < nextList[i].qlist.length; v++) {
+				//								nextList[i].qlist[v].serial_number = nextList[i].qlist[v].serial_number + 1;
+				//							}
+				//						}
+				//
+				//					}
+				//				}
+				this.resetOrder(this.list);
+				return ifill;
 			},
 			addsingle(index) {
+				let ix = 0;
+				if(index != 0 && this.list[index].qlist.length == 0) {
+					let lastList = this.list.filter(o => (o.serial_number - 1) < index && o.qlist.length != 0)
+					if(lastList.length > 0) {
+						ix = Math.max.apply(null, lastList[lastList.length - 1].qlist.map(function(item) {
+							return item.serial_number
+						})) + 1;
+					} else {
+						ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(null, this.list[index].qlist.map(function(item) {
+							return item.serial_number
+						})) + 1;
+					}
+				} else {
+					ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
+						return item.serial_number
+					})) + 1;
+				}
 				osingle.show = true;
 				osingle.edittextinput = true;
-				let ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
-					return item.serial_number
-				})) + 1;
+				//				let ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
+				//					return item.serial_number
+				//				})) + 1;
 				let isingle = JSON.parse(JSON.stringify(osingle));
 				isingle.ppid = this.subId;
 				isingle.pid = this.list[index].id;
 				isingle.serial_number = ix;
 				isingle.qtitle = ix;
 				this.list[index].qlist.push(isingle);
+				//				if(this.list.length - 1 > index) {
+				//					var nextList = this.list.filter(o => (o.serial_number - 1) > index);
+				//					for(var i = 0; i < nextList.length; i++) {
+				//						if(nextList[i].qlist.length > 0) {
+				//							for(var v = 0; v < nextList[i].qlist.length; v++) {
+				//								nextList[i].qlist[v].serial_number = nextList[i].qlist[v].serial_number + 1;
+				//							}
+				//						}
+				//
+				//					}
+				//				}
+				this.resetOrder(this.list);
+				return isingle;
 			},
 			addmultiple(index) {
+				let ix = 0;
+				if(index != 0 && this.list[index].qlist.length == 0) {
+					let lastList = this.list.filter(o => (o.serial_number - 1) < index && o.qlist.length != 0)
+					if(lastList.length > 0) {
+						ix = Math.max.apply(null, lastList[lastList.length - 1].qlist.map(function(item) {
+							return item.serial_number
+						})) + 1;
+					} else {
+						ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(null, this.list[index].qlist.map(function(item) {
+							return item.serial_number
+						})) + 1;
+					}
+				} else {
+					ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
+						return item.serial_number
+					})) + 1;
+				}
 				omultiple.show = true;
 				omultiple.edittextinput = true;
-				let ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
-					return item.serial_number
-				})) + 1;
 				let imultiple = JSON.parse(JSON.stringify(omultiple));
 				imultiple.ppid = this.subId;
 				imultiple.pid = this.list[index].id;
 				imultiple.serial_number = ix;
 				imultiple.qtitle = ix;
 				this.list[index].qlist.push(imultiple);
+				//				if(this.list.length - 1 > index) {
+				//					var nextList = this.list.filter(o => (o.serial_number - 1) > index);
+				//					for(var i = 0; i < nextList.length; i++) {
+				//						if(nextList[i].qlist.length > 0) {
+				//							for(var v = 0; v < nextList[i].qlist.length; v++) {
+				//								nextList[i].qlist[v].serial_number = nextList[i].qlist[v].serial_number + 1;
+				//							}
+				//						}
+				//
+				//					}
+				//				}
+				this.resetOrder(this.list);
+				return imultiple;
 
 			},
-			relevance(item,index) {
+			relevance(item, index) {
 				if(this.status != "1" && this.type != '0' && !this.$route.query.templateId) {
-
 					this.$message({
 						type: 'error',
 						message: '当前问卷状态无法进行此操作'
 					});
 					return;
 				}
-				this.relevanceshow = true;
-								
+				item.relevanceshow = true;
 			},
-			surerelevance() {
-				this.relevanceshow = false;
+			surerelevance(item) {
+				item.relevanceshow = false;
 			},
 			canclerelevance(item) {
-				this.relevanceshow = false;
+				item.relevanceshow = false;
+			},
+			resetOrder(list) {
+				var orderId = 1;
+				for(var k = 0; k < list.length; k++) {
+					list[k].qlist.sort(function(a, b) {
+						return a.serial_number - b.serial_number;
+					});
+					for(var j = 0; j < list[k].qlist.length; j++) {
+						list[k].qlist[j].qtitle = orderId;
+						orderId++;
+					}
+
+					var qlistArrary = list[k].qlist.filter(o => o.sub_cat == 'comprehensive');
+
+					for(var mm = 0; mm < qlistArrary.length; mm++) {
+						qlistArrary[mm].qlist.sort(function(a, b) {
+							return a.serial_number - b.serial_number;
+						});
+						var cmorderId = 1;
+						for(var jj = 0; jj < qlistArrary[mm].qlist.length; jj++) {
+							qlistArrary[mm].qlist[jj].qtitle = cmorderId;
+							cmorderId++;
+						}
+					}
+
+				}
 			},
 			addmultistage(index) {
+				let ix = 0;
+				if(index != 0 && this.list[index].qlist.length == 0) {
+					let lastList = this.list.filter(o => (o.serial_number - 1) < index && o.qlist.length != 0)
+					if(lastList.length > 0) {
+						ix = Math.max.apply(null, lastList[lastList.length - 1].qlist.map(function(item) {
+							return item.serial_number
+						})) + 1;
+					} else {
+						ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(null, this.list[index].qlist.map(function(item) {
+							return item.serial_number
+						})) + 1;
+					}
+				} else {
+					ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
+						return item.serial_number
+					})) + 1;
+				}
 				omultistage.show = true;
 				omultistage.edittextinput = true;
-				let ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
-					return item.serial_number
-				})) + 1;
+				//				let ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
+				//					return item.serial_number
+				//				})) + 1;
 				let imultistage = JSON.parse(JSON.stringify(omultistage));
 				imultistage.ppid = this.subId;
 				imultistage.pid = this.list[index].id;
 				imultistage.serial_number = ix;
 				imultistage.qtitle = ix;
 				this.list[index].qlist.push(imultistage);
+				//				if(this.list.length - 1 > index) {
+				//					var nextList = this.list.filter(o => (o.serial_number - 1) > index);
+				//					for(var i = 0; i < nextList.length; i++) {
+				//						if(nextList[i].qlist.length > 0) {
+				//							for(var v = 0; v < nextList[i].qlist.length; v++) {
+				//								nextList[i].qlist[v].serial_number = nextList[i].qlist[v].serial_number + 1;
+				//							}
+				//						}
+				//
+				//					}
+				//				}
+				this.resetOrder(this.list);
+				return imultistage;
 			},
 			adduploadimg(index) {
+				let ix = 0;
+				if(index != 0 && this.list[index].qlist.length == 0) {
+					let lastList = this.list.filter(o => (o.serial_number - 1) < index && o.qlist.length != 0)
+					if(lastList.length > 0) {
+						ix = Math.max.apply(null, lastList[lastList.length - 1].qlist.map(function(item) {
+							return item.serial_number
+						})) + 1;
+					} else {
+						ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(null, this.list[index].qlist.map(function(item) {
+							return item.serial_number
+						})) + 1;
+					}
+				} else {
+					ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
+						return item.serial_number
+					})) + 1;
+				}
 				ouploadimg.show = true;
 				ouploadimg.edittextinput = true;
-				let ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
-					return item.serial_number
-				})) + 1;
+				//				let ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
+				//					return item.serial_number
+				//				})) + 1;
 				let iuploadimg = JSON.parse(JSON.stringify(ouploadimg));
 				iuploadimg.ppid = this.subId;
 				iuploadimg.pid = this.list[index].id;
 				iuploadimg.serial_number = ix;
 				iuploadimg.qtitle = ix;
 				this.list[index].qlist.push(iuploadimg);
+				//				if(this.list.length - 1 > index) {
+				//					var nextList = this.list.filter(o => (o.serial_number - 1) > index);
+				//					for(var i = 0; i < nextList.length; i++) {
+				//						if(nextList[i].qlist.length > 0) {
+				//							for(var v = 0; v < nextList[i].qlist.length; v++) {
+				//								nextList[i].qlist[v].serial_number = nextList[i].qlist[v].serial_number + 1;
+				//							}
+				//						}
+				//
+				//					}
+				//				}
+				this.resetOrder(this.list);
+				return iuploadimg
 			},
 			addloCation(index) {
+				let ix = 0;
+				if(index != 0 && this.list[index].qlist.length == 0) {
+					let lastList = this.list.filter(o => (o.serial_number - 1) < index && o.qlist.length != 0)
+					ix = Math.max.apply(Math, lastList[lastList.length - 1].qlist.map(function(item) {
+						return item.serial_number
+					})) + 1;
+				} else {
+					ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
+						return item.serial_number
+					})) + 1;
+				}
 				oloCation.show = true;
 				oloCation.edittextinput = true;
-				let ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
-					return item.serial_number
-				})) + 1;
+				//				let ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
+				//					return item.serial_number
+				//				})) + 1;
 				let iloCation = JSON.parse(JSON.stringify(oloCation));
 				iloCation.ppid = this.subId;
 				iloCation.pid = this.list[index].id;
 				iloCation.serial_number = ix;
 				iloCation.qtitle = ix;
 				this.list[index].qlist.push(iloCation);
+
+				//				if(this.list.length - 1 > index) {
+				//					var nextList = this.list.filter(o => (o.serial_number - 1) > index);
+				//					for(var i = 0; i < nextList.length; i++) {
+				//						if(nextList[i].qlist.length > 0) {
+				//							for(var v = 0; v < nextList[i].qlist.length; v++) {
+				//								nextList[i].qlist[v].serial_number = nextList[i].qlist[v].serial_number + 1;
+				//							}
+				//						}
+				//
+				//					}
+				//				}
+				this.resetOrder(this.list);
+				return iloCation;
 			},
 			addsignature(index) {
+				let ix = 0;
+				if(index != 0 && this.list[index].qlist.length == 0) {
+					let lastList = this.list.filter(o => (o.serial_number - 1) < index && o.qlist.length != 0)
+					if(lastList.length > 0) {
+						ix = Math.max.apply(null, lastList[lastList.length - 1].qlist.map(function(item) {
+							return item.serial_number
+						})) + 1;
+					} else {
+						ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(null, this.list[index].qlist.map(function(item) {
+							return item.serial_number
+						})) + 1;
+					}
+				} else {
+					ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
+						return item.serial_number
+					})) + 1;
+				}
 				osignature.show = true;
 				osignature.edittextinput = true;
-				let ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
-					return item.serial_number
-				})) + 1;
+				//				let ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
+				//					return item.serial_number
+				//				})) + 1;
 				let isignature = JSON.parse(JSON.stringify(osignature));
 				isignature.ppid = this.subId;
 				isignature.pid = this.list[index].id;
 				isignature.serial_number = ix;
 				isignature.qtitle = ix;
 				this.list[index].qlist.push(isignature);
+				//				if(this.list.length - 1 > index) {
+				//					var nextList = this.list.filter(o => (o.serial_number - 1) > index);
+				//					for(var i = 0; i < nextList.length; i++) {
+				//						if(nextList[i].qlist.length > 0) {
+				//							for(var v = 0; v < nextList[i].qlist.length; v++) {
+				//								nextList[i].qlist[v].serial_number = nextList[i].qlist[v].serial_number + 1;
+				//							}
+				//						}
+				//
+				//					}
+				//				}
+				this.resetOrder(this.list);
+				return isignature;
 			},
 			addfractions(index) {
+				let ix = 0;
+				if(index != 0 && this.list[index].qlist.length == 0) {
+					let lastList = this.list.filter(o => (o.serial_number - 1) < index && o.qlist.length != 0)
+					if(lastList.length > 0) {
+						ix = Math.max.apply(null, lastList[lastList.length - 1].qlist.map(function(item) {
+							return item.serial_number
+						})) + 1;
+					} else {
+						ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(null, this.list[index].qlist.map(function(item) {
+							return item.serial_number
+						})) + 1;
+					}
+				} else {
+					ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
+						return item.serial_number
+					})) + 1;
+				}
 				ofractions.show = true;
 				ofractions.edittextinput = true;
-				let ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
-					return item.serial_number
-				})) + 1;
+				//				let ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
+				//					return item.serial_number
+				//				})) + 1;
 				let ifractions = JSON.parse(JSON.stringify(ofractions));
 				ifractions.ppid = this.subId;
 				ifractions.pid = this.list[index].id;
 				ifractions.serial_number = ix;
 				ifractions.qtitle = ix;
 				this.list[index].qlist.push(ifractions);
-
+				//				if(this.list.length - 1 > index) {
+				//					var nextList = this.list.filter(o => (o.serial_number - 1) > index);
+				//					for(var i = 0; i < nextList.length; i++) {
+				//						if(nextList[i].qlist.length > 0) {
+				//							for(var v = 0; v < nextList[i].qlist.length; v++) {
+				//								nextList[i].qlist[v].serial_number = nextList[i].qlist[v].serial_number + 1;
+				//							}
+				//						}
+				//
+				//					}
+				//				}
+				this.resetOrder(this.list);
+				return ifractions;
 			},
 			addcomprehensive(index) {
-				//let ix = this.list[index].qlist.length + 1;
-				//				let ix = Math.max.apply(Math, this.list[index].qlist.map(function(item) {
+				let ix = 0;
+				if(index != 0 && this.list[index].qlist.length == 0) {
+					let lastList = this.list.filter(o => (o.serial_number - 1) < index && o.qlist.length != 0)
+					if(lastList.length > 0) {
+						ix = Math.max.apply(null, lastList[lastList.length - 1].qlist.map(function(item) {
+							return item.serial_number
+						})) + 1;
+					} else {
+						ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(null, this.list[index].qlist.map(function(item) {
+							return item.serial_number
+						})) + 1;
+					}
+				} else {
+					debugger
+					ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
+						return item.serial_number
+					})) + 1;
+				}
+				//				let ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
 				//					return item.serial_number
 				//				})) + 1;
-				let ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
-					return item.serial_number
-				})) + 1;
 				var option = {};
 				option.title = "综合题名称";
 				option.qtitle = ix;
@@ -270,15 +537,20 @@
 				option.pid = this.list[index].id;
 				option.sub_cat = "comprehensive";
 				option.poSition = "";
+
 				this.$post("/Home/Subject/createNewMod", {
 					pid: this.subId,
 					chief: option.pid,
-					mod_name: option.title
+					mod_name: option.title,
+					serial_number: option.serial_number
 				}).then((res) => {
 					option.id = res.id;
+					option.serial_number = res.serial_number;
+					ix = option.serial_number;
 					this.list[index].qlist.push(option);
+					this.resetOrder(this.list);
+					return option
 				});
-
 			},
 			delem(index, pindex) {
 				if(this.status != "1") {
@@ -289,6 +561,7 @@
 					return;
 				}
 				this.list[index].qlist.splice(pindex, 1);
+				this.resetOrder(this.list);
 
 			},
 			addItem(index, type) {
@@ -300,59 +573,74 @@
 					});
 					return;
 				}
+				let item = new Promise((resolve, reject) => {
+					let additem;
+					switch(type) {
+						case "fill":
+							{
+								additem = this.addfill(index);
+							}
+							break;
+						case "single":
+							{
+								additem = this.addsingle(index);
+							}
+							break;
+						case "multiple":
+							{
+								additem = this.addmultiple(index);
+							}
+							break;
+						case "multistage":
+							{
+								additem = this.addmultistage(index);
+							}
+							break;
+						case "uploadimg":
+							{
+								additem = this.adduploadimg(index);
+							}
+							break;
+						case "loCation":
+							{
+								additem = this.addloCation(index);
+							}
+							break;
+						case "fractions":
+							{
 
-				switch(type) {
-					case "fill":
-						{
+								additem = this.addfractions(index);
+							}
+							break;
+						case "signature":
+							{
+								additem = this.addsignature(index);
+							}
+							break;
+						case "comprehensive":
+							{
+								additem = this.addcomprehensive(index);
+							}
+							break;
+						default:
+							break;
+					}
+					this.activeNames.indexOf(index) == -1 && this.activeNames.push(index);
+					if(!!additem) {
 
-							this.addfill(index);
-						}
-						break;
-					case "single":
-						{
-							this.addsingle(index);
-						}
-						break;
-					case "multiple":
-						{
-							this.addmultiple(index);
-						}
-						break;
-					case "multistage":
-						{
-							this.addmultistage(index);
-						}
-						break;
-					case "uploadimg":
-						{
-							this.adduploadimg(index);
-						}
-						break;
-					case "loCation":
-						{
-							this.addloCation(index);
-						}
-						break;
-					case "fractions":
-						{
+						resolve(additem);
+					} else {
+						reject(error);
+					}
+				})
 
-							this.addfractions(index);
-						}
-						break;
-					case "signature":
-						{
-							this.addsignature(index);
-						}
-						break;
-					case "comprehensive":
-						{
-							this.addcomprehensive(index);
-						}
-						break;
-					default:
-						break;
-				}
-				this.activeNames.indexOf(index) == -1 && this.activeNames.push(index)
+				item.then(function(additem) {
+
+					that.submitForm(additem, index);
+				}).catch(function() {
+					//failure
+				})
+
 			},
 			addDomain(index, qindex) {
 				if(this.status != "1") {
@@ -406,6 +694,7 @@
 					}
 					let nlist = this.list[index].qlist.deleteIndex(qindex);
 					this.list[index].qlist = nlist;
+					this.resetOrder(this.list);
 				}).catch(() => {});
 			},
 			removeDomainitem(index, qindex, dindex) {
@@ -416,7 +705,6 @@
 					});
 					return;
 				}
-				debugger
 				let dlist = this.list[index].qlist[qindex].option.deleteIndex(dindex);
 				this.list[index].qlist[qindex].option = dlist;
 			},
@@ -550,13 +838,18 @@
 				option.serial_number = opcount;
 				option.pid = this.subId;
 				option.qlist = [];
+				option.relevanceshow = false;
+				storage.set("molitem", "1");
 				this.$post("/Home/Subject/createNewMod", {
 					pid: this.subId,
 					chief: 0,
-					mod_name: option.mod_name
+					mod_name: option.mod_name,
+					serial_number: option.serial_number
 				}).then((res) => {
 					option.id = res.id;
+					option.serial_number = res.serial_number
 					self.list.push(option);
+
 				});
 			},
 			submitForm(item, index) {
@@ -602,7 +895,11 @@
 				console.log(subModel);
 				this.$post("/Home/Subject/createNewItem", subModel).then((res) => {
 					item.id = res.id;
-
+					if(res.option.length > 0) {
+						for(var i = 0; i < res.option.length; i++) {
+							item.option[i].id = res.option.filter(o => o.order_num == item.option[i].order_num)[0].id;
+						}
+					}
 				});
 			},
 			finishSub() {
@@ -617,41 +914,51 @@
 						description: this.contentText,
 						mod: []
 					}
+
 					for(var i = 0; i < this.list.length; i++) {
 						let modoption = {};
 						modoption.id = this.list[i].id;
 						modoption.mod_name = this.list[i].mod_name;
 						modoption.serial_number = this.list[i].serial_number;
 						modoption.item = [];
-						for(var j = 0; j < this.list[i].qlist.length; j++) {
-							if(this.list[i].qlist[j].sub_cat == "comprehensive") {
-								let bmodoption = {};
-								bmodoption.id = this.list[i].qlist[j].id;
-								bmodoption.mod_name = this.list[i].qlist[j].title;
-								bmodoption.serial_number = this.list[i].qlist[j].serial_number;
-								bmodoption.item = [];
-								for(var b = 0; b < this.list[i].qlist[j].qlist.length; b++) {
+						if(this.list[i].qlist.length > 0) {
+							for(var j = 0; j < this.list[i].qlist.length; j++) {
+								if(this.list[i].qlist[j].sub_cat == "comprehensive") {
+									if(SubInfo.mod.filter(o => o.id == modoption.id).length == 0) {
+										SubInfo.mod.push(modoption);
+									}
+									let bmodoption = {};
+									bmodoption.id = this.list[i].qlist[j].id;
+									bmodoption.mod_name = this.list[i].qlist[j].title;
+									bmodoption.serial_number = this.list[i].qlist[j].serial_number;
+									bmodoption.item = [];
+									for(var b = 0; b < this.list[i].qlist[j].qlist.length; b++) {
+										var jitem = {};
+										jitem.id = this.list[i].qlist[j].qlist[b].id;
+										jitem.order = this.list[i].qlist[j].qlist[b].serial_number;
+										bmodoption.item.push(jitem);
+									}
+									SubInfo.mod.push(bmodoption);
+								} else {
 									var jitem = {};
-									jitem.id = this.list[i].qlist[j].qlist[b].id;
-									jitem.order = this.list[i].qlist[j].qlist[b].serial_number;
-									bmodoption.item.push(jitem);
-								}
-								SubInfo.mod.push(bmodoption);
-							} else {
-								var jitem = {};
-								jitem.id = this.list[i].qlist[j].id;
-								jitem.order = this.list[i].qlist[j].serial_number;
-								modoption.item.push(jitem);
-								if(SubInfo.mod.filter(o => o.id == modoption.id).length == 0) {
-									SubInfo.mod.push(modoption);
+									jitem.id = this.list[i].qlist[j].id;
+									jitem.order = this.list[i].qlist[j].serial_number;
+									modoption.item.push(jitem);
+									if(SubInfo.mod.filter(o => o.id == modoption.id).length == 0) {
+										SubInfo.mod.push(modoption);
+									}
 								}
 							}
+						} else {
+							SubInfo.mod.push(modoption);
 						}
 					}
+					console.log("SubInfo==" + JSON.stringify(SubInfo));
 					this.$post("/Home/Subject/finishSub", SubInfo).then((res) => {
 						this.$alert('操作成功！', '提示', {
 							confirmButtonText: '确定',
 							callback: action => {
+								this.finishSure = true;
 								this.$router.push({
 									path: '/questionNaire'
 								})
@@ -850,24 +1157,29 @@
 								resList.push(isignature);
 							}
 							break;
-
 					}
 				});
 
 				return resList;
 			},
 			getListArrary(subId) {
+				this.finishSure = false;
 				this.list = [];
-				this.$post("/Home/Subject/getSingleSub", {
+
+				var listArrary = this.$post("/Home/Subject/getSingleSub", {
 					id: subId
 				}).then((res) => {
+
 					this.status = res.status + "";
 					this.contentText = res.description || "";
 					this.questiontitle = res.sub_name || "";
+					if(!res.hasOwnProperty("mod")) return
 					let modlist = res.mod;
+
 					for(var k = 0; k < modlist.length; k++) {
 						var option = {};
 						option.mod_name = modlist[k].mod_name;
+						option.relevanceshow = false;
 						option.id = modlist[k].id;
 						var serial_number = modlist[k].serial_number;
 						try {
@@ -901,18 +1213,103 @@
 						option.qlist.sort(function(a, b) {
 							return a.serial_number - b.serial_number;
 						});
+
 						this.list.push(option);
+
 					}
+					this.resetOrder(this.list);
+					return this.list;
+				});
+
+				return listArrary;
+			},
+			beforeunloadFn(theList) {
+
+				console.log(theList)
+				let SubInfo = {
+					id: this.subId,
+					name: this.questiontitle,
+					description: this.contentText,
+					mod: []
+				}
+				for(var i = 0; i < theList.length; i++) {
+					let modoption = {};
+					modoption.id = theList[i].id;
+					modoption.mod_name = theList[i].mod_name;
+
+					modoption.serial_number = theList[i].serial_number;
+					modoption.item = [];
+					if(theList[i].qlist.length > 0) {
+						for(var j = 0; j < theList[i].qlist.length; j++) {
+							if(theList[i].qlist[j].sub_cat == "comprehensive") {
+								if(SubInfo.mod.filter(o => o.id == modoption.id).length == 0) {
+									SubInfo.mod.push(modoption);
+								}
+								let bmodoption = {};
+								bmodoption.id = theList[i].qlist[j].id;
+								bmodoption.mod_name = theList[i].qlist[j].title;
+
+								bmodoption.serial_number = theList[i].qlist[j].serial_number;
+								bmodoption.item = [];
+								for(var b = 0; b < theList[i].qlist[j].qlist.length; b++) {
+									var jitem = {};
+									jitem.id = theList[i].qlist[j].qlist[b].id;
+									jitem.order = theList[i].qlist[j].qlist[b].serial_number;
+									bmodoption.item.push(jitem);
+								}
+								SubInfo.mod.push(bmodoption);
+							} else {
+								var jitem = {};
+								jitem.id = theList[i].qlist[j].id;
+								jitem.order = theList[i].qlist[j].serial_number;
+								modoption.item.push(jitem);
+								if(SubInfo.mod.filter(o => o.id == modoption.id).length == 0) {
+									SubInfo.mod.push(modoption);
+								}
+							}
+						}
+					} else {
+
+						SubInfo.mod.push(modoption);
+					}
+				}
+				console.log("SubInfo==" + JSON.stringify(SubInfo));
+
+				this.$post("/Home/Subject/finishSub", SubInfo).then((res) => {
+					console.log("update");
 				});
 			}
+
 		},
-		mounted: function() {},
+		mounted() {
+			//			if(sessionStorage.getItem("newNum")){
+			//				window.location.href=window.location.href+"&newNum="+this.RndNum(5)
+			//			}else{
+			//				sessionStorage.setItem("newnewNum",true);
+			//			}
+			console.log("ddd")
+			console.log(this.list)
+
+		},
 		created() {
 			this.subId = this.$route.query.questionId;
-			this.getListArrary(this.subId);
+				this.getListArrary(this.subId);
+			
+		},
+		beforeRouteLeave(to, from, next) {
+			if(!this.finishSure && to.path != "/login") {
+				const answer = window.confirm('如果离开当前页面，问卷将自动保存，是否离开？')
+				if(answer) {
+					this.beforeunloadFn(this.list)
+					next()
+				} else {
+					next(false);
+				}
+			} else {
+				next()
+			}
 		},
 		components: {
-
 			topic,
 			fill,
 			single,
@@ -964,6 +1361,7 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+		padding: 0;
 	}
 	
 	.edit_item>.titlename .el-input__inner {
@@ -1201,16 +1599,17 @@
 			margin: 0 auto;
 		}
 	}
-	.molrelevance{
-		background:none;
-		border:none;
-		padding:0;
-		    position: absolute;
-    top: 20px;
-    right: 346px;
-		&:hover{
-			background:none;
-			color:#005ad4;
+	
+	.molrelevance {
+		background: none;
+		border: none;
+		padding: 0;
+		position: absolute;
+		top: 20px;
+		right: 346px;
+		&:hover {
+			background: none;
+			color: #005ad4;
 		}
 	}
 </style>
