@@ -29,8 +29,8 @@
 					</span>
 				</li>
 			</ul>
-			<el-button @click="canclerelevance(item)" size="medium">取消</el-button>
-			<el-button size="medium" @click="surerelevance(item)">确定</el-button>
+			<el-button @click.stop.prevent="canclerelevance(item)" size="medium">取消</el-button>
+			<el-button size="medium" @click.stop.prevent="surerelevance(item)">确定</el-button>
 		</div>
 	</div>
 </template>
@@ -150,6 +150,7 @@
 					this.saveChangeMethod(qsItem, qsOption, "del");
 				}
 				// 把选择的项 设置 关联
+				
 				this.saveChangeMethod(sItem, sOption, "add");
 			},
 			itemChange(obj) {
@@ -361,7 +362,7 @@
 		},
 		mounted() {
 			// mol 模块关联  moloption 模块题目关联 molcom综合题关
-			console.log(this.item);
+//			console.log(this.item);
 			this.iniPageList();
 		},
 		components: {
@@ -403,13 +404,16 @@
 				margin: 0 auto;
 				border-top: 1px solid #303133;
 				border-left: 1px solid #303133;
+				border-right: 1px solid #303133;
 				float: left;
+				background: #409EFF;
 				li {
 					border-bottom: 1px solid #303133;
-					border-right: 1px solid #303133;
+					
 					text-align: center;
 					float: left;
 					width: 100%;
+					
 					>span {
 						&:nth-of-type(1) {
 							background: #409EFF;
@@ -417,16 +421,24 @@
 					}
 					span {
 						display: inline-block;
-						padding: 8px 0;
+						padding: 2px 0;
 						&:nth-of-type(1) {
 							width: 30%;
-							border-right: 1px solid #303133;
+							
 						}
-						width: 69%;
+						width: 70%;
 						float:left;
+						background: #fff;
+						    line-height: 39px;
 					}
 				}
 			}
 		}
+	}
+	label.el-checkbox.multiplecheck{
+		display: block
+	}
+	label.el-checkbox.multiplecheck+label.el-checkbox.multiplecheck{
+		margin-left:0;
 	}
 </style>

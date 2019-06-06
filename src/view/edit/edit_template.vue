@@ -6,7 +6,7 @@
 		<div class="editTemContain">
 			<div class="outconTop">
 				<el-row type="flex" justify="end" class="conTop">
-					<el-col :span="3" @click.native="openModel"><i class="el-icon-plus"></i>新建模块</el-col>
+					<el-col :span="3" @click.native="openModel" class="openModel"><i class="el-icon-plus"></i>新建模块</el-col>
 				</el-row>
 			</div>
 
@@ -20,7 +20,7 @@
 					<div class="edit_item" v-for="(item,index) in list" :key="index">
 						<template v-if="index!=0">
 							<el-button @click="relevance(item,index)" type="primary" plain class="molrelevance">关联逻辑</el-button>
-							<relevance :relevanceshow='relevanceshow' :qlist="qlist" :relatetype="'mol'" :list="list" :item="item" @canclerelevance='canclerelevance' :index="index" :qindex="qindex" @surerelevance="surerelevance"></relevance>	
+							<relevance :qlist="qlist" :relatetype="'mol'" :list="list" :item="item" @canclerelevance='canclerelevance' :index="index" :qindex="qindex" @surerelevance="surerelevance"></relevance>	
 						</template>
 						<el-dropdown placement="bottom">
 							<span class="el-dropdown-link">
@@ -68,7 +68,7 @@
 									<signature :item="qitem" :list="list" :relatetype="relatetype" :taccord="taccord" :index="index" :qindex="qindex" @removeDomain="removeDomain" @itemSortdown="itemSortdown" @submitForm="submitForm" :status="status"></signature>
 								</template>
 								<template v-if="qitem.sub_cat=='comprehensive'">
-									<comprehensive :item="qitem" :list="list" :relatetype="relatetype" @deleCom="delem" :comtaccord="comtaccord" :index="index" :comitem="qitem" :qindex="qindex" @itemSortdown="itemSortdown" :type="type" :status="status"></comprehensive>
+									<comprehensive :qlist="item.qlist" :item="qitem" :list="list" :relatetype="'molcom'" @deleCom="delem" :comtaccord="comtaccord" :index="index" :comitem="qitem" :qindex="qindex" @itemSortdown="itemSortdown" :type="type" :status="status"></comprehensive>
 								</template>
 							</div>
 						</el-collapse-item>
@@ -115,7 +115,6 @@
 				status: "",
 				SubInfo: {},
 				relatetype: "moloption", //mol 模块关联  moloption 模块题目关联 molcom综合题关联
-				relevanceshow: false,
 				finishSure:false
 
 			}
@@ -153,17 +152,18 @@ let ix=0;
 				ifill.qtitle = ix;
 				ifill.edittextinput = true;
 				this.list[index].qlist.push(ifill);
-					if(this.list.length-1>index){
-					var nextList=this.list.filter(o=>(o.serial_number-1)>index);
-					for(var i=0;i<nextList.length;i++){
-						if(nextList[i].qlist.length>0){
-							for(var v=0;v<nextList[i].qlist.length;v++){
-								nextList[i].qlist[v].serial_number=nextList[i].qlist[v].serial_number+1;
-							}
-						}
-					 	
-					}
-				}
+//					if(this.list.length-1>index){
+//					var nextList=this.list.filter(o=>(o.serial_number-1)>index);
+//					for(var i=0;i<nextList.length;i++){
+//						if(nextList[i].qlist.length>0){
+//							for(var v=0;v<nextList[i].qlist.length;v++){
+//								nextList[i].qlist[v].serial_number=nextList[i].qlist[v].serial_number+1;
+//							}
+//						}
+//					 	
+//					}
+//				}
+this.resetOrder(this.list);
 				return ifill;
 			},
 			addsingle(index) {
@@ -194,17 +194,18 @@ let ix=0;
 				isingle.edittextinput = true;
 				isingle.qtitle = ix;
 				this.list[index].qlist.push(isingle);
-								if(this.list.length-1>index){
-					var nextList=this.list.filter(o=>(o.serial_number-1)>index);
-					for(var i=0;i<nextList.length;i++){
-						if(nextList[i].qlist.length>0){
-							for(var v=0;v<nextList[i].qlist.length;v++){
-								nextList[i].qlist[v].serial_number=nextList[i].qlist[v].serial_number+1;
-							}
-						}
-					 	
-					}
-				}
+//								if(this.list.length-1>index){
+//					var nextList=this.list.filter(o=>(o.serial_number-1)>index);
+//					for(var i=0;i<nextList.length;i++){
+//						if(nextList[i].qlist.length>0){
+//							for(var v=0;v<nextList[i].qlist.length;v++){
+//								nextList[i].qlist[v].serial_number=nextList[i].qlist[v].serial_number+1;
+//							}
+//						}
+//					 	
+//					}
+//				}
+this.resetOrder(this.list);
 				
 				return isingle;
 			},
@@ -236,17 +237,18 @@ let ix=0;
 				imultiple.edittextinput = true;
 				imultiple.qtitle = ix;
 				this.list[index].qlist.push(imultiple);
-				if(this.list.length-1>index){
-					var nextList=this.list.filter(o=>(o.serial_number-1)>index);
-					for(var i=0;i<nextList.length;i++){
-						if(nextList[i].qlist.length>0){
-							for(var v=0;v<nextList[i].qlist.length;v++){
-								nextList[i].qlist[v].serial_number=nextList[i].qlist[v].serial_number+1;
-							}
-						}
-					 	
-					}
-				}
+//				if(this.list.length-1>index){
+//					var nextList=this.list.filter(o=>(o.serial_number-1)>index);
+//					for(var i=0;i<nextList.length;i++){
+//						if(nextList[i].qlist.length>0){
+//							for(var v=0;v<nextList[i].qlist.length;v++){
+//								nextList[i].qlist[v].serial_number=nextList[i].qlist[v].serial_number+1;
+//							}
+//						}
+//					 	
+//					}
+//				}
+this.resetOrder(this.list);
 				return imultiple;
 
 			},
@@ -278,17 +280,18 @@ let ix=0;
 				imultistage.qtitle = ix;
 				imultistage.edittextinput = true;
 				this.list[index].qlist.push(imultistage);
-							if(this.list.length-1>index){
-					var nextList=this.list.filter(o=>(o.serial_number-1)>index);
-					for(var i=0;i<nextList.length;i++){
-						if(nextList[i].qlist.length>0){
-							for(var v=0;v<nextList[i].qlist.length;v++){
-								nextList[i].qlist[v].serial_number=nextList[i].qlist[v].serial_number+1;
-							}
-						}
-					 	
-					}
-				}
+//							if(this.list.length-1>index){
+//					var nextList=this.list.filter(o=>(o.serial_number-1)>index);
+//					for(var i=0;i<nextList.length;i++){
+//						if(nextList[i].qlist.length>0){
+//							for(var v=0;v<nextList[i].qlist.length;v++){
+//								nextList[i].qlist[v].serial_number=nextList[i].qlist[v].serial_number+1;
+//							}
+//						}
+//					 	
+//					}
+//				}
+this.resetOrder(this.list);
 				return imultistage;
 			},
 			adduploadimg(index) {
@@ -319,18 +322,18 @@ let ix=0;
 				iuploadimg.qtitle = ix;
 				iuploadimg.edittextinput = true;
 				this.list[index].qlist.push(iuploadimg);
-					this.list[index].qlist.push(iuploadimg);
-								if(this.list.length-1>index){
-					var nextList=this.list.filter(o=>(o.serial_number-1)>index);
-					for(var i=0;i<nextList.length;i++){
-						if(nextList[i].qlist.length>0){
-							for(var v=0;v<nextList[i].qlist.length;v++){
-								nextList[i].qlist[v].serial_number=nextList[i].qlist[v].serial_number+1;
-							}
-						}
-					 	
-					}
-				}
+//								if(this.list.length-1>index){
+//					var nextList=this.list.filter(o=>(o.serial_number-1)>index);
+//					for(var i=0;i<nextList.length;i++){
+//						if(nextList[i].qlist.length>0){
+//							for(var v=0;v<nextList[i].qlist.length;v++){
+//								nextList[i].qlist[v].serial_number=nextList[i].qlist[v].serial_number+1;
+//							}
+//						}
+//					 	
+//					}
+//				}
+this.resetOrder(this.list);
 				return	iuploadimg
 			},
 			addloCation(index) {
@@ -361,17 +364,18 @@ let ix=0;
 				iloCation.qtitle = ix;
 				iloCation.edittextinput = true;
 				this.list[index].qlist.push(iloCation);
-								if(this.list.length-1>index){
-					var nextList=this.list.filter(o=>(o.serial_number-1)>index);
-					for(var i=0;i<nextList.length;i++){
-						if(nextList[i].qlist.length>0){
-							for(var v=0;v<nextList[i].qlist.length;v++){
-								nextList[i].qlist[v].serial_number=nextList[i].qlist[v].serial_number+1;
-							}
-						}
-					 	
-					}
-				}
+//								if(this.list.length-1>index){
+//					var nextList=this.list.filter(o=>(o.serial_number-1)>index);
+//					for(var i=0;i<nextList.length;i++){
+//						if(nextList[i].qlist.length>0){
+//							for(var v=0;v<nextList[i].qlist.length;v++){
+//								nextList[i].qlist[v].serial_number=nextList[i].qlist[v].serial_number+1;
+//							}
+//						}
+//					 	
+//					}
+//				}
+this.resetOrder(this.list);
 				return iloCation;
 			},
 			addsignature(index) {
@@ -403,17 +407,18 @@ let ix=0;
 				isignature.serial_number = ix;
 				isignature.qtitle = ix;
 				this.list[index].qlist.push(isignature);
-									if(this.list.length-1>index){
-					var nextList=this.list.filter(o=>(o.serial_number-1)>index);
-					for(var i=0;i<nextList.length;i++){
-						if(nextList[i].qlist.length>0){
-							for(var v=0;v<nextList[i].qlist.length;v++){
-								nextList[i].qlist[v].serial_number=nextList[i].qlist[v].serial_number+1;
-							}
-						}
-					 	
-					}
-				}
+//									if(this.list.length-1>index){
+//					var nextList=this.list.filter(o=>(o.serial_number-1)>index);
+//					for(var i=0;i<nextList.length;i++){
+//						if(nextList[i].qlist.length>0){
+//							for(var v=0;v<nextList[i].qlist.length;v++){
+//								nextList[i].qlist[v].serial_number=nextList[i].qlist[v].serial_number+1;
+//							}
+//						}
+//					 	
+//					}
+//				}
+this.resetOrder(this.list);
 				return	isignature;
 			},
 			addfractions(index) {
@@ -444,17 +449,18 @@ let ix=0;
 				ifractions.qtitle = ix;
 				ifractions.edittextinput = true;
 				this.list[index].qlist.push(ifractions);
-							if(this.list.length-1>index){
-					var nextList=this.list.filter(o=>(o.serial_number-1)>index);
-					for(var i=0;i<nextList.length;i++){
-						if(nextList[i].qlist.length>0){
-							for(var v=0;v<nextList[i].qlist.length;v++){
-								nextList[i].qlist[v].serial_number=nextList[i].qlist[v].serial_number+1;
-							}
-						}
-					 	
-					}
-				}
+//							if(this.list.length-1>index){
+//					var nextList=this.list.filter(o=>(o.serial_number-1)>index);
+//					for(var i=0;i<nextList.length;i++){
+//						if(nextList[i].qlist.length>0){
+//							for(var v=0;v<nextList[i].qlist.length;v++){
+//								nextList[i].qlist[v].serial_number=nextList[i].qlist[v].serial_number+1;
+//							}
+//						}
+//					 	
+//					}
+//				}
+this.resetOrder(this.list);
 				return ifractions;
 
 			},
@@ -488,20 +494,23 @@ let ix=0;
 				option.pid = this.list[index].id;
 				option.sub_cat = "comprehensive";
 				option.poSition = "";
-
+option.relevanceshow = false;
 				this.$post("/Home/Tpl/createNewMod", {
 					pid: this.subId,
 					chief: option.pid,
-					mod_name: option.title
+					mod_name: option.title,
+					serial_number: option.serial_number
 				}).then((res) => {
 					option.id = res.id;
 					this.list[index].qlist.push(option);
+					this.resetOrder(this.list);
 					return option
 				});
 
 			},
 			delem(index, pindex) {
 				this.list[index].qlist.splice(pindex, 1);
+				this.resetOrder(this.list);
 			},
 			addItem(index, type) {
 				//				debugger
@@ -623,6 +632,7 @@ let item=new Promise((resolve, reject) => {
 					}
 					let nlist = this.list[index].qlist.deleteIndex(qindex);
 					this.list[index].qlist = nlist;
+					this.resetOrder(this.list);
 				}).catch(() => {});
 			},
 			removeDomainitem(index, qindex, dindex) {
@@ -691,25 +701,52 @@ let item=new Promise((resolve, reject) => {
 						});
 					}
 				}
-				sortList.sort(function(a, b) {
-					return a.serial_number - b.serial_number;
-				});
-
-				this.list[index].qlist = sortList;
+//				sortList.sort(function(a, b) {
+//					return a.serial_number - b.serial_number;
+//				});
+//
+//				this.list[index].qlist = sortList;
+this.resetOrder(this.list);
 				item.show=false;
 				item.edittextinput=false;
 
 			},
 				relevance(item,index) {
 		
-				this.relevanceshow = true;
+				item.relevanceshow = true;
 								
 			},
-			surerelevance() {
-				this.relevanceshow = false;
+			surerelevance(item) {
+				item.relevanceshow = false;
 			},
 			canclerelevance(item) {
-				this.relevanceshow = false;
+				item.relevanceshow = false;
+			},
+			resetOrder(list) {
+				var orderId = 1;
+				for(var k = 0; k < list.length; k++) {
+					list[k].qlist.sort(function(a, b) {
+						return a.serial_number - b.serial_number;
+					});
+					for(var j = 0; j < list[k].qlist.length; j++) {
+						list[k].qlist[j].qtitle = orderId;
+						orderId++;
+					}
+
+					var qlistArrary = list[k].qlist.filter(o => o.sub_cat == 'comprehensive');
+
+					for(var mm = 0; mm < qlistArrary.length; mm++) {
+						qlistArrary[mm].qlist.sort(function(a, b) {
+							return a.serial_number - b.serial_number;
+						});
+						var cmorderId = 1;
+						for(var jj = 0; jj < qlistArrary[mm].qlist.length; jj++) {
+							qlistArrary[mm].qlist[jj].qtitle = cmorderId;
+							cmorderId++;
+						}
+					}
+
+				}
 			},
 			domainSortdown(index, qindex, dindex, type) {
 				var sdomainItem = this.list[index].qlist[qindex].option[dindex];
@@ -744,19 +781,23 @@ let item=new Promise((resolve, reject) => {
 				}));
 				opcount = opcount + 1;
 				option.mod_name = "模块名称";
-				option.qtitle = self.list.length + 1;
-				option.qtitle = jsNumDX(option.qtitle);
+//				option.qtitle = self.list.length + 1;
+//				option.qtitle = jsNumDX(option.qtitle);
+option.qtitle = jsNumDX(opcount);
 				option.id = 0;
 //				option.sortId = 0;
 option.serial_number = opcount;
 				option.pid = this.subId;
 				option.qlist = [];
+				option.relevanceshow = false;
 				this.$post("/Home/Tpl/createNewMod", {
 					pid: this.subId,
 					chief: 0,
-					mod_name: option.mod_name
+					mod_name: option.mod_name,
+					serial_number: option.serial_number
 				}).then((res) => {
 					option.id = res.id;
+					option.serial_number = res.serial_number
 					self.list.push(option);
 				});
 			},
@@ -803,6 +844,12 @@ option.serial_number = opcount;
 				console.log(subModel);
 				this.$post("/Home/Tpl/createNewItem", subModel).then((res) => {
 					item.id = res.id;
+						if(res.option.length > 0) {
+						for(var i = 0; i < res.option.length; i++) {
+							item.option[i].id = res.option.filter(o => o.order_num == item.option[i].order_num)[0].id;
+						}
+					}
+					
 				});
 			},
 			removeMode(item) {
@@ -990,18 +1037,18 @@ if(this.list[i].qlist.length>0){
 			getListArrary(subId) {
 				this.finishSure=false;
 				this.list = [];
-				this.$post("/Home/Tpl/getSingleTpl", {
+			var listArrary=this.$post("/Home/Tpl/getSingleTpl", {
 					id: this.subId
 				}).then((res) => {
 
 					this.contentText = res.description || "";
 					this.questiontitle = res.tmp_name || "";
+					if(!res.hasOwnProperty("mod")) return
 					let modlist = res.mod;
 					for(var k = 0; k < modlist.length; k++) {
 						var option = {};
 						option.mod_name = modlist[k].mod_name;
-//						option.qtitle = this.list.length + 1;
-//						option.qtitle = jsNumDX(option.qtitle);
+						option.relevanceshow = false;
 						option.id = modlist[k].id;
 //						option.sortId = modlist[k].order_num;
 	var serial_number = modlist[k].serial_number;
@@ -1040,12 +1087,15 @@ if(this.list[i].qlist.length>0){
 						option.qlist.sort(function(a, b) {
 							return a.serial_number - b.serial_number;
 						});
+					
 this.list.push(option);
 
 					}
+					this.resetOrder(this.list);
+					return this.list;
 
 				});
-
+return listArrary;
 			},
 			getItemOptions(itemList) {
 				let resList = [];
@@ -1542,9 +1592,28 @@ padding:0;
 		    position: absolute;
     top: 20px;
     right: 346px;
+    z-index: 15;
 		&:hover{
 			background:none;
 			color:#005ad4;
 		}
+	}
+		.edit_item /deep/ .molrelevance.el-button--primary.is-plain{
+		background: none;
+		border: none;
+		display: inline-block;
+		padding: 0;
+		width: 10%;
+		&:hover {
+			background: none;
+			
+			border-color:none;
+			span{
+				color: #005ad4;
+			}
+		}
+	span{
+		color: #409EFF;
+	}
 	}
 </style>

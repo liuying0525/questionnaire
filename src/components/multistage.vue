@@ -12,15 +12,15 @@
 					</template>
 				</div>
 				<div v-show="item.show" class="transition-box">
-					<span @click="showedit(item)">编辑</span>
-					<span @click.prevent="removeDomain(index,qindex)">删除</span>
-					<span @click.prevent="changeposition(item)">位置变更</span>
+					<span @click.stop.prevent="showedit(item)">编辑</span>
+					<span @click..stop.prevent="removeDomain(index,qindex)">删除</span>
+					<span @click.stop.prevent="changeposition(item)">位置变更</span>
 					<div class="changeposition" v-if="item.changeButton">
-						<el-button type="info" plain @click="itemSortdown(item,index,qindex,'up')">上移一题</el-button>
-						<el-button type="info" plain @click="itemSortdown(item,index,qindex,'down')">下移一题</el-button>
+						<el-button type="info" plain @click.stop.prevent="itemSortdown(item,index,qindex,'up')">上移一题</el-button>
+						<el-button type="info" plain @click.stop.prevent="itemSortdown(item,index,qindex,'down')">下移一题</el-button>
 						<div>移至【
 							<el-input v-model="item.poSition" class="inputposition"></el-input>】题
-							<el-button type="primary" plain class="positionsure" @click.native="itemSortdown(item,index,qindex,'jumpitem')">确定</el-button>
+							<el-button type="primary" plain class="positionsure" @click.stop.prevent="itemSortdown(item,index,qindex,'jumpitem')">确定</el-button>
 						</div>
 					</div>
 				</div>

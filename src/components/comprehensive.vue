@@ -4,16 +4,16 @@
 			<el-form-item class="edit_item" :label="item.qtitle+comtaccord">
 				<el-input v-model="comitem.title" placeholder="综合题名称" class="titlename"></el-input>
 				<div class="compretopright">
-					<el-button @click="relevance(item)" type="primary" plain class="comrelevance">关联逻辑</el-button>
+					<el-button @click.stop.prevent="relevance(item,index)" type="primary" plain class="molrelevance">关联逻辑</el-button>
 					<relevance :qlist="qlist" :relatetype="relatetype" :list="list" :item="item" @canclerelevance='canclerelevance' :index="index" :qindex="qindex" @surerelevance="surerelevance"></relevance>
-					<span @click.prevent="deletecomp" class="deletecomp">删除</span>
-					<span @click.prevent="changeposition(comitem)" class="oposition">位置变更</span>
+					<span @click.stop.prevent="deletecomp" class="deletecomp">删除</span>
+					<span @click.stop.prevent="changeposition(comitem)" class="oposition">位置变更</span>
 					<div class="changeposition" v-show="comitem.changeButton">
-						<el-button type="info" plain @click="itemSortdownc(item,index,qindex,'up')">上移一题</el-button>
-						<el-button type="info" plain @click="itemSortdownc(item,index,qindex,'down')">下移一题</el-button>
+						<el-button type="info" plain @click.stop.prevent="itemSortdownc(item,index,qindex,'up')">上移一题</el-button>
+						<el-button type="info" plain @click.stop.prevent="itemSortdownc(item,index,qindex,'down')">下移一题</el-button>
 						<div>移至【
 							<el-input v-model="comitem.poSition" class="inputposition"></el-input>】题
-							<el-button type="primary" plain class="positionsure" @click.native="itemSortdownc(item,index,qindex,'jumpitem')">确定</el-button>
+							<el-button type="primary" plain class="positionsure" @click.stop.prevent="itemSortdownc(item,index,qindex,'jumpitem')">确定</el-button>
 						</div>
 					</div>
 				</div>
@@ -105,10 +105,6 @@
 			relatetype: {
 				type: String,
 				default: ""
-			},
-			item: {
-				type: Object,
-				default: {}
 			},
 			qindex: {
 				type: Number,
@@ -276,7 +272,7 @@
 				this.resetComOrder(this.comitem.qlist);
 				return isignature;
 			},
-			relevance(item) {
+			relevance(item,index) {
 				if(this.status != "1" && this.type != '0' && !this.$route.query.templateId) {
 
 					this.$message({
@@ -289,13 +285,13 @@
 			},
 			surerelevance(item) {
 				item.relevanceshow = false;
-				this.item.show = true;
-				this.item.edittextinput = true;
+				item.show = true;
+				item.edittextinput = true;
 			},
 			canclerelevance(item) {
 				item.relevanceshow = false;
-				this.item.show = true;
-				this.item.edittextinput = true;
+				item.show = true;
+				item.edittextinput = true;
 			},
 			resetComOrder(list) {
 				var orderId = 1;
@@ -461,6 +457,7 @@
 			},
 			changeposition(item) {
 				item.changeButton = !item.changeButton;
+				
 			},
 			removeDomainitem(index, qindex, dindex) {
 				if(this.status != "1") {
@@ -552,10 +549,11 @@
 						});
 					}
 				}
-				sortList.sort(function(a, b) {
-					return a.serial_number - b.serial_number;
-				});
-				this.comitem.qlist = sortList;
+//				sortList.sort(function(a, b) {
+//					return a.serial_number - b.serial_number;
+//				});
+//				this.comitem.qlist = sortList;
+this.resetComOrder(this.comitem.qlist)
 				item.show = false;
 				item.edittextinput = false;
 			},
@@ -1031,7 +1029,7 @@
 		}
 	}
 	
-	.comrelevance {
+	.edit_item /deep/ .comrelevance {
 		background: none;
 		border: none;
 		display: inline-block;
@@ -1039,7 +1037,31 @@
 		width: 28%;
 		&:hover {
 			background: none;
-			color: #005ad4;
+			
+			border-color:none;
+			span{
+				color: #005ad4;
+			}
+		}
+	}
+		.edit_item /deep/ .molrelevance.el-button--primary.is-plain{
+		background: none;
+		border: none;
+		display: inline-block;
+		padding: 0;
+		width: 28%;
+		&:hover {
+			background: none;
+			
+			border-color:none;
+			span{
+				color: #005ad4;
+			}
+		}
+		&:active{
+			span{
+				color:#3a8ee6;
+			}
 		}
 	}
 </style>

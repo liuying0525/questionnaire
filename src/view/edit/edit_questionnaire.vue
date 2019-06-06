@@ -518,7 +518,6 @@
 						})) + 1;
 					}
 				} else {
-					debugger
 					ix = this.list[index].qlist.length == 0 ? 1 : Math.max.apply(Math, this.list[index].qlist.map(function(item) {
 						return item.serial_number
 					})) + 1;
@@ -537,7 +536,7 @@
 				option.pid = this.list[index].id;
 				option.sub_cat = "comprehensive";
 				option.poSition = "";
-
+option.relevanceshow = false;
 				this.$post("/Home/Subject/createNewMod", {
 					pid: this.subId,
 					chief: option.pid,
@@ -777,11 +776,12 @@
 						});
 					}
 				}
-				sortList.sort(function(a, b) {
-					return a.serial_number - b.serial_number;
-				});
-
-				this.list[index].qlist = sortList;
+//				sortList.sort(function(a, b) {
+//					return a.serial_number - b.serial_number;
+//				});
+//
+//				this.list[index].qlist = sortList;
+this.resetOrder(this.list);
 				item.show = false;
 				item.edittextinput = false;
 
@@ -839,7 +839,7 @@
 				option.pid = this.subId;
 				option.qlist = [];
 				option.relevanceshow = false;
-				storage.set("molitem", "1");
+//				storage.set("molitem", "1");
 				this.$post("/Home/Subject/createNewMod", {
 					pid: this.subId,
 					chief: 0,
@@ -878,12 +878,12 @@
 						break;
 					case "single":
 						{
-							delete subModel.default_choose;
+//							delete subModel.default_choose;
 						}
 						break;
 					case "comprehensive":
 						{
-							delete subModel.default_choose;
+//							delete subModel.default_choose;
 						}
 						break;
 					case "multiple":
@@ -892,7 +892,7 @@
 						}
 						break;
 				}
-				console.log(subModel);
+//				console.log(subModel);
 				this.$post("/Home/Subject/createNewItem", subModel).then((res) => {
 					item.id = res.id;
 					if(res.option.length > 0) {
@@ -935,14 +935,16 @@
 									for(var b = 0; b < this.list[i].qlist[j].qlist.length; b++) {
 										var jitem = {};
 										jitem.id = this.list[i].qlist[j].qlist[b].id;
-										jitem.order = this.list[i].qlist[j].qlist[b].serial_number;
+//										jitem.order = this.list[i].qlist[j].qlist[b].serial_number;
+jitem.order = this.list[i].qlist[j].qlist[b].qtitle;
 										bmodoption.item.push(jitem);
 									}
 									SubInfo.mod.push(bmodoption);
 								} else {
 									var jitem = {};
 									jitem.id = this.list[i].qlist[j].id;
-									jitem.order = this.list[i].qlist[j].serial_number;
+//									jitem.order = this.list[i].qlist[j].serial_number;
+jitem.order = this.list[i].qlist[j].qtitle
 									modoption.item.push(jitem);
 									if(SubInfo.mod.filter(o => o.id == modoption.id).length == 0) {
 										SubInfo.mod.push(modoption);
@@ -953,7 +955,15 @@
 							SubInfo.mod.push(modoption);
 						}
 					}
-					console.log("SubInfo==" + JSON.stringify(SubInfo));
+					console.log("SubInfo==" + JSON.stringify(SubInfo).length);
+					if(JSON.stringify(SubInfo).length>14000){
+						this.$alert('您的题目数已超过限制，请删减题目后再进行保存', '提示', {
+							confirmButtonText: '确定',
+							  callback: action => {}
+							  
+								})
+						return
+					}
 					this.$post("/Home/Subject/finishSub", SubInfo).then((res) => {
 						this.$alert('操作成功！', '提示', {
 							confirmButtonText: '确定',
@@ -1225,7 +1235,7 @@
 			},
 			beforeunloadFn(theList) {
 
-				console.log(theList)
+//				console.log(theList)
 				let SubInfo = {
 					id: this.subId,
 					name: this.questiontitle,
@@ -1288,7 +1298,7 @@
 			//				sessionStorage.setItem("newnewNum",true);
 			//			}
 			console.log("ddd")
-			console.log(this.list)
+//			console.log(this.list)
 
 		},
 		created() {
@@ -1607,9 +1617,30 @@
 		position: absolute;
 		top: 20px;
 		right: 346px;
+		    z-index: 15;
 		&:hover {
 			background: none;
 			color: #005ad4;
+		}
+	}
+	.edit_item /deep/ .molrelevance.el-button--primary.is-plain{
+		background: none;
+		border: none;
+		display: inline-block;
+		padding: 0;
+		width: 10%;
+		&:hover {
+			background: none;
+			
+			border-color:none;
+			span{
+				color: #005ad4;
+			}
+		}
+			&:active{
+			span{
+				color:#3a8ee6;
+			}
 		}
 	}
 </style>
