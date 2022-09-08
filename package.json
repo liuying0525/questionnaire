@@ -16,7 +16,7 @@
     "css-loader": "^1.0.0",
     "es6-promise": "^4.1.1",
     "file-saver": "^2.0.1",
-    "jszip": "^3.2.1",
+    "jszip": "^3.7.0",
     "node-sass": "^4.9.3",
     "object-assign": "^4.1.1",
     "vue": "^2.2.1",
